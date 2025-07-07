@@ -60,13 +60,16 @@ function normalize() {
 
 function shortname() {
     VALUE="$1"
+    VALUE=${VALUE%%_}
     echo "${VALUE}" | \
-        sed -e 's/projects/pjs/' \
+        sed -E \
+            -e 's/projects/pjs/' \
             -e 's/groups/grps/' \
             -e 's/packages/pkgs/' \
             -e 's/pipelines/pls/' \
             -e 's/repository/repo/' \
-            -e 's/merge_requests/mrs/'
+            -e 's/merge_requests/mrs/' \
+            -e 's/_+/_/g'
 }
 
 function write-preceding() {
@@ -105,14 +108,14 @@ function write-register-func() {
     TOOL_SNAME=$(shortname "${TOOL_NAME}")
     API_NAME=$(capitalize "${TOOL_NAME}")
 
-    echo "| ${TOOL_SNAME} | ${DESCRIPTION} |"
+    echo "| ${METHOD,,}_${TOOL_SNAME} | ${DESCRIPTION} |"
 
     FILE_PATH=$(filename "${OP_PATH}")
     # signature
     cat >> "${FILE_PATH}" <<EOF
 
 func register${METHOD}${API_NAME}(s *server.MCPServer) {
-	tool := mcp.NewTool("${TOOL_SNAME}",
+	tool := mcp.NewTool("${METHOD,,}_${TOOL_SNAME}",
 		mcp.WithDescription("${DESCRIPTION}"),
 EOF
 
@@ -458,7 +461,7 @@ do
     OP_GET=$(yq ".paths.\"${OP_PATH}\".get" "${TMP_DIR}/openapi.yml")
     if [[ "$OP_GET" != 'null' ]]; then
         METHOD="Get"
-        if [[ ${#TOOL_SNAME} -gt 46 ]]; then
+        if [[ ${#TOOL_SNAME} -gt 42 ]]; then # get_XXX
             # If the tool name is too long, we need to use a shorter name
             # to avoid exceeding the maximum length of 46 characters.
             # See https://github.com/microsoft/vscode/blob/1.101.2/src/vs/workbench/contrib/mcp/common/mcpTypes.ts#L710-L714

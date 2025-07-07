@@ -11,7 +11,7 @@ import (
 )
 
 func registerGetAvatar(s *server.MCPServer) {
-	tool := mcp.NewTool("avatar_",
+	tool := mcp.NewTool("get_avatar",
 		mcp.WithDescription("Return avatar url for a user"),
 		mcp.WithString("email",
 			mcp.Description("Public email address of the user"),

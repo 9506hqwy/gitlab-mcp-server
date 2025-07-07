@@ -11,7 +11,7 @@ import (
 )
 
 func registerGetPagesDomains(s *server.MCPServer) {
-	tool := mcp.NewTool("pages_domains",
+	tool := mcp.NewTool("get_pages_domains",
 		mcp.WithDescription("Get all pages domains"),
 		mcp.WithNumber("page",
 			mcp.Description("Current page number (example: 1) (default: 1)"),

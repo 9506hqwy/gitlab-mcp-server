@@ -10,7 +10,7 @@ import (
 )
 
 func registerGetApplicationPlanLimits(s *server.MCPServer) {
-	tool := mcp.NewTool("application_plan_limits",
+	tool := mcp.NewTool("get_application_plan_limits",
 		mcp.WithDescription("List the current limits of a plan on the GitLab instance."),
 		mcp.WithString("plan_name",
 			mcp.Description("Name of the plan to get the limits from. Default: default. (default: default)"),
@@ -45,7 +45,7 @@ func parseGetApplicationPlanLimits(request mcp.CallToolRequest) client.GetApiV4A
 }
 
 func registerGetApplicationAppearance(s *server.MCPServer) {
-	tool := mcp.NewTool("application_appearance",
+	tool := mcp.NewTool("get_application_appearance",
 		mcp.WithDescription("Get the current appearance"),
 	)
 
@@ -62,7 +62,7 @@ func getApplicationAppearanceHandler(ctx context.Context, request mcp.CallToolRe
 }
 
 func registerGetApplicationStatistics(s *server.MCPServer) {
-	tool := mcp.NewTool("application_statistics",
+	tool := mcp.NewTool("get_application_statistics",
 		mcp.WithDescription("Get the current application statistics"),
 	)
 

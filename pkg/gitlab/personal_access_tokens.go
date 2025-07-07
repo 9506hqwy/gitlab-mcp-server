@@ -13,7 +13,7 @@ import (
 )
 
 func registerGetPersonalAccessTokensSelf(s *server.MCPServer) {
-	tool := mcp.NewTool("personal_access_tokens_self",
+	tool := mcp.NewTool("get_personal_access_tokens_self",
 		mcp.WithDescription("Get the details of a personal access token by passing it to the API in a header"),
 	)
 
@@ -30,7 +30,7 @@ func getPersonalAccessTokensSelfHandler(ctx context.Context, request mcp.CallToo
 }
 
 func registerGetPersonalAccessTokensSelfAssociations(s *server.MCPServer) {
-	tool := mcp.NewTool("personal_access_tokens_self_associations",
+	tool := mcp.NewTool("get_personal_access_tokens_self_associations",
 		mcp.WithDescription("Get groups and projects this personal access token can access by passing it to the API in a header"),
 		mcp.WithNumber("min_access_level",
 			mcp.Description("Limit by minimum access level of authenticated user"),
@@ -83,7 +83,7 @@ func parseGetPersonalAccessTokensSelfAssociations(request mcp.CallToolRequest) c
 }
 
 func registerGetPersonalAccessTokens(s *server.MCPServer) {
-	tool := mcp.NewTool("personal_access_tokens_",
+	tool := mcp.NewTool("get_personal_access_tokens",
 		mcp.WithDescription("Get all personal access tokens the authenticated user has access to."),
 		mcp.WithNumber("user_id",
 			mcp.Description("Filter PATs by User ID (example: 2)"),
@@ -223,7 +223,7 @@ func parseGetPersonalAccessTokens(request mcp.CallToolRequest) client.GetApiV4Pe
 }
 
 func registerGetPersonalAccessTokensId(s *server.MCPServer) {
-	tool := mcp.NewTool("personal_access_tokens_id",
+	tool := mcp.NewTool("get_personal_access_tokens_id",
 		mcp.WithDescription("Get a personal access token by using the ID of the personal access token."),
 		mcp.WithNumber("id",
 			mcp.Description("null"),

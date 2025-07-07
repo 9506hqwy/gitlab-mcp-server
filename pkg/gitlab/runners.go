@@ -12,7 +12,7 @@ import (
 )
 
 func registerGetRunners(s *server.MCPServer) {
-	tool := mcp.NewTool("runners_",
+	tool := mcp.NewTool("get_runners",
 		mcp.WithDescription("Get runners available for user"),
 		mcp.WithString("scope",
 			mcp.Description("Deprecated: Use `type` or `status` instead. The scope of runners to return"),
@@ -111,7 +111,7 @@ func parseGetRunners(request mcp.CallToolRequest) client.GetApiV4RunnersParams {
 }
 
 func registerGetRunnersAll(s *server.MCPServer) {
-	tool := mcp.NewTool("runners_all",
+	tool := mcp.NewTool("get_runners_all",
 		mcp.WithDescription("Get a list of all runners in the GitLab instance (shared and project). Access is restricted to users with either administrator access or auditor access."),
 		mcp.WithString("scope",
 			mcp.Description("Deprecated: Use `type` or `status` instead. The scope of runners to return"),
@@ -210,7 +210,7 @@ func parseGetRunnersAll(request mcp.CallToolRequest) client.GetApiV4RunnersAllPa
 }
 
 func registerGetRunnersId(s *server.MCPServer) {
-	tool := mcp.NewTool("runners_id",
+	tool := mcp.NewTool("get_runners_id",
 		mcp.WithDescription("At least the Maintainer role is required to get runner details at the project and group level. Instance-level runner details via this endpoint are available to all signed in users."),
 		mcp.WithNumber("id",
 			mcp.Description("The ID of a runner"),
@@ -233,7 +233,7 @@ func getRunnersIdHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp
 }
 
 func registerGetRunnersIdManagers(s *server.MCPServer) {
-	tool := mcp.NewTool("runners_id_managers",
+	tool := mcp.NewTool("get_runners_id_managers",
 		mcp.WithDescription("Get a list of all runner's managers"),
 		mcp.WithNumber("id",
 			mcp.Description("The ID of a runner"),
@@ -256,7 +256,7 @@ func getRunnersIdManagersHandler(ctx context.Context, request mcp.CallToolReques
 }
 
 func registerGetRunnersIdJobs(s *server.MCPServer) {
-	tool := mcp.NewTool("runners_id_jobs",
+	tool := mcp.NewTool("get_runners_id_jobs",
 		mcp.WithDescription("List jobs that are being processed or were processed by the specified runner. The list of jobs is limited to projects where the user has at least the Reporter role."),
 		mcp.WithNumber("id",
 			mcp.Description("The ID of a runner"),

@@ -13,7 +13,7 @@ import (
 )
 
 func registerGetEvents(s *server.MCPServer) {
-	tool := mcp.NewTool("events_",
+	tool := mcp.NewTool("get_events",
 		mcp.WithDescription("This feature was introduced in GitLab 9.3."),
 		mcp.WithString("scope",
 			mcp.Description("Include all events across a user’s projects (example: all)"),

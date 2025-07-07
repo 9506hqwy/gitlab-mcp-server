@@ -10,7 +10,7 @@ import (
 )
 
 func registerGetUsageDataMetricDefinitions(s *server.MCPServer) {
-	tool := mcp.NewTool("usage_data_metric_definitions",
+	tool := mcp.NewTool("get_usage_data_metric_definitions",
 		mcp.WithDescription("This feature was introduced in GitLab 13.11."),
 		mcp.WithBoolean("include_paths",
 			mcp.Description("Include file paths in the metric definitions (example: true) (default: false)"),
@@ -40,7 +40,7 @@ func parseGetUsageDataMetricDefinitions(request mcp.CallToolRequest) client.GetA
 }
 
 func registerGetUsageDataServicePing(s *server.MCPServer) {
-	tool := mcp.NewTool("usage_data_service_ping",
+	tool := mcp.NewTool("get_usage_data_service_ping",
 		mcp.WithDescription("Introduces in Gitlab 16.9. Requires personal access token with read_service_ping scope."),
 	)
 
@@ -57,7 +57,7 @@ func getUsageDataServicePingHandler(ctx context.Context, request mcp.CallToolReq
 }
 
 func registerGetUsageDataNonSqlMetrics(s *server.MCPServer) {
-	tool := mcp.NewTool("usage_data_non_sql_metrics",
+	tool := mcp.NewTool("get_usage_data_non_sql_metrics",
 		mcp.WithDescription("This feature was introduced in GitLab 13.11."),
 	)
 
@@ -74,7 +74,7 @@ func getUsageDataNonSqlMetricsHandler(ctx context.Context, request mcp.CallToolR
 }
 
 func registerGetUsageDataQueries(s *server.MCPServer) {
-	tool := mcp.NewTool("usage_data_queries",
+	tool := mcp.NewTool("get_usage_data_queries",
 		mcp.WithDescription("This feature was introduced in GitLab 13.11."),
 	)
 

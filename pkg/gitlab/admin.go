@@ -11,7 +11,7 @@ import (
 )
 
 func registerGetAdminBatchedBackgroundMigrationsId(s *server.MCPServer) {
-	tool := mcp.NewTool("admin_batched_background_migrations_id",
+	tool := mcp.NewTool("get_admin_batched_background_migrations_id",
 		mcp.WithDescription("Retrieve a batched background migration"),
 		mcp.WithString("database",
 			mcp.Description("The name of the database (default: main)"),
@@ -51,7 +51,7 @@ func parseGetAdminBatchedBackgroundMigrationsId(request mcp.CallToolRequest) cli
 }
 
 func registerGetAdminBatchedBackgroundMigrations(s *server.MCPServer) {
-	tool := mcp.NewTool("admin_batched_background_migrations",
+	tool := mcp.NewTool("get_admin_batched_background_migrations",
 		mcp.WithDescription("Get the list of batched background migrations"),
 		mcp.WithString("database",
 			mcp.Description("The name of the database, the default `main` (default: main)"),
@@ -95,7 +95,7 @@ func parseGetAdminBatchedBackgroundMigrations(request mcp.CallToolRequest) clien
 }
 
 func registerGetAdminCiVariables(s *server.MCPServer) {
-	tool := mcp.NewTool("admin_ci_variables",
+	tool := mcp.NewTool("get_admin_ci_variables",
 		mcp.WithDescription("List all instance-level variables"),
 		mcp.WithNumber("page",
 			mcp.Description("Current page number (example: 1) (default: 1)"),
@@ -137,7 +137,7 @@ func parseGetAdminCiVariables(request mcp.CallToolRequest) client.GetApiV4AdminC
 }
 
 func registerGetAdminCiVariablesKey(s *server.MCPServer) {
-	tool := mcp.NewTool("admin_ci_variables_key",
+	tool := mcp.NewTool("get_admin_ci_variables_key",
 		mcp.WithDescription("Get the details of a specific instance-level variable"),
 		mcp.WithString("key",
 			mcp.Description("The key of a variable"),
@@ -160,7 +160,7 @@ func getAdminCiVariablesKeyHandler(ctx context.Context, request mcp.CallToolRequ
 }
 
 func registerGetAdminDatabasesDatabaseNameDictionaryTablesTableName(s *server.MCPServer) {
-	tool := mcp.NewTool("admin_databases_database_name_dictionary_tables_table_name",
+	tool := mcp.NewTool("get_admin_databases_database_name_dictionary_tables_table_name",
 		mcp.WithDescription("Retrieve dictionary details"),
 		mcp.WithString("database_name",
 			mcp.Description("The database name"),
@@ -189,7 +189,7 @@ func getAdminDatabasesDatabaseNameDictionaryTablesTableNameHandler(ctx context.C
 }
 
 func registerGetAdminClusters(s *server.MCPServer) {
-	tool := mcp.NewTool("admin_clusters",
+	tool := mcp.NewTool("get_admin_clusters",
 		mcp.WithDescription("This feature was introduced in GitLab 13.2. Returns a list of instance clusters."),
 	)
 
@@ -206,7 +206,7 @@ func getAdminClustersHandler(ctx context.Context, request mcp.CallToolRequest) (
 }
 
 func registerGetAdminClustersClusterId(s *server.MCPServer) {
-	tool := mcp.NewTool("admin_clusters_cluster_id",
+	tool := mcp.NewTool("get_admin_clusters_cluster_id",
 		mcp.WithDescription("This feature was introduced in GitLab 13.2. Returns a single instance cluster."),
 		mcp.WithNumber("cluster_id",
 			mcp.Description("The cluster ID"),

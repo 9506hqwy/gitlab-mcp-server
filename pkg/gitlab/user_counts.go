@@ -8,7 +8,7 @@ import (
 )
 
 func registerGetUserCounts(s *server.MCPServer) {
-	tool := mcp.NewTool("user_counts_",
+	tool := mcp.NewTool("get_user_counts",
 		mcp.WithDescription("Assigned open issues, assigned MRs and pending todos count"),
 	)
 

@@ -10,7 +10,7 @@ import (
 )
 
 func registerGetKeysId(s *server.MCPServer) {
-	tool := mcp.NewTool("keys_id",
+	tool := mcp.NewTool("get_keys_id",
 		mcp.WithDescription("Get SSH key with user by ID of an SSH key. Note only administrators can lookup SSH key with user by ID of an SSH key"),
 		mcp.WithString("id",
 			mcp.Description("The ID of an SSH key (example: 2)"),
@@ -33,7 +33,7 @@ func getKeysIdHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.Ca
 }
 
 func registerGetKeys(s *server.MCPServer) {
-	tool := mcp.NewTool("keys_",
+	tool := mcp.NewTool("get_keys",
 		mcp.WithDescription("You can search for a user that owns a specific SSH key. Note only administrators can lookup SSH key with the fingerprint of an SSH key"),
 		mcp.WithString("fingerprint",
 			mcp.Description("The fingerprint of an SSH key (example: ba:81:59:68:d7:6c:cd:02:02:bf:6a:9b:55:4e:af:d1)"),

@@ -13,7 +13,7 @@ import (
 )
 
 func registerGetIssues(s *server.MCPServer) {
-	tool := mcp.NewTool("issues_",
+	tool := mcp.NewTool("get_issues",
 		mcp.WithDescription("List issues"),
 		mcp.WithNumber("assignee_id",
 			mcp.Description("Return issues assigned to the given user id. Mutually exclusive with assignee_username. None returns unassigned issues. Any returns issues with an assignee."),
@@ -303,7 +303,7 @@ func parseGetIssues(request mcp.CallToolRequest) client.GetApiV4IssuesParams {
 }
 
 func registerGetIssuesId(s *server.MCPServer) {
-	tool := mcp.NewTool("issues_id",
+	tool := mcp.NewTool("get_issues_id",
 		mcp.WithDescription("Single issue"),
 		mcp.WithNumber("id",
 			mcp.Description("The ID of the issue."),

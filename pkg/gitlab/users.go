@@ -14,7 +14,7 @@ import (
 )
 
 func registerGetUsersIdEvents(s *server.MCPServer) {
-	tool := mcp.NewTool("users_id_events",
+	tool := mcp.NewTool("get_users_id_events",
 		mcp.WithDescription("This feature was introduced in GitLab 8.13."),
 		mcp.WithString("id",
 			mcp.Description("The ID or username of the user"),
@@ -110,7 +110,7 @@ func parseGetUsersIdEvents(request mcp.CallToolRequest) client.GetApiV4UsersIdEv
 }
 
 func registerGetUsersUserIdProjects(s *server.MCPServer) {
-	tool := mcp.NewTool("users_user_id_pjs",
+	tool := mcp.NewTool("get_users_user_id_pjs",
 		mcp.WithDescription("Get a user projects"),
 		mcp.WithString("user_id",
 			mcp.Description("The ID or username of the user"),
@@ -405,7 +405,7 @@ func parseGetUsersUserIdProjects(request mcp.CallToolRequest) client.GetApiV4Use
 }
 
 func registerGetUsersUserIdContributedProjects(s *server.MCPServer) {
-	tool := mcp.NewTool("users_user_id_contributed_pjs",
+	tool := mcp.NewTool("get_users_user_id_contributed_pjs",
 		mcp.WithDescription("Get projects that a user has contributed to"),
 		mcp.WithString("user_id",
 			mcp.Description("The ID or username of the user"),
@@ -480,7 +480,7 @@ func parseGetUsersUserIdContributedProjects(request mcp.CallToolRequest) client.
 }
 
 func registerGetUsersUserIdStarredProjects(s *server.MCPServer) {
-	tool := mcp.NewTool("users_user_id_starred_pjs",
+	tool := mcp.NewTool("get_users_user_id_starred_pjs",
 		mcp.WithDescription("Get projects starred by a user"),
 		mcp.WithString("user_id",
 			mcp.Description("The ID or username of the user"),

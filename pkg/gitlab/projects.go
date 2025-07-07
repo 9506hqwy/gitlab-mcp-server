@@ -15,7 +15,7 @@ import (
 )
 
 func registerGetProjectsIdAccessRequests(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_access_requests",
+	tool := mcp.NewTool("get_pjs_id_access_requests",
 		mcp.WithDescription("This feature was introduced in GitLab 8.11."),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project owned by the authenticated user"),
@@ -62,7 +62,7 @@ func parseGetProjectsIdAccessRequests(request mcp.CallToolRequest) client.GetApi
 }
 
 func registerGetProjectsIdAlertManagementAlertsAlertIidMetricImages(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_alert_management_alerts_alert_iid_metric_images",
+	tool := mcp.NewTool("get_pjs_id_alert_management_alerts_alert_iid_metric_images",
 		mcp.WithDescription("Metric Images for alert"),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project (example: 17)"),
@@ -90,7 +90,7 @@ func getProjectsIdAlertManagementAlertsAlertIidMetricImagesHandler(ctx context.C
 }
 
 func registerGetProjectsIdIssuesIssueIidAwardEmoji(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_issues_issue_iid_award_emoji",
+	tool := mcp.NewTool("get_pjs_id_issues_issue_iid_award_emoji",
 		mcp.WithDescription("Get a list of all emoji reactions for a specified awardable. This feature was introduced in 8.9"),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project"),
@@ -142,7 +142,7 @@ func parseGetProjectsIdIssuesIssueIidAwardEmoji(request mcp.CallToolRequest) cli
 }
 
 func registerGetProjectsIdIssuesIssueIidAwardEmojiAwardId(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_issues_issue_iid_award_emoji_award_id",
+	tool := mcp.NewTool("get_pjs_id_issues_issue_iid_award_emoji_award_id",
 		mcp.WithDescription("Get a single emoji reaction from an issue, snippet, or merge request. This feature was introduced in 8.9"),
 		mcp.WithNumber("award_id",
 			mcp.Description("ID of the emoji reaction."),
@@ -175,7 +175,7 @@ func getProjectsIdIssuesIssueIidAwardEmojiAwardIdHandler(ctx context.Context, re
 }
 
 func registerGetProjectsIdIssuesIssueIidNotesNoteIdAwardEmoji(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_issues_issue_iid_notes_note_id_award_emoji",
+	tool := mcp.NewTool("get_pjs_id_issues_issue_iid_notes_note_id_award_emoji",
 		mcp.WithDescription("Get a list of all emoji reactions for a specified awardable. This feature was introduced in 8.9"),
 		mcp.WithNumber("page",
 			mcp.Description("Current page number (example: 1) (default: 1)"),
@@ -232,7 +232,7 @@ func parseGetProjectsIdIssuesIssueIidNotesNoteIdAwardEmoji(request mcp.CallToolR
 }
 
 func registerGetProjectsIdIssuesIssueIidNotesNoteIdAwardEmojiAwardId(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_issues_issue_iid_notes_note_id_award_emoji_award_id",
+	tool := mcp.NewTool("get_pjs_id_issues_issue_iid_notes_note_id_award_emoji_award_id",
 		mcp.WithDescription("Get a single emoji reaction from an issue, snippet, or merge request. This feature was introduced in 8.9"),
 		mcp.WithNumber("award_id",
 			mcp.Description("ID of the emoji reaction."),
@@ -270,7 +270,7 @@ func getProjectsIdIssuesIssueIidNotesNoteIdAwardEmojiAwardIdHandler(ctx context.
 }
 
 func registerGetProjectsIdMergeRequestsMergeRequestIidAwardEmoji(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_mrs_merge_request_iid_award_emoji",
+	tool := mcp.NewTool("get_pjs_id_mrs_merge_request_iid_award_emoji",
 		mcp.WithDescription("Get a list of all emoji reactions for a specified awardable. This feature was introduced in 8.9"),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project"),
@@ -322,7 +322,7 @@ func parseGetProjectsIdMergeRequestsMergeRequestIidAwardEmoji(request mcp.CallTo
 }
 
 func registerGetProjectsIdMergeRequestsMergeRequestIidAwardEmojiAwardId(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_mrs_merge_request_iid_award_emoji_award_id",
+	tool := mcp.NewTool("get_pjs_id_mrs_merge_request_iid_award_emoji_award_id",
 		mcp.WithDescription("Get a single emoji reaction from an issue, snippet, or merge request. This feature was introduced in 8.9"),
 		mcp.WithNumber("award_id",
 			mcp.Description("ID of the emoji reaction."),
@@ -355,7 +355,7 @@ func getProjectsIdMergeRequestsMergeRequestIidAwardEmojiAwardIdHandler(ctx conte
 }
 
 func registerGetProjectsIdMergeRequestsMergeRequestIidNotesNoteIdAwardEmoji(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_mrs_merge_request_iid_notes_note_id_award_emoji",
+	tool := mcp.NewTool("get_pjs_id_mrs_merge_request_iid_notes_note_id_award_emoji",
 		mcp.WithDescription("Get a list of all emoji reactions for a specified awardable. This feature was introduced in 8.9"),
 		mcp.WithNumber("page",
 			mcp.Description("Current page number (example: 1) (default: 1)"),
@@ -412,7 +412,7 @@ func parseGetProjectsIdMergeRequestsMergeRequestIidNotesNoteIdAwardEmoji(request
 }
 
 func registerGetProjectsIdMergeRequestsMergeRequestIidNotesNoteIdAwardEmojiAwardId(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_mrs_merge_request_iid_notes_note_id_award_emoji_award_id",
+	tool := mcp.NewTool("get_pjs_id_mrs_merge_request_iid_notes_note_id_award_emoji_award_id",
 		mcp.WithDescription("Get a single emoji reaction from an issue, snippet, or merge request. This feature was introduced in 8.9"),
 		mcp.WithNumber("award_id",
 			mcp.Description("ID of the emoji reaction."),
@@ -450,7 +450,7 @@ func getProjectsIdMergeRequestsMergeRequestIidNotesNoteIdAwardEmojiAwardIdHandle
 }
 
 func registerGetProjectsIdSnippetsSnippetIdAwardEmoji(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_snippets_snippet_id_award_emoji",
+	tool := mcp.NewTool("get_pjs_id_snippets_snippet_id_award_emoji",
 		mcp.WithDescription("Get a list of all emoji reactions for a specified awardable. This feature was introduced in 8.9"),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project"),
@@ -502,7 +502,7 @@ func parseGetProjectsIdSnippetsSnippetIdAwardEmoji(request mcp.CallToolRequest) 
 }
 
 func registerGetProjectsIdSnippetsSnippetIdAwardEmojiAwardId(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_snippets_snippet_id_award_emoji_award_id",
+	tool := mcp.NewTool("get_pjs_id_snippets_snippet_id_award_emoji_award_id",
 		mcp.WithDescription("Get a single emoji reaction from an issue, snippet, or merge request. This feature was introduced in 8.9"),
 		mcp.WithNumber("award_id",
 			mcp.Description("ID of the emoji reaction."),
@@ -535,7 +535,7 @@ func getProjectsIdSnippetsSnippetIdAwardEmojiAwardIdHandler(ctx context.Context,
 }
 
 func registerGetProjectsIdSnippetsSnippetIdNotesNoteIdAwardEmoji(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_snippets_snippet_id_notes_note_id_award_emoji",
+	tool := mcp.NewTool("get_pjs_id_snippets_snippet_id_notes_note_id_award_emoji",
 		mcp.WithDescription("Get a list of all emoji reactions for a specified awardable. This feature was introduced in 8.9"),
 		mcp.WithNumber("page",
 			mcp.Description("Current page number (example: 1) (default: 1)"),
@@ -592,7 +592,7 @@ func parseGetProjectsIdSnippetsSnippetIdNotesNoteIdAwardEmoji(request mcp.CallTo
 }
 
 func registerGetProjectsIdSnippetsSnippetIdNotesNoteIdAwardEmojiAwardId(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_snippets_snippet_id_notes_note_id_award_emoji_award_id",
+	tool := mcp.NewTool("get_pjs_id_snippets_snippet_id_notes_note_id_award_emoji_award_id",
 		mcp.WithDescription("Get a single emoji reaction from an issue, snippet, or merge request. This feature was introduced in 8.9"),
 		mcp.WithNumber("award_id",
 			mcp.Description("ID of the emoji reaction."),
@@ -630,7 +630,7 @@ func getProjectsIdSnippetsSnippetIdNotesNoteIdAwardEmojiAwardIdHandler(ctx conte
 }
 
 func registerGetProjectsIdBadges(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_badges",
+	tool := mcp.NewTool("get_pjs_id_badges",
 		mcp.WithDescription("This feature was introduced in GitLab 10.6."),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project owned by the authenticated user."),
@@ -686,7 +686,7 @@ func parseGetProjectsIdBadges(request mcp.CallToolRequest) client.GetApiV4Projec
 }
 
 func registerGetProjectsIdBadgesRender(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_badges_render",
+	tool := mcp.NewTool("get_pjs_id_badges_render",
 		mcp.WithDescription("This feature was introduced in GitLab 10.6."),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project owned by the authenticated user."),
@@ -735,7 +735,7 @@ func parseGetProjectsIdBadgesRender(request mcp.CallToolRequest) client.GetApiV4
 }
 
 func registerGetProjectsIdBadgesBadgeId(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_badges_badge_id",
+	tool := mcp.NewTool("get_pjs_id_badges_badge_id",
 		mcp.WithDescription("This feature was introduced in GitLab 10.6."),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project owned by the authenticated user."),
@@ -763,7 +763,7 @@ func getProjectsIdBadgesBadgeIdHandler(ctx context.Context, request mcp.CallTool
 }
 
 func registerGetProjectsIdRepositoryBranches(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_repo_branches",
+	tool := mcp.NewTool("get_pjs_id_repo_branches",
 		mcp.WithDescription("Get a project repository branches"),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project"),
@@ -848,7 +848,7 @@ func parseGetProjectsIdRepositoryBranches(request mcp.CallToolRequest) client.Ge
 }
 
 func registerGetProjectsIdRepositoryBranchesBranch(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_repo_branches_branch",
+	tool := mcp.NewTool("get_pjs_id_repo_branches_branch",
 		mcp.WithDescription("Get a single repository branch"),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project"),
@@ -876,7 +876,7 @@ func getProjectsIdRepositoryBranchesBranchHandler(ctx context.Context, request m
 }
 
 func registerGetProjectsIdJobsArtifactsRefNameDownload(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_jobs_artifacts_ref_name_download",
+	tool := mcp.NewTool("get_pjs_id_jobs_artifacts_ref_name_download",
 		mcp.WithDescription("This feature was introduced in GitLab 8.10"),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project"),
@@ -929,7 +929,7 @@ func parseGetProjectsIdJobsArtifactsRefNameDownload(request mcp.CallToolRequest)
 }
 
 func registerGetProjectsIdJobsJobIdArtifacts(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_jobs_job_id_artifacts",
+	tool := mcp.NewTool("get_pjs_id_jobs_job_id_artifacts",
 		mcp.WithDescription("This feature was introduced in GitLab 8.5"),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project"),
@@ -972,7 +972,7 @@ func parseGetProjectsIdJobsJobIdArtifacts(request mcp.CallToolRequest) client.Ge
 }
 
 func registerGetProjectsIdJobs(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_jobs",
+	tool := mcp.NewTool("get_pjs_id_jobs",
 		mcp.WithDescription("Get a projects jobs"),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project"),
@@ -1028,7 +1028,7 @@ func parseGetProjectsIdJobs(request mcp.CallToolRequest) client.GetApiV4Projects
 }
 
 func registerGetProjectsIdJobsJobId(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_jobs_job_id",
+	tool := mcp.NewTool("get_pjs_id_jobs_job_id",
 		mcp.WithDescription("Get a specific job of a project"),
 		mcp.WithNumber("job_id",
 			mcp.Description("The ID of a job (example: 88)"),
@@ -1056,7 +1056,7 @@ func getProjectsIdJobsJobIdHandler(ctx context.Context, request mcp.CallToolRequ
 }
 
 func registerGetProjectsIdJobsJobIdTrace(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_jobs_job_id_trace",
+	tool := mcp.NewTool("get_pjs_id_jobs_job_id_trace",
 		mcp.WithDescription("Get a trace of a specific job of a project"),
 		mcp.WithNumber("job_id",
 			mcp.Description("The ID of a job (example: 88)"),
@@ -1084,7 +1084,7 @@ func getProjectsIdJobsJobIdTraceHandler(ctx context.Context, request mcp.CallToo
 }
 
 func registerGetProjectsIdResourceGroups(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_resource_grps",
+	tool := mcp.NewTool("get_pjs_id_resource_grps",
 		mcp.WithDescription("Get all resource groups for a project"),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project owned by the authenticated user"),
@@ -1131,7 +1131,7 @@ func parseGetProjectsIdResourceGroups(request mcp.CallToolRequest) client.GetApi
 }
 
 func registerGetProjectsIdResourceGroupsKey(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_resource_grps_key",
+	tool := mcp.NewTool("get_pjs_id_resource_grps_key",
 		mcp.WithDescription("Get a specific resource group"),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project owned by the authenticated user"),
@@ -1159,7 +1159,7 @@ func getProjectsIdResourceGroupsKeyHandler(ctx context.Context, request mcp.Call
 }
 
 func registerGetProjectsIdResourceGroupsKeyUpcomingJobs(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_resource_grps_key_upcoming_jobs",
+	tool := mcp.NewTool("get_pjs_id_resource_grps_key_upcoming_jobs",
 		mcp.WithDescription("List upcoming jobs for a specific resource group"),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project owned by the authenticated user"),
@@ -1211,7 +1211,7 @@ func parseGetProjectsIdResourceGroupsKeyUpcomingJobs(request mcp.CallToolRequest
 }
 
 func registerGetProjectsIdRunners(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_runners",
+	tool := mcp.NewTool("get_pjs_id_runners",
 		mcp.WithDescription("List all runners available in the project, including from ancestor groups and any allowed shared runners."),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project owned by the authenticated user"),
@@ -1315,7 +1315,7 @@ func parseGetProjectsIdRunners(request mcp.CallToolRequest) client.GetApiV4Proje
 }
 
 func registerGetProjectsIdSecureFiles(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_secure_files",
+	tool := mcp.NewTool("get_pjs_id_secure_files",
 		mcp.WithDescription("Get list of secure files in a project"),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project owned by the authenticated user"),
@@ -1362,7 +1362,7 @@ func parseGetProjectsIdSecureFiles(request mcp.CallToolRequest) client.GetApiV4P
 }
 
 func registerGetProjectsIdSecureFilesSecureFileId(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_secure_files_secure_file_id",
+	tool := mcp.NewTool("get_pjs_id_secure_files_secure_file_id",
 		mcp.WithDescription("Get the details of a specific secure file in a project"),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project owned by the authenticated user"),
@@ -1390,7 +1390,7 @@ func getProjectsIdSecureFilesSecureFileIdHandler(ctx context.Context, request mc
 }
 
 func registerGetProjectsIdSecureFilesSecureFileIdDownload(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_secure_files_secure_file_id_download",
+	tool := mcp.NewTool("get_pjs_id_secure_files_secure_file_id_download",
 		mcp.WithDescription("Download secure file"),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project owned by the authenticated user"),
@@ -1418,7 +1418,7 @@ func getProjectsIdSecureFilesSecureFileIdDownloadHandler(ctx context.Context, re
 }
 
 func registerGetProjectsIdPipelines(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_pls",
+	tool := mcp.NewTool("get_pjs_id_pls",
 		mcp.WithDescription("This feature was introduced in GitLab 8.11."),
 		mcp.WithString("id",
 			mcp.Description("The project ID or URL-encoded path (example: 11)"),
@@ -1598,7 +1598,7 @@ func parseGetProjectsIdPipelines(request mcp.CallToolRequest) client.GetApiV4Pro
 }
 
 func registerGetProjectsIdPipelinesLatest(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_pls_latest",
+	tool := mcp.NewTool("get_pjs_id_pls_latest",
 		mcp.WithDescription("This feature was introduced in GitLab 12.3"),
 		mcp.WithString("id",
 			mcp.Description("The project ID or URL-encoded path (example: 11)"),
@@ -1636,7 +1636,7 @@ func parseGetProjectsIdPipelinesLatest(request mcp.CallToolRequest) client.GetAp
 }
 
 func registerGetProjectsIdPipelinesPipelineId(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_pls_pipeline_id",
+	tool := mcp.NewTool("get_pjs_id_pls_pipeline_id",
 		mcp.WithDescription("This feature was introduced in GitLab 8.11"),
 		mcp.WithString("id",
 			mcp.Description("The project ID or URL-encoded path (example: 11)"),
@@ -1664,7 +1664,7 @@ func getProjectsIdPipelinesPipelineIdHandler(ctx context.Context, request mcp.Ca
 }
 
 func registerGetProjectsIdPipelinesPipelineIdJobs(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_pls_pipeline_id_jobs",
+	tool := mcp.NewTool("get_pjs_id_pls_pipeline_id_jobs",
 		mcp.WithDescription("Get pipeline jobs"),
 		mcp.WithString("id",
 			mcp.Description("The project ID or URL-encoded path (example: 11)"),
@@ -1733,7 +1733,7 @@ func parseGetProjectsIdPipelinesPipelineIdJobs(request mcp.CallToolRequest) clie
 }
 
 func registerGetProjectsIdPipelinesPipelineIdBridges(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_pls_pipeline_id_bridges",
+	tool := mcp.NewTool("get_pjs_id_pls_pipeline_id_bridges",
 		mcp.WithDescription("Get pipeline bridge jobs"),
 		mcp.WithString("id",
 			mcp.Description("The project ID or URL-encoded path (example: 11)"),
@@ -1796,7 +1796,7 @@ func parseGetProjectsIdPipelinesPipelineIdBridges(request mcp.CallToolRequest) c
 }
 
 func registerGetProjectsIdPipelinesPipelineIdVariables(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_pls_pipeline_id_variables",
+	tool := mcp.NewTool("get_pjs_id_pls_pipeline_id_variables",
 		mcp.WithDescription("This feature was introduced in GitLab 11.11"),
 		mcp.WithString("id",
 			mcp.Description("The project ID or URL-encoded path (example: 11)"),
@@ -1824,7 +1824,7 @@ func getProjectsIdPipelinesPipelineIdVariablesHandler(ctx context.Context, reque
 }
 
 func registerGetProjectsIdPipelinesPipelineIdTestReport(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_pls_pipeline_id_test_report",
+	tool := mcp.NewTool("get_pjs_id_pls_pipeline_id_test_report",
 		mcp.WithDescription("This feature was introduced in GitLab 13.0."),
 		mcp.WithString("id",
 			mcp.Description("The project ID or URL-encoded path (example: 11)"),
@@ -1852,7 +1852,7 @@ func getProjectsIdPipelinesPipelineIdTestReportHandler(ctx context.Context, requ
 }
 
 func registerGetProjectsIdPipelinesPipelineIdTestReportSummary(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_pls_pipeline_id_test_report_summary",
+	tool := mcp.NewTool("get_pjs_id_pls_pipeline_id_test_report_summary",
 		mcp.WithDescription("This feature was introduced in GitLab 14.2"),
 		mcp.WithString("id",
 			mcp.Description("The project ID or URL-encoded path (example: 11)"),
@@ -1880,7 +1880,7 @@ func getProjectsIdPipelinesPipelineIdTestReportSummaryHandler(ctx context.Contex
 }
 
 func registerGetProjectsIdPipelineSchedules(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_pipeline_schedules",
+	tool := mcp.NewTool("get_pjs_id_pipeline_schedules",
 		mcp.WithDescription("Get all pipeline schedules"),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project (example: 18)"),
@@ -1938,7 +1938,7 @@ func parseGetProjectsIdPipelineSchedules(request mcp.CallToolRequest) client.Get
 }
 
 func registerGetProjectsIdPipelineSchedulesPipelineScheduleId(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_pipeline_schedules_pipeline_schedule_id",
+	tool := mcp.NewTool("get_pjs_id_pipeline_schedules_pipeline_schedule_id",
 		mcp.WithDescription("Get a single pipeline schedule"),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project (example: 18)"),
@@ -1966,7 +1966,7 @@ func getProjectsIdPipelineSchedulesPipelineScheduleIdHandler(ctx context.Context
 }
 
 func registerGetProjectsIdPipelineSchedulesPipelineScheduleIdPipelines(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_pipeline_schedules_pipeline_schedule_id_pls",
+	tool := mcp.NewTool("get_pjs_id_pipeline_schedules_pipeline_schedule_id_pls",
 		mcp.WithDescription("Get all pipelines triggered from a pipeline schedule"),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project (example: 18)"),
@@ -1994,7 +1994,7 @@ func getProjectsIdPipelineSchedulesPipelineScheduleIdPipelinesHandler(ctx contex
 }
 
 func registerGetProjectsIdTriggers(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_triggers",
+	tool := mcp.NewTool("get_pjs_id_triggers",
 		mcp.WithDescription("Get trigger tokens list"),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project (example: 18)"),
@@ -2041,7 +2041,7 @@ func parseGetProjectsIdTriggers(request mcp.CallToolRequest) client.GetApiV4Proj
 }
 
 func registerGetProjectsIdTriggersTriggerId(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_triggers_trigger_id",
+	tool := mcp.NewTool("get_pjs_id_triggers_trigger_id",
 		mcp.WithDescription("Get specific trigger token of a project"),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project (example: 18)"),
@@ -2069,7 +2069,7 @@ func getProjectsIdTriggersTriggerIdHandler(ctx context.Context, request mcp.Call
 }
 
 func registerGetProjectsIdVariables(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_variables",
+	tool := mcp.NewTool("get_pjs_id_variables",
 		mcp.WithDescription("Get project variables"),
 		mcp.WithString("id",
 			mcp.Description("The ID of a project or URL-encoded NAMESPACE/PROJECT_NAME of the project owned by the authenticated user"),
@@ -2116,7 +2116,7 @@ func parseGetProjectsIdVariables(request mcp.CallToolRequest) client.GetApiV4Pro
 }
 
 func registerGetProjectsIdVariablesKey(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_variables_key",
+	tool := mcp.NewTool("get_pjs_id_variables_key",
 		mcp.WithDescription("Get the details of a single variable from a project"),
 		mcp.WithString("id",
 			mcp.Description("The ID of a project or URL-encoded NAMESPACE/PROJECT_NAME of the project owned by the authenticated user"),
@@ -2159,7 +2159,7 @@ func parseGetProjectsIdVariablesKey(request mcp.CallToolRequest) client.GetApiV4
 }
 
 func registerGetProjectsIdClusterAgentsAgentIdTokens(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_cluster_agents_agent_id_tokens",
+	tool := mcp.NewTool("get_pjs_id_cluster_agents_agent_id_tokens",
 		mcp.WithDescription("This feature was introduced in GitLab 15.0. Returns a list of tokens for an agent."),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project"),
@@ -2211,7 +2211,7 @@ func parseGetProjectsIdClusterAgentsAgentIdTokens(request mcp.CallToolRequest) c
 }
 
 func registerGetProjectsIdClusterAgentsAgentIdTokensTokenId(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_cluster_agents_agent_id_tokens_token_id",
+	tool := mcp.NewTool("get_pjs_id_cluster_agents_agent_id_tokens_token_id",
 		mcp.WithDescription("This feature was introduced in GitLab 15.0. Gets a single agent token."),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project"),
@@ -2244,7 +2244,7 @@ func getProjectsIdClusterAgentsAgentIdTokensTokenIdHandler(ctx context.Context, 
 }
 
 func registerGetProjectsIdClusterAgents(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_cluster_agents",
+	tool := mcp.NewTool("get_pjs_id_cluster_agents",
 		mcp.WithDescription("This feature was introduced in GitLab 14.10. Returns the list of agents registered for the project."),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project"),
@@ -2291,7 +2291,7 @@ func parseGetProjectsIdClusterAgents(request mcp.CallToolRequest) client.GetApiV
 }
 
 func registerGetProjectsIdClusterAgentsAgentId(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_cluster_agents_agent_id",
+	tool := mcp.NewTool("get_pjs_id_cluster_agents_agent_id",
 		mcp.WithDescription("This feature was introduced in GitLab 14.10. Gets a single agent details."),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project"),
@@ -2319,7 +2319,7 @@ func getProjectsIdClusterAgentsAgentIdHandler(ctx context.Context, request mcp.C
 }
 
 func registerGetProjectsIdPackagesCargoConfigJson(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_pkgs_cargo_config_json",
+	tool := mcp.NewTool("get_pjs_id_pkgs_cargo_config_json",
 		mcp.WithDescription("This will be used by cargo for further requests"),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project"),
@@ -2342,7 +2342,7 @@ func getProjectsIdPackagesCargoConfigJsonHandler(ctx context.Context, request mc
 }
 
 func registerGetProjectsIdRepositoryCommits(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_repo_commits",
+	tool := mcp.NewTool("get_pjs_id_repo_commits",
 		mcp.WithDescription("Get a project repository commits"),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project"),
@@ -2469,7 +2469,7 @@ func parseGetProjectsIdRepositoryCommits(request mcp.CallToolRequest) client.Get
 }
 
 func registerGetProjectsIdRepositoryCommitsSha(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_repo_commits_sha",
+	tool := mcp.NewTool("get_pjs_id_repo_commits_sha",
 		mcp.WithDescription("Get a specific commit of a project"),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project"),
@@ -2509,7 +2509,7 @@ func parseGetProjectsIdRepositoryCommitsSha(request mcp.CallToolRequest) client.
 }
 
 func registerGetProjectsIdRepositoryCommitsShaDiff(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_repo_commits_sha_diff",
+	tool := mcp.NewTool("get_pjs_id_repo_commits_sha_diff",
 		mcp.WithDescription("Get the diff for a specific commit of a project"),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project"),
@@ -2567,7 +2567,7 @@ func parseGetProjectsIdRepositoryCommitsShaDiff(request mcp.CallToolRequest) cli
 }
 
 func registerGetProjectsIdRepositoryCommitsShaComments(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_repo_commits_sha_comments",
+	tool := mcp.NewTool("get_pjs_id_repo_commits_sha_comments",
 		mcp.WithDescription("Get a commit's comments"),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project"),
@@ -2619,7 +2619,7 @@ func parseGetProjectsIdRepositoryCommitsShaComments(request mcp.CallToolRequest)
 }
 
 func registerGetProjectsIdRepositoryCommitsShaSequence(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_repo_commits_sha_sequence",
+	tool := mcp.NewTool("get_pjs_id_repo_commits_sha_sequence",
 		mcp.WithDescription("Get the sequence count of a commit SHA"),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project"),
@@ -2659,7 +2659,7 @@ func parseGetProjectsIdRepositoryCommitsShaSequence(request mcp.CallToolRequest)
 }
 
 func registerGetProjectsIdRepositoryCommitsShaRefs(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_repo_commits_sha_refs",
+	tool := mcp.NewTool("get_pjs_id_repo_commits_sha_refs",
 		mcp.WithDescription("This feature was introduced in GitLab 10.6"),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project"),
@@ -2722,7 +2722,7 @@ func parseGetProjectsIdRepositoryCommitsShaRefs(request mcp.CallToolRequest) cli
 }
 
 func registerGetProjectsIdRepositoryCommitsShaMergeRequests(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_repo_commits_sha_mrs",
+	tool := mcp.NewTool("get_pjs_id_repo_commits_sha_mrs",
 		mcp.WithDescription("Get Merge Requests associated with a commit"),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project"),
@@ -2783,7 +2783,7 @@ func parseGetProjectsIdRepositoryCommitsShaMergeRequests(request mcp.CallToolReq
 }
 
 func registerGetProjectsIdRepositoryCommitsShaSignature(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_repo_commits_sha_signature",
+	tool := mcp.NewTool("get_pjs_id_repo_commits_sha_signature",
 		mcp.WithDescription("Get a commit's signature"),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project"),
@@ -2811,7 +2811,7 @@ func getProjectsIdRepositoryCommitsShaSignatureHandler(ctx context.Context, requ
 }
 
 func registerGetProjectsIdRepositoryCommitsShaStatuses(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_repo_commits_sha_statuses",
+	tool := mcp.NewTool("get_pjs_id_repo_commits_sha_statuses",
 		mcp.WithDescription("Get a commit's statuses"),
 		mcp.WithString("id",
 			mcp.Description("ID or URL-encoded path of the project."),
@@ -2927,7 +2927,7 @@ func parseGetProjectsIdRepositoryCommitsShaStatuses(request mcp.CallToolRequest)
 }
 
 func registerGetProjectsIdPackagesConanV1UsersAuthenticate(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_pkgs_conan_v1_users_authenticate",
+	tool := mcp.NewTool("get_pjs_id_pkgs_conan_v1_users_authenticate",
 		mcp.WithDescription("This feature was introduced in GitLab 12.2"),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project"),
@@ -2950,7 +2950,7 @@ func getProjectsIdPackagesConanV1UsersAuthenticateHandler(ctx context.Context, r
 }
 
 func registerGetProjectsIdPackagesConanV1UsersCheckCredentials(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_pkgs_conan_v1_users_check_credentials",
+	tool := mcp.NewTool("get_pjs_id_pkgs_conan_v1_users_check_credentials",
 		mcp.WithDescription("This feature was introduced in GitLab 12.4"),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project"),
@@ -2973,7 +2973,7 @@ func getProjectsIdPackagesConanV1UsersCheckCredentialsHandler(ctx context.Contex
 }
 
 func registerGetProjectsIdPackagesConanV1ConansSearch(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_pkgs_conan_v1_conans_search",
+	tool := mcp.NewTool("get_pjs_id_pkgs_conan_v1_conans_search",
 		mcp.WithDescription("This feature was introduced in GitLab 12.4"),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project"),
@@ -3012,7 +3012,7 @@ func parseGetProjectsIdPackagesConanV1ConansSearch(request mcp.CallToolRequest) 
 }
 
 func registerGetProjectsIdPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelSearch(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_pkgs_conan_v1_conans_package_name_package_version_package_username_package_channel_search",
+	tool := mcp.NewTool("get_pjs_id_pkgs_conan_v1_conans_package_name_package_version_package_username_package_channel_search",
 		mcp.WithDescription("This feature was introduced in GitLab 18.0"),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project"),
@@ -3055,7 +3055,7 @@ func getProjectsIdPackagesConanV1ConansPackageNamePackageVersionPackageUsernameP
 }
 
 func registerGetProjectsIdPackagesConanV1Ping(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_pkgs_conan_v1_ping",
+	tool := mcp.NewTool("get_pjs_id_pkgs_conan_v1_ping",
 		mcp.WithDescription("This feature was introduced in GitLab 12.2"),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project"),
@@ -3078,7 +3078,7 @@ func getProjectsIdPackagesConanV1PingHandler(ctx context.Context, request mcp.Ca
 }
 
 func registerGetProjectsIdPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelPackagesConanPackageReference(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_pkgs_conan_v1_conans_package_name_package_version_package_username_package_channel_packages_conan_package_reference",
+	tool := mcp.NewTool("get_pjs_id_pkgs_conan_v1_conans_package_name_package_version_package_username_package_channel_packages_conan_package_reference",
 		mcp.WithDescription("This feature was introduced in GitLab 12.5"),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project"),
@@ -3126,7 +3126,7 @@ func getProjectsIdPackagesConanV1ConansPackageNamePackageVersionPackageUsernameP
 }
 
 func registerGetProjectsIdPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannel(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_pkgs_conan_v1_conans_package_name_package_version_package_username_package_channel",
+	tool := mcp.NewTool("get_pjs_id_pkgs_conan_v1_conans_package_name_package_version_package_username_package_channel",
 		mcp.WithDescription("This feature was introduced in GitLab 12.5"),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project"),
@@ -3169,7 +3169,7 @@ func getProjectsIdPackagesConanV1ConansPackageNamePackageVersionPackageUsernameP
 }
 
 func registerGetProjectsIdPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelPackagesConanPackageReferenceDigest(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_pkgs_conan_v1_conans_package_name_package_version_package_username_package_channel_packages_conan_package_reference_digest",
+	tool := mcp.NewTool("get_pjs_id_pkgs_conan_v1_conans_package_name_package_version_package_username_package_channel_packages_conan_package_reference_digest",
 		mcp.WithDescription("This feature was introduced in GitLab 12.5"),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project"),
@@ -3217,7 +3217,7 @@ func getProjectsIdPackagesConanV1ConansPackageNamePackageVersionPackageUsernameP
 }
 
 func registerGetProjectsIdPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelDigest(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_pkgs_conan_v1_conans_package_name_package_version_package_username_package_channel_digest",
+	tool := mcp.NewTool("get_pjs_id_pkgs_conan_v1_conans_package_name_package_version_package_username_package_channel_digest",
 		mcp.WithDescription("This feature was introduced in GitLab 12.5"),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project"),
@@ -3260,7 +3260,7 @@ func getProjectsIdPackagesConanV1ConansPackageNamePackageVersionPackageUsernameP
 }
 
 func registerGetProjectsIdPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelPackagesConanPackageReferenceDownloadUrls(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_pkgs_conan_v1_conans_package_name_package_version_package_username_package_channel_packages_conan_package_reference_download_urls",
+	tool := mcp.NewTool("get_pjs_id_pkgs_conan_v1_conans_package_name_package_version_package_username_package_channel_packages_conan_package_reference_download_urls",
 		mcp.WithDescription("This feature was introduced in GitLab 12.5"),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project"),
@@ -3308,7 +3308,7 @@ func getProjectsIdPackagesConanV1ConansPackageNamePackageVersionPackageUsernameP
 }
 
 func registerGetProjectsIdPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelDownloadUrls(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_pkgs_conan_v1_conans_package_name_package_version_package_username_package_channel_download_urls",
+	tool := mcp.NewTool("get_pjs_id_pkgs_conan_v1_conans_package_name_package_version_package_username_package_channel_download_urls",
 		mcp.WithDescription("This feature was introduced in GitLab 12.5"),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project"),
@@ -3351,7 +3351,7 @@ func getProjectsIdPackagesConanV1ConansPackageNamePackageVersionPackageUsernameP
 }
 
 func registerGetProjectsIdPackagesConanV1FilesPackageNamePackageVersionPackageUsernamePackageChannelRecipeRevisionExportFileName(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_pkgs_conan_v1_files_package_name_package_version_package_username_package_channel_recipe_revision_export_file_name",
+	tool := mcp.NewTool("get_pjs_id_pkgs_conan_v1_files_package_name_package_version_package_username_package_channel_recipe_revision_export_file_name",
 		mcp.WithDescription("This feature was introduced in GitLab 12.6"),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project"),
@@ -3405,7 +3405,7 @@ func getProjectsIdPackagesConanV1FilesPackageNamePackageVersionPackageUsernamePa
 }
 
 func registerGetProjectsIdPackagesConanV1FilesPackageNamePackageVersionPackageUsernamePackageChannelRecipeRevisionPackageConanPackageReferencePackageRevisionFileName(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_pkgs_conan_v1_files_package_name_package_version_package_username_package_channel_recipe_revision_package_conan_package_reference_package_revision_file_name",
+	tool := mcp.NewTool("get_pjs_id_pkgs_conan_v1_files_package_name_package_version_package_username_package_channel_recipe_revision_package_conan_package_reference_package_revision_file_name",
 		mcp.WithDescription("This feature was introduced in GitLab 12.5"),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project"),
@@ -3469,7 +3469,7 @@ func getProjectsIdPackagesConanV1FilesPackageNamePackageVersionPackageUsernamePa
 }
 
 func registerGetProjectsIdPackagesConanV2UsersAuthenticate(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_pkgs_conan_v2_users_authenticate",
+	tool := mcp.NewTool("get_pjs_id_pkgs_conan_v2_users_authenticate",
 		mcp.WithDescription("This feature was introduced in GitLab 12.2"),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project"),
@@ -3492,7 +3492,7 @@ func getProjectsIdPackagesConanV2UsersAuthenticateHandler(ctx context.Context, r
 }
 
 func registerGetProjectsIdPackagesConanV2UsersCheckCredentials(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_pkgs_conan_v2_users_check_credentials",
+	tool := mcp.NewTool("get_pjs_id_pkgs_conan_v2_users_check_credentials",
 		mcp.WithDescription("This feature was introduced in GitLab 12.4"),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project"),
@@ -3515,7 +3515,7 @@ func getProjectsIdPackagesConanV2UsersCheckCredentialsHandler(ctx context.Contex
 }
 
 func registerGetProjectsIdPackagesConanV2ConansSearch(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_pkgs_conan_v2_conans_search",
+	tool := mcp.NewTool("get_pjs_id_pkgs_conan_v2_conans_search",
 		mcp.WithDescription("This feature was introduced in GitLab 12.4"),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project"),
@@ -3554,7 +3554,7 @@ func parseGetProjectsIdPackagesConanV2ConansSearch(request mcp.CallToolRequest) 
 }
 
 func registerGetProjectsIdPackagesConanV2ConansPackageNamePackageVersionPackageUsernamePackageChannelSearch(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_pkgs_conan_v2_conans_package_name_package_version_package_username_package_channel_search",
+	tool := mcp.NewTool("get_pjs_id_pkgs_conan_v2_conans_package_name_package_version_package_username_package_channel_search",
 		mcp.WithDescription("This feature was introduced in GitLab 18.0"),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project"),
@@ -3597,7 +3597,7 @@ func getProjectsIdPackagesConanV2ConansPackageNamePackageVersionPackageUsernameP
 }
 
 func registerGetProjectsIdPackagesConanV2ConansPackageNamePackageVersionPackageUsernamePackageChannelLatest(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_pkgs_conan_v2_conans_package_name_package_version_package_username_package_channel_latest",
+	tool := mcp.NewTool("get_pjs_id_pkgs_conan_v2_conans_package_name_package_version_package_username_package_channel_latest",
 		mcp.WithDescription("This feature was introduced in GitLab 17.11"),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project"),
@@ -3640,7 +3640,7 @@ func getProjectsIdPackagesConanV2ConansPackageNamePackageVersionPackageUsernameP
 }
 
 func registerGetProjectsIdPackagesConanV2ConansPackageNamePackageVersionPackageUsernamePackageChannelRevisions(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_pkgs_conan_v2_conans_package_name_package_version_package_username_package_channel_revisions",
+	tool := mcp.NewTool("get_pjs_id_pkgs_conan_v2_conans_package_name_package_version_package_username_package_channel_revisions",
 		mcp.WithDescription("This feature was introduced in GitLab 17.11"),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project"),
@@ -3683,7 +3683,7 @@ func getProjectsIdPackagesConanV2ConansPackageNamePackageVersionPackageUsernameP
 }
 
 func registerGetProjectsIdPackagesConanV2ConansPackageNamePackageVersionPackageUsernamePackageChannelRevisionsRecipeRevisionFiles(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_pkgs_conan_v2_conans_package_name_package_version_package_username_package_channel_revisions_recipe_revision_files",
+	tool := mcp.NewTool("get_pjs_id_pkgs_conan_v2_conans_package_name_package_version_package_username_package_channel_revisions_recipe_revision_files",
 		mcp.WithDescription("This feature was introduced in GitLab 17.11"),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project"),
@@ -3731,7 +3731,7 @@ func getProjectsIdPackagesConanV2ConansPackageNamePackageVersionPackageUsernameP
 }
 
 func registerGetProjectsIdPackagesConanV2ConansPackageNamePackageVersionPackageUsernamePackageChannelRevisionsRecipeRevisionFilesFileName(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_pkgs_conan_v2_conans_package_name_package_version_package_username_package_channel_revisions_recipe_revision_files_file_name",
+	tool := mcp.NewTool("get_pjs_id_pkgs_conan_v2_conans_package_name_package_version_package_username_package_channel_revisions_recipe_revision_files_file_name",
 		mcp.WithDescription("This feature was introduced in GitLab 17.8"),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project"),
@@ -3785,7 +3785,7 @@ func getProjectsIdPackagesConanV2ConansPackageNamePackageVersionPackageUsernameP
 }
 
 func registerGetProjectsIdPackagesConanV2ConansPackageNamePackageVersionPackageUsernamePackageChannelRevisionsRecipeRevisionSearch(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_pkgs_conan_v2_conans_package_name_package_version_package_username_package_channel_revisions_recipe_revision_search",
+	tool := mcp.NewTool("get_pjs_id_pkgs_conan_v2_conans_package_name_package_version_package_username_package_channel_revisions_recipe_revision_search",
 		mcp.WithDescription("This feature was introduced in GitLab 18.1"),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project"),
@@ -3833,7 +3833,7 @@ func getProjectsIdPackagesConanV2ConansPackageNamePackageVersionPackageUsernameP
 }
 
 func registerGetProjectsIdPackagesConanV2ConansPackageNamePackageVersionPackageUsernamePackageChannelRevisionsRecipeRevisionPackagesConanPackageReferenceLatest(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_pkgs_conan_v2_conans_package_name_package_version_package_username_package_channel_revisions_recipe_revision_packages_conan_package_reference_latest",
+	tool := mcp.NewTool("get_pjs_id_pkgs_conan_v2_conans_package_name_package_version_package_username_package_channel_revisions_recipe_revision_packages_conan_package_reference_latest",
 		mcp.WithDescription("This feature was introduced in GitLab 17.11"),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project"),
@@ -3886,7 +3886,7 @@ func getProjectsIdPackagesConanV2ConansPackageNamePackageVersionPackageUsernameP
 }
 
 func registerGetProjectsIdPackagesConanV2ConansPackageNamePackageVersionPackageUsernamePackageChannelRevisionsRecipeRevisionPackagesConanPackageReferenceRevisions(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_pkgs_conan_v2_conans_package_name_package_version_package_username_package_channel_revisions_recipe_revision_packages_conan_package_reference_revisions",
+	tool := mcp.NewTool("get_pjs_id_pkgs_conan_v2_conans_package_name_package_version_package_username_package_channel_revisions_recipe_revision_packages_conan_package_reference_revisions",
 		mcp.WithDescription("This feature was introduced in GitLab 18.0"),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project"),
@@ -3939,7 +3939,7 @@ func getProjectsIdPackagesConanV2ConansPackageNamePackageVersionPackageUsernameP
 }
 
 func registerGetProjectsIdPackagesConanV2ConansPackageNamePackageVersionPackageUsernamePackageChannelRevisionsRecipeRevisionPackagesConanPackageReferenceRevisionsPackageRevisionFiles(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_pkgs_conan_v2_conans_package_name_package_version_package_username_package_channel_revisions_recipe_revision_packages_conan_package_reference_revisions_package_revision_files",
+	tool := mcp.NewTool("get_pjs_id_pkgs_conan_v2_conans_package_name_package_version_package_username_package_channel_revisions_recipe_revision_packages_conan_package_reference_revisions_package_revision_files",
 		mcp.WithDescription("This feature was introduced in GitLab 18.0"),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project"),
@@ -3997,7 +3997,7 @@ func getProjectsIdPackagesConanV2ConansPackageNamePackageVersionPackageUsernameP
 }
 
 func registerGetProjectsIdPackagesConanV2ConansPackageNamePackageVersionPackageUsernamePackageChannelRevisionsRecipeRevisionPackagesConanPackageReferenceRevisionsPackageRevisionFilesFileName(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_pkgs_conan_v2_conans_package_name_package_version_package_username_package_channel_revisions_recipe_revision_packages_conan_package_reference_revisions_package_revision_files_file_name",
+	tool := mcp.NewTool("get_pjs_id_pkgs_conan_v2_conans_package_name_package_version_package_username_package_channel_revisions_recipe_revision_packages_conan_package_reference_revisions_package_revision_files_file_name",
 		mcp.WithDescription("This feature was introduced in GitLab 17.11"),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project"),
@@ -4061,7 +4061,7 @@ func getProjectsIdPackagesConanV2ConansPackageNamePackageVersionPackageUsernameP
 }
 
 func registerGetProjectsIdPackagesDebianPoolDistributionLetterPackageNamePackageVersionFileName(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_pkgs_debian_pool_distribution_letter_package_name_package_version_file_name",
+	tool := mcp.NewTool("get_pjs_id_pkgs_debian_pool_distribution_letter_package_name_package_version_file_name",
 		mcp.WithDescription("This feature was introduced in GitLab 14.2"),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project"),
@@ -4109,7 +4109,7 @@ func getProjectsIdPackagesDebianPoolDistributionLetterPackageNamePackageVersionF
 }
 
 func registerGetProjectsIdDeployKeys(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_deploy_keys",
+	tool := mcp.NewTool("get_pjs_id_deploy_keys",
 		mcp.WithDescription("Get a list of a project's deploy keys."),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project owned by the authenticated user"),
@@ -4156,7 +4156,7 @@ func parseGetProjectsIdDeployKeys(request mcp.CallToolRequest) client.GetApiV4Pr
 }
 
 func registerGetProjectsIdDeployKeysKeyId(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_deploy_keys_key_id",
+	tool := mcp.NewTool("get_pjs_id_deploy_keys_key_id",
 		mcp.WithDescription("Get a single key."),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project owned by the authenticated user"),
@@ -4184,7 +4184,7 @@ func getProjectsIdDeployKeysKeyIdHandler(ctx context.Context, request mcp.CallTo
 }
 
 func registerGetProjectsIdDeployTokens(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_deploy_tokens",
+	tool := mcp.NewTool("get_pjs_id_deploy_tokens",
 		mcp.WithDescription("Get a list of a project's deploy tokens. This feature was introduced in GitLab 12.9."),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project owned by the authenticated user"),
@@ -4237,7 +4237,7 @@ func parseGetProjectsIdDeployTokens(request mcp.CallToolRequest) client.GetApiV4
 }
 
 func registerGetProjectsIdDeployTokensTokenId(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_deploy_tokens_token_id",
+	tool := mcp.NewTool("get_pjs_id_deploy_tokens_token_id",
 		mcp.WithDescription("Get a single project's deploy token by ID. This feature was introduced in GitLab 14.9."),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project owned by the authenticated user"),
@@ -4265,7 +4265,7 @@ func getProjectsIdDeployTokensTokenIdHandler(ctx context.Context, request mcp.Ca
 }
 
 func registerGetProjectsIdDeployments(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_deployments",
+	tool := mcp.NewTool("get_pjs_id_deployments",
 		mcp.WithDescription("Get a list of deployments in a project. This feature was introduced in GitLab 8.11."),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project owned by the authenticated user"),
@@ -4390,7 +4390,7 @@ func parseGetProjectsIdDeployments(request mcp.CallToolRequest) client.GetApiV4P
 }
 
 func registerGetProjectsIdDeploymentsDeploymentId(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_deployments_deployment_id",
+	tool := mcp.NewTool("get_pjs_id_deployments_deployment_id",
 		mcp.WithDescription("This feature was introduced in GitLab 8.11."),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project owned by the authenticated user"),
@@ -4418,7 +4418,7 @@ func getProjectsIdDeploymentsDeploymentIdHandler(ctx context.Context, request mc
 }
 
 func registerGetProjectsIdDeploymentsDeploymentIdMergeRequests(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_deployments_deployment_id_mrs",
+	tool := mcp.NewTool("get_pjs_id_deployments_deployment_id_mrs",
 		mcp.WithDescription("Retrieves the list of merge requests shipped with a given deployment. This feature was introduced in GitLab 12.7."),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project owned by the authenticated user"),
@@ -4847,7 +4847,7 @@ func parseGetProjectsIdDeploymentsDeploymentIdMergeRequests(request mcp.CallTool
 }
 
 func registerGetProjectsIdMergeRequestsMergeRequestIidDraftNotes(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_mrs_merge_request_iid_draft_notes",
+	tool := mcp.NewTool("get_pjs_id_mrs_merge_request_iid_draft_notes",
 		mcp.WithDescription("Get a list of merge request draft notes"),
 		mcp.WithString("id",
 			mcp.Description("The ID of a project"),
@@ -4875,7 +4875,7 @@ func getProjectsIdMergeRequestsMergeRequestIidDraftNotesHandler(ctx context.Cont
 }
 
 func registerGetProjectsIdMergeRequestsMergeRequestIidDraftNotesDraftNoteId(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_mrs_merge_request_iid_draft_notes_draft_note_id",
+	tool := mcp.NewTool("get_pjs_id_mrs_merge_request_iid_draft_notes_draft_note_id",
 		mcp.WithDescription("Get a single draft note"),
 		mcp.WithString("id",
 			mcp.Description("The ID of a project"),
@@ -4908,7 +4908,7 @@ func getProjectsIdMergeRequestsMergeRequestIidDraftNotesDraftNoteIdHandler(ctx c
 }
 
 func registerGetProjectsIdEnvironments(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_environments",
+	tool := mcp.NewTool("get_pjs_id_environments",
 		mcp.WithDescription("Get all environments for a given project. This feature was introduced in GitLab 8.11."),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project owned by the authenticated user"),
@@ -4984,7 +4984,7 @@ func parseGetProjectsIdEnvironments(request mcp.CallToolRequest) client.GetApiV4
 }
 
 func registerGetProjectsIdEnvironmentsEnvironmentId(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_environments_environment_id",
+	tool := mcp.NewTool("get_pjs_id_environments_environment_id",
 		mcp.WithDescription("Get a specific environment"),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project owned by the authenticated user"),
@@ -5012,7 +5012,7 @@ func getProjectsIdEnvironmentsEnvironmentIdHandler(ctx context.Context, request 
 }
 
 func registerGetProjectsIdErrorTrackingClientKeys(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_error_tracking_client_keys",
+	tool := mcp.NewTool("get_pjs_id_error_tracking_client_keys",
 		mcp.WithDescription("List all client keys. This feature was introduced in GitLab 14.3."),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project owned by the authenticated user"),
@@ -5035,7 +5035,7 @@ func getProjectsIdErrorTrackingClientKeysHandler(ctx context.Context, request mc
 }
 
 func registerGetProjectsIdErrorTrackingSettings(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_error_tracking_settings",
+	tool := mcp.NewTool("get_pjs_id_error_tracking_settings",
 		mcp.WithDescription("Get error tracking settings for the project. This feature was introduced in GitLab 12.7."),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project owned by the authenticated user"),
@@ -5058,7 +5058,7 @@ func getProjectsIdErrorTrackingSettingsHandler(ctx context.Context, request mcp.
 }
 
 func registerGetProjectsIdFeatureFlags(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_feature_flags",
+	tool := mcp.NewTool("get_pjs_id_feature_flags",
 		mcp.WithDescription("Gets all feature flags of the requested project. This feature was introduced in GitLab 12.5."),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project"),
@@ -5116,7 +5116,7 @@ func parseGetProjectsIdFeatureFlags(request mcp.CallToolRequest) client.GetApiV4
 }
 
 func registerGetProjectsIdFeatureFlagsFeatureFlagName(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_feature_flags_feature_flag_name",
+	tool := mcp.NewTool("get_pjs_id_feature_flags_feature_flag_name",
 		mcp.WithDescription("Gets a single feature flag. This feature was introduced in GitLab 12.5."),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project"),
@@ -5144,7 +5144,7 @@ func getProjectsIdFeatureFlagsFeatureFlagNameHandler(ctx context.Context, reques
 }
 
 func registerGetProjectsIdFeatureFlagsUserLists(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_feature_flags_user_lists",
+	tool := mcp.NewTool("get_pjs_id_feature_flags_user_lists",
 		mcp.WithDescription("Gets all feature flag user lists for the requested project. This feature was introduced in GitLab 12.10."),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project"),
@@ -5200,7 +5200,7 @@ func parseGetProjectsIdFeatureFlagsUserLists(request mcp.CallToolRequest) client
 }
 
 func registerGetProjectsIdFeatureFlagsUserListsIid(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_feature_flags_user_lists_iid",
+	tool := mcp.NewTool("get_pjs_id_feature_flags_user_lists_iid",
 		mcp.WithDescription("Gets a feature flag user list. This feature was introduced in GitLab 12.10."),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project"),
@@ -5228,7 +5228,7 @@ func getProjectsIdFeatureFlagsUserListsIidHandler(ctx context.Context, request m
 }
 
 func registerGetProjectsIdRepositoryFilesFilePathBlame(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_repo_files_file_path_blame",
+	tool := mcp.NewTool("get_pjs_id_repo_files_file_path_blame",
 		mcp.WithDescription("Get blame file from the repository"),
 		mcp.WithString("id",
 			mcp.Description("The project ID (example: gitlab-org/gitlab)"),
@@ -5292,7 +5292,7 @@ func parseGetProjectsIdRepositoryFilesFilePathBlame(request mcp.CallToolRequest)
 }
 
 func registerGetProjectsIdRepositoryFilesFilePathRaw(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_repo_files_file_path_raw",
+	tool := mcp.NewTool("get_pjs_id_repo_files_file_path_raw",
 		mcp.WithDescription("Get raw file contents from the repository"),
 		mcp.WithString("id",
 			mcp.Description("The project ID (example: gitlab-org/gitlab)"),
@@ -5341,7 +5341,7 @@ func parseGetProjectsIdRepositoryFilesFilePathRaw(request mcp.CallToolRequest) c
 }
 
 func registerGetProjectsIdRepositoryFilesFilePath(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_repo_files_file_path",
+	tool := mcp.NewTool("get_pjs_id_repo_files_file_path",
 		mcp.WithDescription("Get a file from the repository"),
 		mcp.WithString("id",
 			mcp.Description("The project ID (example: gitlab-org/gitlab)"),
@@ -5385,7 +5385,7 @@ func parseGetProjectsIdRepositoryFilesFilePath(request mcp.CallToolRequest) clie
 }
 
 func registerGetProjectsIdFreezePeriods(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_freeze_periods",
+	tool := mcp.NewTool("get_pjs_id_freeze_periods",
 		mcp.WithDescription("Paginated list of Freeze Periods, sorted by created_at in ascending order. This feature was introduced in GitLab 13.0."),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project"),
@@ -5432,7 +5432,7 @@ func parseGetProjectsIdFreezePeriods(request mcp.CallToolRequest) client.GetApiV
 }
 
 func registerGetProjectsIdFreezePeriodsFreezePeriodId(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_freeze_periods_freeze_period_id",
+	tool := mcp.NewTool("get_pjs_id_freeze_periods_freeze_period_id",
 		mcp.WithDescription("Get a freeze period for the given `freeze_period_id`. This feature was introduced in GitLab 13.0."),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project"),
@@ -5460,7 +5460,7 @@ func getProjectsIdFreezePeriodsFreezePeriodIdHandler(ctx context.Context, reques
 }
 
 func registerGetProjectsIdPackagesHelmChannelIndexYaml(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_pkgs_helm_channel_index_yaml",
+	tool := mcp.NewTool("get_pjs_id_pkgs_helm_channel_index_yaml",
 		mcp.WithDescription("This feature was introduced in GitLab 14.0"),
 		mcp.WithNumber("id",
 			mcp.Description("The ID or full path of a project"),
@@ -5488,7 +5488,7 @@ func getProjectsIdPackagesHelmChannelIndexYamlHandler(ctx context.Context, reque
 }
 
 func registerGetProjectsIdPackagesHelmChannelChartsFileNameTgz(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_pkgs_helm_channel_charts_file_name_tgz",
+	tool := mcp.NewTool("get_pjs_id_pkgs_helm_channel_charts_file_name_tgz",
 		mcp.WithDescription("This feature was introduced in GitLab 14.0"),
 		mcp.WithNumber("id",
 			mcp.Description("The ID or full path of a project"),
@@ -5521,7 +5521,7 @@ func getProjectsIdPackagesHelmChannelChartsFileNameTgzHandler(ctx context.Contex
 }
 
 func registerGetProjectsIdServices(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_services",
+	tool := mcp.NewTool("get_pjs_id_services",
 		mcp.WithDescription("Get a list of all active integrations."),
 		mcp.WithNumber("id",
 			mcp.Description("null"),
@@ -5544,7 +5544,7 @@ func getProjectsIdServicesHandler(ctx context.Context, request mcp.CallToolReque
 }
 
 func registerGetProjectsIdServicesSlug(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_services_slug",
+	tool := mcp.NewTool("get_pjs_id_services_slug",
 		mcp.WithDescription("Get the integration settings."),
 		mcp.WithString("slug",
 			mcp.Description("The name of the integration"),
@@ -5573,7 +5573,7 @@ func getProjectsIdServicesSlugHandler(ctx context.Context, request mcp.CallToolR
 }
 
 func registerGetProjectsIdIntegrations(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_integrations",
+	tool := mcp.NewTool("get_pjs_id_integrations",
 		mcp.WithDescription("Get a list of all active integrations."),
 		mcp.WithNumber("id",
 			mcp.Description("null"),
@@ -5596,7 +5596,7 @@ func getProjectsIdIntegrationsHandler(ctx context.Context, request mcp.CallToolR
 }
 
 func registerGetProjectsIdIntegrationsSlug(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_integrations_slug",
+	tool := mcp.NewTool("get_pjs_id_integrations_slug",
 		mcp.WithDescription("Get the integration settings."),
 		mcp.WithString("slug",
 			mcp.Description("The name of the integration"),
@@ -5625,7 +5625,7 @@ func getProjectsIdIntegrationsSlugHandler(ctx context.Context, request mcp.CallT
 }
 
 func registerGetProjectsIdInvitations(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_invitations",
+	tool := mcp.NewTool("get_pjs_id_invitations",
 		mcp.WithDescription("This feature was introduced in GitLab 13.6"),
 		mcp.WithString("id",
 			mcp.Description("The project ID"),
@@ -5681,7 +5681,7 @@ func parseGetProjectsIdInvitations(request mcp.CallToolRequest) client.GetApiV4P
 }
 
 func registerGetProjectsIdIssuesIssueIidLinks(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_issues_issue_iid_links",
+	tool := mcp.NewTool("get_pjs_id_issues_issue_iid_links",
 		mcp.WithDescription("Get a list of a given issue’s linked issues, sorted by the relationship creation datetime (ascending).Issues are filtered according to the user authorizations."),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project owned by the authenticated user"),
@@ -5709,7 +5709,7 @@ func getProjectsIdIssuesIssueIidLinksHandler(ctx context.Context, request mcp.Ca
 }
 
 func registerGetProjectsIdIssuesIssueIidLinksIssueLinkId(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_issues_issue_iid_links_issue_link_id",
+	tool := mcp.NewTool("get_pjs_id_issues_issue_iid_links_issue_link_id",
 		mcp.WithDescription("Gets details about an issue link. This feature was introduced in GitLab 15.1."),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project owned by the authenticated user"),
@@ -5742,7 +5742,7 @@ func getProjectsIdIssuesIssueIidLinksIssueLinkIdHandler(ctx context.Context, req
 }
 
 func registerGetProjectsIdCiLint(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_ci_lint",
+	tool := mcp.NewTool("get_pjs_id_ci_lint",
 		mcp.WithDescription("Checks if a project’s .gitlab-ci.yml configuration in a given commit (by default HEAD of the project’s default branch) is valid"),
 		mcp.WithString("sha",
 			mcp.Description("Deprecated: Use content_ref instead"),
@@ -5819,7 +5819,7 @@ func parseGetProjectsIdCiLint(request mcp.CallToolRequest) client.GetApiV4Projec
 }
 
 func registerGetProjectsIdUploads(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_uploads",
+	tool := mcp.NewTool("get_pjs_id_uploads",
 		mcp.WithDescription("Get the list of uploads of a project"),
 		mcp.WithNumber("page",
 			mcp.Description("Current page number (example: 1) (default: 1)"),
@@ -5866,7 +5866,7 @@ func parseGetProjectsIdUploads(request mcp.CallToolRequest) client.GetApiV4Proje
 }
 
 func registerGetProjectsIdUploadsUploadId(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_uploads_upload_id",
+	tool := mcp.NewTool("get_pjs_id_uploads_upload_id",
 		mcp.WithDescription("Download a single project upload by ID"),
 		mcp.WithNumber("upload_id",
 			mcp.Description("The ID of a project upload"),
@@ -5894,7 +5894,7 @@ func getProjectsIdUploadsUploadIdHandler(ctx context.Context, request mcp.CallTo
 }
 
 func registerGetProjectsIdUploadsSecretFilename(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_uploads_secret_filename",
+	tool := mcp.NewTool("get_pjs_id_uploads_secret_filename",
 		mcp.WithDescription("Download a single project upload by secret and filename"),
 		mcp.WithString("secret",
 			mcp.Description("The 32-character secret of a project upload"),
@@ -5927,7 +5927,7 @@ func getProjectsIdUploadsSecretFilenameHandler(ctx context.Context, request mcp.
 }
 
 func registerGetProjectsIdMembers(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_members",
+	tool := mcp.NewTool("get_pjs_id_members",
 		mcp.WithDescription("Gets a list of group or project members viewable by the authenticated user."),
 		mcp.WithString("id",
 			mcp.Description("The project ID"),
@@ -6023,7 +6023,7 @@ func parseGetProjectsIdMembers(request mcp.CallToolRequest) client.GetApiV4Proje
 }
 
 func registerGetProjectsIdMembersAll(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_members_all",
+	tool := mcp.NewTool("get_pjs_id_members_all",
 		mcp.WithDescription("Gets a list of group or project members viewable by the authenticated user, including those who gained membership through ancestor group."),
 		mcp.WithString("id",
 			mcp.Description("The project ID"),
@@ -6110,7 +6110,7 @@ func parseGetProjectsIdMembersAll(request mcp.CallToolRequest) client.GetApiV4Pr
 }
 
 func registerGetProjectsIdMembersUserId(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_members_user_id",
+	tool := mcp.NewTool("get_pjs_id_members_user_id",
 		mcp.WithDescription("Gets a member of a group or project."),
 		mcp.WithString("id",
 			mcp.Description("The project ID"),
@@ -6138,7 +6138,7 @@ func getProjectsIdMembersUserIdHandler(ctx context.Context, request mcp.CallTool
 }
 
 func registerGetProjectsIdMembersAllUserId(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_members_all_user_id",
+	tool := mcp.NewTool("get_pjs_id_members_all_user_id",
 		mcp.WithDescription("Gets a member of a group or project, including those who gained membership through ancestor group"),
 		mcp.WithString("id",
 			mcp.Description("The project ID"),
@@ -6166,7 +6166,7 @@ func getProjectsIdMembersAllUserIdHandler(ctx context.Context, request mcp.CallT
 }
 
 func registerGetProjectsIdMergeRequestsMergeRequestIidApprovals(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_mrs_merge_request_iid_approvals",
+	tool := mcp.NewTool("get_pjs_id_mrs_merge_request_iid_approvals",
 		mcp.WithDescription("List approvals for merge request"),
 		mcp.WithNumber("id",
 			mcp.Description("null"),
@@ -6194,7 +6194,7 @@ func getProjectsIdMergeRequestsMergeRequestIidApprovalsHandler(ctx context.Conte
 }
 
 func registerGetProjectsIdMergeRequestsMergeRequestIidApprovalState(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_mrs_merge_request_iid_approval_state",
+	tool := mcp.NewTool("get_pjs_id_mrs_merge_request_iid_approval_state",
 		mcp.WithDescription("Get approval state of merge request"),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project"),
@@ -6222,7 +6222,7 @@ func getProjectsIdMergeRequestsMergeRequestIidApprovalStateHandler(ctx context.C
 }
 
 func registerGetProjectsIdMergeRequestsMergeRequestIidTimeStats(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_mrs_merge_request_iid_time_stats",
+	tool := mcp.NewTool("get_pjs_id_mrs_merge_request_iid_time_stats",
 		mcp.WithDescription("Get time tracking stats"),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project."),
@@ -6250,7 +6250,7 @@ func getProjectsIdMergeRequestsMergeRequestIidTimeStatsHandler(ctx context.Conte
 }
 
 func registerGetProjectsIdMergeRequests(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_mrs",
+	tool := mcp.NewTool("get_pjs_id_mrs",
 		mcp.WithDescription("Get all merge requests for this project."),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project."),
@@ -6715,7 +6715,7 @@ func parseGetProjectsIdMergeRequests(request mcp.CallToolRequest) client.GetApiV
 }
 
 func registerGetProjectsIdMergeRequestsMergeRequestIid(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_mrs_merge_request_iid",
+	tool := mcp.NewTool("get_pjs_id_mrs_merge_request_iid",
 		mcp.WithDescription("Shows information about a single merge request. Note: the `changes_count` value in the response is a string, not an integer. This is because when an merge request has too many changes to display and store, it is capped at 1,000. In that case, the API returns the string `\"1000+\"` for the changes count."),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project."),
@@ -6767,7 +6767,7 @@ func parseGetProjectsIdMergeRequestsMergeRequestIid(request mcp.CallToolRequest)
 }
 
 func registerGetProjectsIdMergeRequestsMergeRequestIidParticipants(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_mrs_merge_request_iid_participants",
+	tool := mcp.NewTool("get_pjs_id_mrs_merge_request_iid_participants",
 		mcp.WithDescription("Get a list of merge request participants."),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project."),
@@ -6795,7 +6795,7 @@ func getProjectsIdMergeRequestsMergeRequestIidParticipantsHandler(ctx context.Co
 }
 
 func registerGetProjectsIdMergeRequestsMergeRequestIidReviewers(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_mrs_merge_request_iid_reviewers",
+	tool := mcp.NewTool("get_pjs_id_mrs_merge_request_iid_reviewers",
 		mcp.WithDescription("Get a list of merge request reviewers."),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project."),
@@ -6823,7 +6823,7 @@ func getProjectsIdMergeRequestsMergeRequestIidReviewersHandler(ctx context.Conte
 }
 
 func registerGetProjectsIdMergeRequestsMergeRequestIidCommits(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_mrs_merge_request_iid_commits",
+	tool := mcp.NewTool("get_pjs_id_mrs_merge_request_iid_commits",
 		mcp.WithDescription("Get a list of merge request commits."),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project."),
@@ -6875,7 +6875,7 @@ func parseGetProjectsIdMergeRequestsMergeRequestIidCommits(request mcp.CallToolR
 }
 
 func registerGetProjectsIdMergeRequestsMergeRequestIidContextCommits(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_mrs_merge_request_iid_context_commits",
+	tool := mcp.NewTool("get_pjs_id_mrs_merge_request_iid_context_commits",
 		mcp.WithDescription("Get a list of merge request context commits."),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project."),
@@ -6903,7 +6903,7 @@ func getProjectsIdMergeRequestsMergeRequestIidContextCommitsHandler(ctx context.
 }
 
 func registerGetProjectsIdMergeRequestsMergeRequestIidChanges(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_mrs_merge_request_iid_changes",
+	tool := mcp.NewTool("get_pjs_id_mrs_merge_request_iid_changes",
 		mcp.WithDescription("Shows information about the merge request including its files and changes."),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project."),
@@ -6943,7 +6943,7 @@ func parseGetProjectsIdMergeRequestsMergeRequestIidChanges(request mcp.CallToolR
 }
 
 func registerGetProjectsIdMergeRequestsMergeRequestIidDiffs(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_mrs_merge_request_iid_diffs",
+	tool := mcp.NewTool("get_pjs_id_mrs_merge_request_iid_diffs",
 		mcp.WithDescription("Get a list of merge request diffs."),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project."),
@@ -7001,7 +7001,7 @@ func parseGetProjectsIdMergeRequestsMergeRequestIidDiffs(request mcp.CallToolReq
 }
 
 func registerGetProjectsIdMergeRequestsMergeRequestIidRawDiffs(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_mrs_merge_request_iid_raw_diffs",
+	tool := mcp.NewTool("get_pjs_id_mrs_merge_request_iid_raw_diffs",
 		mcp.WithDescription("Get the raw diffs of a merge request that can used programmatically."),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project."),
@@ -7029,7 +7029,7 @@ func getProjectsIdMergeRequestsMergeRequestIidRawDiffsHandler(ctx context.Contex
 }
 
 func registerGetProjectsIdMergeRequestsMergeRequestIidPipelines(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_mrs_merge_request_iid_pls",
+	tool := mcp.NewTool("get_pjs_id_mrs_merge_request_iid_pls",
 		mcp.WithDescription("Get a list of merge request pipelines."),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project."),
@@ -7057,7 +7057,7 @@ func getProjectsIdMergeRequestsMergeRequestIidPipelinesHandler(ctx context.Conte
 }
 
 func registerGetProjectsIdMergeRequestsMergeRequestIidMergeRef(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_mrs_merge_request_iid_merge_ref",
+	tool := mcp.NewTool("get_pjs_id_mrs_merge_request_iid_merge_ref",
 		mcp.WithDescription("Returns the up to date merge-ref HEAD commit"),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project."),
@@ -7085,7 +7085,7 @@ func getProjectsIdMergeRequestsMergeRequestIidMergeRefHandler(ctx context.Contex
 }
 
 func registerGetProjectsIdMergeRequestsMergeRequestIidClosesIssues(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_mrs_merge_request_iid_closes_issues",
+	tool := mcp.NewTool("get_pjs_id_mrs_merge_request_iid_closes_issues",
 		mcp.WithDescription("Get all the issues that would be closed by merging the provided merge request."),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project."),
@@ -7137,7 +7137,7 @@ func parseGetProjectsIdMergeRequestsMergeRequestIidClosesIssues(request mcp.Call
 }
 
 func registerGetProjectsIdMergeRequestsMergeRequestIidRelatedIssues(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_mrs_merge_request_iid_related_issues",
+	tool := mcp.NewTool("get_pjs_id_mrs_merge_request_iid_related_issues",
 		mcp.WithDescription("Get all the related issues from title, description, commits, comments and discussions of the merge request."),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project."),
@@ -7189,7 +7189,7 @@ func parseGetProjectsIdMergeRequestsMergeRequestIidRelatedIssues(request mcp.Cal
 }
 
 func registerGetProjectsIdMergeRequestsMergeRequestIidVersions(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_mrs_merge_request_iid_versions",
+	tool := mcp.NewTool("get_pjs_id_mrs_merge_request_iid_versions",
 		mcp.WithDescription("This feature was introduced in GitLab 8.12."),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project"),
@@ -7241,7 +7241,7 @@ func parseGetProjectsIdMergeRequestsMergeRequestIidVersions(request mcp.CallTool
 }
 
 func registerGetProjectsIdMergeRequestsMergeRequestIidVersionsVersionId(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_mrs_merge_request_iid_versions_version_id",
+	tool := mcp.NewTool("get_pjs_id_mrs_merge_request_iid_versions_version_id",
 		mcp.WithDescription("This feature was introduced in GitLab 8.12."),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project"),
@@ -7286,7 +7286,7 @@ func parseGetProjectsIdMergeRequestsMergeRequestIidVersionsVersionId(request mcp
 }
 
 func registerGetProjectsIdPackagesNugetIndex(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_pkgs_nuget_index",
+	tool := mcp.NewTool("get_pjs_id_pkgs_nuget_index",
 		mcp.WithDescription("This feature was introduced in GitLab 12.6"),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project"),
@@ -7309,7 +7309,7 @@ func getProjectsIdPackagesNugetIndexHandler(ctx context.Context, request mcp.Cal
 }
 
 func registerGetProjectsIdPackagesNugetV2(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_pkgs_nuget_v2",
+	tool := mcp.NewTool("get_pjs_id_pkgs_nuget_v2",
 		mcp.WithDescription("This feature was introduced in GitLab 16.2"),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project"),
@@ -7332,7 +7332,7 @@ func getProjectsIdPackagesNugetV2Handler(ctx context.Context, request mcp.CallTo
 }
 
 func registerGetProjectsIdPackagesNugetV2Metadata(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_pkgs_nuget_v2__metadata",
+	tool := mcp.NewTool("get_pjs_id_pkgs_nuget_v2_metadata",
 		mcp.WithDescription("This feature was introduced in GitLab 16.3"),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project"),
@@ -7355,7 +7355,7 @@ func getProjectsIdPackagesNugetV2MetadataHandler(ctx context.Context, request mc
 }
 
 func registerGetProjectsIdPackagesNugetQuery(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_pkgs_nuget_query",
+	tool := mcp.NewTool("get_pjs_id_pkgs_nuget_query",
 		mcp.WithDescription("This feature was introduced in GitLab 12.8"),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project"),
@@ -7417,7 +7417,7 @@ func parseGetProjectsIdPackagesNugetQuery(request mcp.CallToolRequest) client.Ge
 }
 
 func registerGetProjectsIdPackagesPackageIdPackageFiles(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_pkgs_package_id_package_files",
+	tool := mcp.NewTool("get_pjs_id_pkgs_package_id_package_files",
 		mcp.WithDescription("Get a list of package files of a single package"),
 		mcp.WithString("id",
 			mcp.Description("ID or URL-encoded path of the project"),
@@ -7491,7 +7491,7 @@ func parseGetProjectsIdPackagesPackageIdPackageFiles(request mcp.CallToolRequest
 }
 
 func registerGetProjectsIdPages(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_pages",
+	tool := mcp.NewTool("get_pjs_id_pages",
 		mcp.WithDescription("Get pages URL and other settings. This feature was introduced in Gitlab 16.8"),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project owned by the authenticated user"),
@@ -7514,7 +7514,7 @@ func getProjectsIdPagesHandler(ctx context.Context, request mcp.CallToolRequest)
 }
 
 func registerGetProjectsIdPagesDomains(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_pages_domains",
+	tool := mcp.NewTool("get_pjs_id_pages_domains",
 		mcp.WithDescription("Get all pages domains"),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project owned by the authenticated user"),
@@ -7561,7 +7561,7 @@ func parseGetProjectsIdPagesDomains(request mcp.CallToolRequest) client.GetApiV4
 }
 
 func registerGetProjectsIdPagesDomainsDomain(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_pages_domains_domain",
+	tool := mcp.NewTool("get_pjs_id_pages_domains_domain",
 		mcp.WithDescription("Get a single pages domain"),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project owned by the authenticated user"),
@@ -7589,7 +7589,7 @@ func getProjectsIdPagesDomainsDomainHandler(ctx context.Context, request mcp.Cal
 }
 
 func registerGetProjectsIdAvatar(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_avatar",
+	tool := mcp.NewTool("get_pjs_id_avatar",
 		mcp.WithDescription("This feature was introduced in GitLab 16.9"),
 		mcp.WithString("id",
 			mcp.Description("ID or URL-encoded path of the project"),
@@ -7612,7 +7612,7 @@ func getProjectsIdAvatarHandler(ctx context.Context, request mcp.CallToolRequest
 }
 
 func registerGetProjectsIdClusters(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_clusters",
+	tool := mcp.NewTool("get_pjs_id_clusters",
 		mcp.WithDescription("This feature was introduced in GitLab 11.7. Returns a list of project clusters."),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project"),
@@ -7659,7 +7659,7 @@ func parseGetProjectsIdClusters(request mcp.CallToolRequest) client.GetApiV4Proj
 }
 
 func registerGetProjectsIdClustersClusterId(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_clusters_cluster_id",
+	tool := mcp.NewTool("get_pjs_id_clusters_cluster_id",
 		mcp.WithDescription("This feature was introduced in GitLab 11.7. Gets a single project cluster."),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project"),
@@ -7687,7 +7687,7 @@ func getProjectsIdClustersClusterIdHandler(ctx context.Context, request mcp.Call
 }
 
 func registerGetProjectsIdRegistryRepositories(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_registry_repositories",
+	tool := mcp.NewTool("get_pjs_id_registry_repositories",
 		mcp.WithDescription("This feature was introduced in GitLab 11.8."),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project"),
@@ -7746,7 +7746,7 @@ func parseGetProjectsIdRegistryRepositories(request mcp.CallToolRequest) client.
 }
 
 func registerGetProjectsIdRegistryRepositoriesRepositoryIdTags(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_registry_repositories_repo_id_tags",
+	tool := mcp.NewTool("get_pjs_id_registry_repositories_repo_id_tags",
 		mcp.WithDescription("This feature was introduced in GitLab 11.8."),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project"),
@@ -7798,7 +7798,7 @@ func parseGetProjectsIdRegistryRepositoriesRepositoryIdTags(request mcp.CallTool
 }
 
 func registerGetProjectsIdRegistryRepositoriesRepositoryIdTagsTagName(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_registry_repositories_repo_id_tags_tag_name",
+	tool := mcp.NewTool("get_pjs_id_registry_repositories_repo_id_tags_tag_name",
 		mcp.WithDescription("This feature was introduced in GitLab 11.8."),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project"),
@@ -7831,7 +7831,7 @@ func getProjectsIdRegistryRepositoriesRepositoryIdTagsTagNameHandler(ctx context
 }
 
 func registerGetProjectsIdRegistryProtectionRepositoryRules(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_registry_protection_repo_rules",
+	tool := mcp.NewTool("get_pjs_id_registry_protection_repo_rules",
 		mcp.WithDescription("Get list of container registry protection rules for a project"),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project"),
@@ -7854,7 +7854,7 @@ func getProjectsIdRegistryProtectionRepositoryRulesHandler(ctx context.Context, 
 }
 
 func registerGetProjectsIdDebianDistributions(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_debian_distributions",
+	tool := mcp.NewTool("get_pjs_id_debian_distributions",
 		mcp.WithDescription("This feature was introduced in 14.0"),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project"),
@@ -7982,7 +7982,7 @@ func parseGetProjectsIdDebianDistributions(request mcp.CallToolRequest) client.G
 }
 
 func registerGetProjectsIdDebianDistributionsCodename(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_debian_distributions_codename",
+	tool := mcp.NewTool("get_pjs_id_debian_distributions_codename",
 		mcp.WithDescription("This feature was introduced in 14.0"),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project"),
@@ -8010,7 +8010,7 @@ func getProjectsIdDebianDistributionsCodenameHandler(ctx context.Context, reques
 }
 
 func registerGetProjectsIdDebianDistributionsCodenameKeyAsc(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_debian_distributions_codename_key_asc",
+	tool := mcp.NewTool("get_pjs_id_debian_distributions_codename_key_asc",
 		mcp.WithDescription("This feature was introduced in 14.4"),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project"),
@@ -8038,7 +8038,7 @@ func getProjectsIdDebianDistributionsCodenameKeyAscHandler(ctx context.Context, 
 }
 
 func registerGetProjectsIdEvents(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_events",
+	tool := mcp.NewTool("get_pjs_id_events",
 		mcp.WithDescription("List a project's visible events"),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project"),
@@ -8134,7 +8134,7 @@ func parseGetProjectsIdEvents(request mcp.CallToolRequest) client.GetApiV4Projec
 }
 
 func registerGetProjectsIdExport(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_export",
+	tool := mcp.NewTool("get_pjs_id_export",
 		mcp.WithDescription("This feature was introduced in GitLab 10.6."),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project"),
@@ -8157,7 +8157,7 @@ func getProjectsIdExportHandler(ctx context.Context, request mcp.CallToolRequest
 }
 
 func registerGetProjectsIdExportDownload(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_export_download",
+	tool := mcp.NewTool("get_pjs_id_export_download",
 		mcp.WithDescription("This feature was introduced in GitLab 10.6."),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project"),
@@ -8180,7 +8180,7 @@ func getProjectsIdExportDownloadHandler(ctx context.Context, request mcp.CallToo
 }
 
 func registerGetProjectsIdExportRelationsDownload(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_export_relations_download",
+	tool := mcp.NewTool("get_pjs_id_export_relations_download",
 		mcp.WithDescription("This feature was introduced in GitLab 14.4"),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project"),
@@ -8234,7 +8234,7 @@ func parseGetProjectsIdExportRelationsDownload(request mcp.CallToolRequest) clie
 }
 
 func registerGetProjectsIdExportRelationsStatus(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_export_relations_status",
+	tool := mcp.NewTool("get_pjs_id_export_relations_status",
 		mcp.WithDescription("This feature was introduced in GitLab 14.4"),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project"),
@@ -8272,7 +8272,7 @@ func parseGetProjectsIdExportRelationsStatus(request mcp.CallToolRequest) client
 }
 
 func registerGetProjectsIdHooks(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_hooks",
+	tool := mcp.NewTool("get_pjs_id_hooks",
 		mcp.WithDescription("Get a list of project hooks"),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project"),
@@ -8319,7 +8319,7 @@ func parseGetProjectsIdHooks(request mcp.CallToolRequest) client.GetApiV4Project
 }
 
 func registerGetProjectsIdHooksHookId(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_hooks_hook_id",
+	tool := mcp.NewTool("get_pjs_id_hooks_hook_id",
 		mcp.WithDescription("Get a specific hook for a project"),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project"),
@@ -8347,7 +8347,7 @@ func getProjectsIdHooksHookIdHandler(ctx context.Context, request mcp.CallToolRe
 }
 
 func registerGetProjectsIdHooksHookIdEvents(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_hooks_hook_id_events",
+	tool := mcp.NewTool("get_pjs_id_hooks_hook_id_events",
 		mcp.WithDescription("List web hook logs by hook id"),
 		mcp.WithString("status",
 			mcp.Description("null"),
@@ -8408,7 +8408,7 @@ func parseGetProjectsIdHooksHookIdEvents(request mcp.CallToolRequest) client.Get
 }
 
 func registerGetProjectsIdImport(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_import",
+	tool := mcp.NewTool("get_pjs_id_import",
 		mcp.WithDescription("This feature was introduced in GitLab 10.6."),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project"),
@@ -8431,7 +8431,7 @@ func getProjectsIdImportHandler(ctx context.Context, request mcp.CallToolRequest
 }
 
 func registerGetProjectsIdRelationImports(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_relation_imports",
+	tool := mcp.NewTool("get_pjs_id_relation_imports",
 		mcp.WithDescription("This feature was introduced in GitLab 16.11."),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project"),
@@ -8454,7 +8454,7 @@ func getProjectsIdRelationImportsHandler(ctx context.Context, request mcp.CallTo
 }
 
 func registerGetProjectsIdJobTokenScope(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_job_token_scope",
+	tool := mcp.NewTool("get_pjs_id_job_token_scope",
 		mcp.WithDescription("Fetch CI_JOB_TOKEN access settings."),
 		mcp.WithNumber("id",
 			mcp.Description("null"),
@@ -8477,7 +8477,7 @@ func getProjectsIdJobTokenScopeHandler(ctx context.Context, request mcp.CallTool
 }
 
 func registerGetProjectsIdJobTokenScopeAllowlist(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_job_token_scope_allowlist",
+	tool := mcp.NewTool("get_pjs_id_job_token_scope_allowlist",
 		mcp.WithDescription("Fetch project inbound allowlist for CI_JOB_TOKEN access settings."),
 		mcp.WithNumber("page",
 			mcp.Description("Current page number (example: 1) (default: 1)"),
@@ -8524,7 +8524,7 @@ func parseGetProjectsIdJobTokenScopeAllowlist(request mcp.CallToolRequest) clien
 }
 
 func registerGetProjectsIdJobTokenScopeGroupsAllowlist(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_job_token_scope_grps_allowlist",
+	tool := mcp.NewTool("get_pjs_id_job_token_scope_grps_allowlist",
 		mcp.WithDescription("Fetch project groups allowlist for CI_JOB_TOKEN access settings."),
 		mcp.WithNumber("page",
 			mcp.Description("Current page number (example: 1) (default: 1)"),
@@ -8571,7 +8571,7 @@ func parseGetProjectsIdJobTokenScopeGroupsAllowlist(request mcp.CallToolRequest)
 }
 
 func registerGetProjectsIdPackages(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_pkgs",
+	tool := mcp.NewTool("get_pjs_id_pkgs",
 		mcp.WithDescription("This feature was introduced in GitLab 11.8"),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project"),
@@ -8686,7 +8686,7 @@ func parseGetProjectsIdPackages(request mcp.CallToolRequest) client.GetApiV4Proj
 }
 
 func registerGetProjectsIdPackagesPackageId(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_pkgs_package_id",
+	tool := mcp.NewTool("get_pjs_id_pkgs_package_id",
 		mcp.WithDescription("This feature was introduced in GitLab 11.9"),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project"),
@@ -8714,7 +8714,7 @@ func getProjectsIdPackagesPackageIdHandler(ctx context.Context, request mcp.Call
 }
 
 func registerGetProjectsIdPackagesPackageIdPipelines(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_pkgs_package_id_pls",
+	tool := mcp.NewTool("get_pjs_id_pkgs_package_id_pls",
 		mcp.WithDescription("This feature was introduced in GitLab 16.1"),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project"),
@@ -8775,7 +8775,7 @@ func parseGetProjectsIdPackagesPackageIdPipelines(request mcp.CallToolRequest) c
 }
 
 func registerGetProjectsIdPackagesProtectionRules(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_pkgs_protection_rules",
+	tool := mcp.NewTool("get_pjs_id_pkgs_protection_rules",
 		mcp.WithDescription("Get list of package protection rules for a project"),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project"),
@@ -8798,7 +8798,7 @@ func getProjectsIdPackagesProtectionRulesHandler(ctx context.Context, request mc
 }
 
 func registerGetProjectsIdSnapshot(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_snapshot",
+	tool := mcp.NewTool("get_pjs_id_snapshot",
 		mcp.WithDescription("This feature was introduced in GitLab 10.7"),
 		mcp.WithBoolean("wiki",
 			mcp.Description("Set to true to receive the wiki repository"),
@@ -8833,7 +8833,7 @@ func parseGetProjectsIdSnapshot(request mcp.CallToolRequest) client.GetApiV4Proj
 }
 
 func registerGetProjectsIdSnippets(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_snippets",
+	tool := mcp.NewTool("get_pjs_id_snippets",
 		mcp.WithDescription("Get all project snippets"),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project"),
@@ -8880,7 +8880,7 @@ func parseGetProjectsIdSnippets(request mcp.CallToolRequest) client.GetApiV4Proj
 }
 
 func registerGetProjectsIdSnippetsSnippetId(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_snippets_snippet_id",
+	tool := mcp.NewTool("get_pjs_id_snippets_snippet_id",
 		mcp.WithDescription("Get a single project snippet"),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project"),
@@ -8908,7 +8908,7 @@ func getProjectsIdSnippetsSnippetIdHandler(ctx context.Context, request mcp.Call
 }
 
 func registerGetProjectsIdSnippetsSnippetIdRaw(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_snippets_snippet_id_raw",
+	tool := mcp.NewTool("get_pjs_id_snippets_snippet_id_raw",
 		mcp.WithDescription("Get a raw project snippet"),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project"),
@@ -8936,7 +8936,7 @@ func getProjectsIdSnippetsSnippetIdRawHandler(ctx context.Context, request mcp.C
 }
 
 func registerGetProjectsIdSnippetsSnippetIdFilesRefFilePathRaw(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_snippets_snippet_id_files_ref_file_path_raw",
+	tool := mcp.NewTool("get_pjs_id_snippets_snippet_id_files_ref_file_path_raw",
 		mcp.WithDescription("Get raw project snippet file contents from the repository"),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project"),
@@ -8974,7 +8974,7 @@ func getProjectsIdSnippetsSnippetIdFilesRefFilePathRawHandler(ctx context.Contex
 }
 
 func registerGetProjectsIdSnippetsSnippetIdUserAgentDetail(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_snippets_snippet_id_user_agent_detail",
+	tool := mcp.NewTool("get_pjs_id_snippets_snippet_id_user_agent_detail",
 		mcp.WithDescription("Get the user agent details for a project snippet"),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project"),
@@ -9002,7 +9002,7 @@ func getProjectsIdSnippetsSnippetIdUserAgentDetailHandler(ctx context.Context, r
 }
 
 func registerGetProjectsIdStatistics(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_statistics",
+	tool := mcp.NewTool("get_pjs_id_statistics",
 		mcp.WithDescription("Get the list of project fetch statistics for the last 30 days"),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project"),
@@ -9025,7 +9025,7 @@ func getProjectsIdStatisticsHandler(ctx context.Context, request mcp.CallToolReq
 }
 
 func registerGetProjectsIdTemplatesType(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_templates_type",
+	tool := mcp.NewTool("get_pjs_id_templates_type",
 		mcp.WithDescription("This endpoint was introduced in GitLab 11.4"),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project"),
@@ -9078,7 +9078,7 @@ func parseGetProjectsIdTemplatesType(request mcp.CallToolRequest) client.GetApiV
 }
 
 func registerGetProjectsIdTemplatesTypeName(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_templates_type_name",
+	tool := mcp.NewTool("get_pjs_id_templates_type_name",
 		mcp.WithDescription("This endpoint was introduced in GitLab 11.4"),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project"),
@@ -9145,7 +9145,7 @@ func parseGetProjectsIdTemplatesTypeName(request mcp.CallToolRequest) client.Get
 }
 
 func registerGetProjectsIdCustomAttributes(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_custom_attributes",
+	tool := mcp.NewTool("get_pjs_id_custom_attributes",
 		mcp.WithDescription("Get all custom attributes on a project"),
 		mcp.WithNumber("id",
 			mcp.Description("null"),
@@ -9168,7 +9168,7 @@ func getProjectsIdCustomAttributesHandler(ctx context.Context, request mcp.CallT
 }
 
 func registerGetProjectsIdCustomAttributesKey(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_custom_attributes_key",
+	tool := mcp.NewTool("get_pjs_id_custom_attributes_key",
 		mcp.WithDescription("Get a custom attribute on a project"),
 		mcp.WithString("key",
 			mcp.Description("The key of the custom attribute"),
@@ -9196,7 +9196,7 @@ func getProjectsIdCustomAttributesKeyHandler(ctx context.Context, request mcp.Ca
 }
 
 func registerGetProjects(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_",
+	tool := mcp.NewTool("get_pjs",
 		mcp.WithDescription("Get a list of visible projects for authenticated user"),
 		mcp.WithString("order_by",
 			mcp.Description("Return projects ordered by field. storage_size, repository_size, wiki_size, packages_size are only available to admins. Similarity is available when searching and is limited to projects the user has access to. (default: created_at)"),
@@ -9486,7 +9486,7 @@ func parseGetProjects(request mcp.CallToolRequest) client.GetApiV4ProjectsParams
 }
 
 func registerGetProjectsIdShareLocations(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_share_locations",
+	tool := mcp.NewTool("get_pjs_id_share_locations",
 		mcp.WithDescription("Returns group that can be shared with the given project"),
 		mcp.WithNumber("id",
 			mcp.Description("The id of the project"),
@@ -9524,7 +9524,7 @@ func parseGetProjectsIdShareLocations(request mcp.CallToolRequest) client.GetApi
 }
 
 func registerGetProjectsId(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id",
+	tool := mcp.NewTool("get_pjs_id",
 		mcp.WithDescription("Get a single project"),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project"),
@@ -9571,7 +9571,7 @@ func parseGetProjectsId(request mcp.CallToolRequest) client.GetApiV4ProjectsIdPa
 }
 
 func registerGetProjectsIdForks(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_forks",
+	tool := mcp.NewTool("get_pjs_id_forks",
 		mcp.WithDescription("List forks of this project"),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project"),
@@ -9860,7 +9860,7 @@ func parseGetProjectsIdForks(request mcp.CallToolRequest) client.GetApiV4Project
 }
 
 func registerGetProjectsIdPagesAccess(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_pages_access",
+	tool := mcp.NewTool("get_pjs_id_pages_access",
 		mcp.WithDescription("Check pages access of this project"),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project"),
@@ -9883,7 +9883,7 @@ func getProjectsIdPagesAccessHandler(ctx context.Context, request mcp.CallToolRe
 }
 
 func registerGetProjectsIdStarrers(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_starrers",
+	tool := mcp.NewTool("get_pjs_id_starrers",
 		mcp.WithDescription("Get the users who starred a project"),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project"),
@@ -9939,7 +9939,7 @@ func parseGetProjectsIdStarrers(request mcp.CallToolRequest) client.GetApiV4Proj
 }
 
 func registerGetProjectsIdLanguages(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_languages",
+	tool := mcp.NewTool("get_pjs_id_languages",
 		mcp.WithDescription("Get languages in project repository"),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project"),
@@ -9962,7 +9962,7 @@ func getProjectsIdLanguagesHandler(ctx context.Context, request mcp.CallToolRequ
 }
 
 func registerGetProjectsIdUsers(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_users",
+	tool := mcp.NewTool("get_pjs_id_users",
 		mcp.WithDescription("Get the users list of a project"),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project"),
@@ -10032,7 +10032,7 @@ func parseGetProjectsIdUsers(request mcp.CallToolRequest) client.GetApiV4Project
 }
 
 func registerGetProjectsIdGroups(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_grps",
+	tool := mcp.NewTool("get_pjs_id_grps",
 		mcp.WithDescription("Get ancestor and shared groups for a project"),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project"),
@@ -10125,7 +10125,7 @@ func parseGetProjectsIdGroups(request mcp.CallToolRequest) client.GetApiV4Projec
 }
 
 func registerGetProjectsIdInvitedGroups(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_invited_grps",
+	tool := mcp.NewTool("get_pjs_id_invited_grps",
 		mcp.WithDescription("Get a list of invited groups in this project"),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project"),
@@ -10207,7 +10207,7 @@ func parseGetProjectsIdInvitedGroups(request mcp.CallToolRequest) client.GetApiV
 }
 
 func registerGetProjectsIdTransferLocations(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_transfer_locations",
+	tool := mcp.NewTool("get_pjs_id_transfer_locations",
 		mcp.WithDescription("Get the namespaces to where the project can be transferred"),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project"),
@@ -10263,7 +10263,7 @@ func parseGetProjectsIdTransferLocations(request mcp.CallToolRequest) client.Get
 }
 
 func registerGetProjectsIdStorage(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_storage",
+	tool := mcp.NewTool("get_pjs_id_storage",
 		mcp.WithDescription("Show the storage information"),
 		mcp.WithString("id",
 			mcp.Description("ID of a project"),
@@ -10286,7 +10286,7 @@ func getProjectsIdStorageHandler(ctx context.Context, request mcp.CallToolReques
 }
 
 func registerGetProjectsIdAuditEvents(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_audit_events",
+	tool := mcp.NewTool("get_pjs_id_audit_events",
 		mcp.WithDescription("Get a list of audit events in this project."),
 		mcp.WithString("created_after",
 			mcp.Description("Return audit events created after the specified time (example: 2016-01-19T09:05:50.355Z)"),
@@ -10351,7 +10351,7 @@ func parseGetProjectsIdAuditEvents(request mcp.CallToolRequest) client.GetApiV4P
 }
 
 func registerGetProjectsIdAuditEventsAuditEventId(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_audit_events_audit_event_id",
+	tool := mcp.NewTool("get_pjs_id_audit_events_audit_event_id",
 		mcp.WithDescription("Get a specific audit event in this project."),
 		mcp.WithNumber("audit_event_id",
 			mcp.Description("The ID of the audit event"),
@@ -10379,7 +10379,7 @@ func getProjectsIdAuditEventsAuditEventIdHandler(ctx context.Context, request mc
 }
 
 func registerGetProjectsIdProtectedBranches(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_protected_branches",
+	tool := mcp.NewTool("get_pjs_id_protected_branches",
 		mcp.WithDescription("Get a project's protected branches"),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project (example: gitlab-org/gitlab)"),
@@ -10435,7 +10435,7 @@ func parseGetProjectsIdProtectedBranches(request mcp.CallToolRequest) client.Get
 }
 
 func registerGetProjectsIdProtectedBranchesName(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_protected_branches_name",
+	tool := mcp.NewTool("get_pjs_id_protected_branches_name",
 		mcp.WithDescription("Get a single protected branch"),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project (example: gitlab-org/gitlab)"),
@@ -10463,7 +10463,7 @@ func getProjectsIdProtectedBranchesNameHandler(ctx context.Context, request mcp.
 }
 
 func registerGetProjectsIdProtectedTags(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_protected_tags",
+	tool := mcp.NewTool("get_pjs_id_protected_tags",
 		mcp.WithDescription("This feature was introduced in GitLab 11.3."),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project"),
@@ -10510,7 +10510,7 @@ func parseGetProjectsIdProtectedTags(request mcp.CallToolRequest) client.GetApiV
 }
 
 func registerGetProjectsIdProtectedTagsName(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_protected_tags_name",
+	tool := mcp.NewTool("get_pjs_id_protected_tags_name",
 		mcp.WithDescription("This feature was introduced in GitLab 11.3."),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project"),
@@ -10538,7 +10538,7 @@ func getProjectsIdProtectedTagsNameHandler(ctx context.Context, request mcp.Call
 }
 
 func registerGetProjectsIdPackagesPypiSimple(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_pkgs_pypi_simple",
+	tool := mcp.NewTool("get_pjs_id_pkgs_pypi_simple",
 		mcp.WithDescription("This feature was introduced in GitLab 15.1"),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project"),
@@ -10561,7 +10561,7 @@ func getProjectsIdPackagesPypiSimpleHandler(ctx context.Context, request mcp.Cal
 }
 
 func registerGetProjectsIdReleases(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_releases",
+	tool := mcp.NewTool("get_pjs_id_releases",
 		mcp.WithDescription("Returns a paginated list of releases. This feature was introduced in GitLab 11.7."),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project"),
@@ -10654,7 +10654,7 @@ func parseGetProjectsIdReleases(request mcp.CallToolRequest) client.GetApiV4Proj
 }
 
 func registerGetProjectsIdReleasesTagName(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_releases_tag_name",
+	tool := mcp.NewTool("get_pjs_id_releases_tag_name",
 		mcp.WithDescription("Gets a release for the given tag. This feature was introduced in GitLab 11.7."),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project"),
@@ -10694,7 +10694,7 @@ func parseGetProjectsIdReleasesTagName(request mcp.CallToolRequest) client.GetAp
 }
 
 func registerGetProjectsIdReleasesTagNameAssetsLinks(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_releases_tag_name_assets_links",
+	tool := mcp.NewTool("get_pjs_id_releases_tag_name_assets_links",
 		mcp.WithDescription("Get assets as links from a release. This feature was introduced in GitLab 11.7."),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project"),
@@ -10746,7 +10746,7 @@ func parseGetProjectsIdReleasesTagNameAssetsLinks(request mcp.CallToolRequest) c
 }
 
 func registerGetProjectsIdReleasesTagNameAssetsLinksLinkId(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_releases_tag_name_assets_links_link_id",
+	tool := mcp.NewTool("get_pjs_id_releases_tag_name_assets_links_link_id",
 		mcp.WithDescription("Get an asset as a link from a release. This feature was introduced in GitLab 11.7."),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project"),
@@ -10779,7 +10779,7 @@ func getProjectsIdReleasesTagNameAssetsLinksLinkIdHandler(ctx context.Context, r
 }
 
 func registerGetProjectsIdRemoteMirrors(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_remote_mirrors",
+	tool := mcp.NewTool("get_pjs_id_remote_mirrors",
 		mcp.WithDescription("List the project's remote mirrors"),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project"),
@@ -10826,7 +10826,7 @@ func parseGetProjectsIdRemoteMirrors(request mcp.CallToolRequest) client.GetApiV
 }
 
 func registerGetProjectsIdRemoteMirrorsMirrorId(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_remote_mirrors_mirror_id",
+	tool := mcp.NewTool("get_pjs_id_remote_mirrors_mirror_id",
 		mcp.WithDescription("Get a single remote mirror"),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project"),
@@ -10854,7 +10854,7 @@ func getProjectsIdRemoteMirrorsMirrorIdHandler(ctx context.Context, request mcp.
 }
 
 func registerGetProjectsIdRemoteMirrorsMirrorIdPublicKey(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_remote_mirrors_mirror_id_public_key",
+	tool := mcp.NewTool("get_pjs_id_remote_mirrors_mirror_id_public_key",
 		mcp.WithDescription("Get the public key of a single remote mirror"),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project"),
@@ -10882,7 +10882,7 @@ func getProjectsIdRemoteMirrorsMirrorIdPublicKeyHandler(ctx context.Context, req
 }
 
 func registerGetProjectsIdRepositoryTree(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_repo_tree",
+	tool := mcp.NewTool("get_pjs_id_repo_tree",
 		mcp.WithDescription("Get a project repository tree"),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project (example: 1)"),
@@ -10973,7 +10973,7 @@ func parseGetProjectsIdRepositoryTree(request mcp.CallToolRequest) client.GetApi
 }
 
 func registerGetProjectsIdRepositoryBlobsShaRaw(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_repo_blobs_sha_raw",
+	tool := mcp.NewTool("get_pjs_id_repo_blobs_sha_raw",
 		mcp.WithDescription("Get raw blob contents from the repository"),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project (example: 1)"),
@@ -11001,7 +11001,7 @@ func getProjectsIdRepositoryBlobsShaRawHandler(ctx context.Context, request mcp.
 }
 
 func registerGetProjectsIdRepositoryBlobsSha(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_repo_blobs_sha",
+	tool := mcp.NewTool("get_pjs_id_repo_blobs_sha",
 		mcp.WithDescription("Get a blob from the repository"),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project (example: 1)"),
@@ -11029,7 +11029,7 @@ func getProjectsIdRepositoryBlobsShaHandler(ctx context.Context, request mcp.Cal
 }
 
 func registerGetProjectsIdRepositoryArchive(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_repo_archive",
+	tool := mcp.NewTool("get_pjs_id_repo_archive",
 		mcp.WithDescription("Get an archive of the repository"),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project (example: 1)"),
@@ -11100,7 +11100,7 @@ func parseGetProjectsIdRepositoryArchive(request mcp.CallToolRequest) client.Get
 }
 
 func registerGetProjectsIdRepositoryCompare(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_repo_compare",
+	tool := mcp.NewTool("get_pjs_id_repo_compare",
 		mcp.WithDescription("Compare two branches, tags, or commits"),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project (example: 1)"),
@@ -11170,7 +11170,7 @@ func parseGetProjectsIdRepositoryCompare(request mcp.CallToolRequest) client.Get
 }
 
 func registerGetProjectsIdRepositoryHealth(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_repo_health",
+	tool := mcp.NewTool("get_pjs_id_repo_health",
 		mcp.WithDescription("Get repository health"),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project (example: 1)"),
@@ -11205,7 +11205,7 @@ func parseGetProjectsIdRepositoryHealth(request mcp.CallToolRequest) client.GetA
 }
 
 func registerGetProjectsIdRepositoryContributors(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_repo_contributors",
+	tool := mcp.NewTool("get_pjs_id_repo_contributors",
 		mcp.WithDescription("Get repository contributors"),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project (example: 1)"),
@@ -11283,7 +11283,7 @@ func parseGetProjectsIdRepositoryContributors(request mcp.CallToolRequest) clien
 }
 
 func registerGetProjectsIdRepositoryMergeBase(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_repo_merge_base",
+	tool := mcp.NewTool("get_pjs_id_repo_merge_base",
 		mcp.WithDescription("Get the common ancestor between commits"),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project (example: 1)"),
@@ -11322,7 +11322,7 @@ func parseGetProjectsIdRepositoryMergeBase(request mcp.CallToolRequest) client.G
 }
 
 func registerGetProjectsIdRepositoryChangelog(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_repo_changelog",
+	tool := mcp.NewTool("get_pjs_id_repo_changelog",
 		mcp.WithDescription("This feature was introduced in GitLab 14.6"),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project (example: 1)"),
@@ -11406,7 +11406,7 @@ func parseGetProjectsIdRepositoryChangelog(request mcp.CallToolRequest) client.G
 }
 
 func registerGetProjectsIdIssuesEventableIdResourceMilestoneEvents(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_issues_eventable_id_resource_milestone_events",
+	tool := mcp.NewTool("get_pjs_id_issues_eventable_id_resource_milestone_events",
 		mcp.WithDescription("Gets a list of all milestone events for a single Issue"),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project"),
@@ -11458,7 +11458,7 @@ func parseGetProjectsIdIssuesEventableIdResourceMilestoneEvents(request mcp.Call
 }
 
 func registerGetProjectsIdIssuesEventableIdResourceMilestoneEventsEventId(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_issues_eventable_id_resource_milestone_events_event_id",
+	tool := mcp.NewTool("get_pjs_id_issues_eventable_id_resource_milestone_events_event_id",
 		mcp.WithDescription("Returns a single milestone event for a specific project Issue"),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project"),
@@ -11491,7 +11491,7 @@ func getProjectsIdIssuesEventableIdResourceMilestoneEventsEventIdHandler(ctx con
 }
 
 func registerGetProjectsIdMergeRequestsEventableIdResourceMilestoneEvents(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_mrs_eventable_id_resource_milestone_events",
+	tool := mcp.NewTool("get_pjs_id_mrs_eventable_id_resource_milestone_events",
 		mcp.WithDescription("Gets a list of all milestone events for a single Merge request"),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project"),
@@ -11543,7 +11543,7 @@ func parseGetProjectsIdMergeRequestsEventableIdResourceMilestoneEvents(request m
 }
 
 func registerGetProjectsIdMergeRequestsEventableIdResourceMilestoneEventsEventId(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_mrs_eventable_id_resource_milestone_events_event_id",
+	tool := mcp.NewTool("get_pjs_id_mrs_eventable_id_resource_milestone_events_event_id",
 		mcp.WithDescription("Returns a single milestone event for a specific project Merge request"),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project"),
@@ -11576,7 +11576,7 @@ func getProjectsIdMergeRequestsEventableIdResourceMilestoneEventsEventIdHandler(
 }
 
 func registerGetProjectsIdPackagesRubygemsFileName(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_pkgs_rubygems_file_name",
+	tool := mcp.NewTool("get_pjs_id_pkgs_rubygems_file_name",
 		mcp.WithDescription("This feature was introduced in GitLab 13.9"),
 		mcp.WithNumber("id",
 			mcp.Description("The ID or URL-encoded path of the project"),
@@ -11604,7 +11604,7 @@ func getProjectsIdPackagesRubygemsFileNameHandler(ctx context.Context, request m
 }
 
 func registerGetProjectsIdPackagesRubygemsQuickMarshal48FileName(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_pkgs_rubygems_quick_marshal_4_8_file_name",
+	tool := mcp.NewTool("get_pjs_id_pkgs_rubygems_quick_marshal_4_8_file_name",
 		mcp.WithDescription("This feature was introduced in GitLab 13.9"),
 		mcp.WithNumber("id",
 			mcp.Description("The ID or URL-encoded path of the project"),
@@ -11632,7 +11632,7 @@ func getProjectsIdPackagesRubygemsQuickMarshal48FileNameHandler(ctx context.Cont
 }
 
 func registerGetProjectsIdPackagesRubygemsGemsFileName(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_pkgs_rubygems_gems_file_name",
+	tool := mcp.NewTool("get_pjs_id_pkgs_rubygems_gems_file_name",
 		mcp.WithDescription("This feature was introduced in GitLab 13.9"),
 		mcp.WithNumber("id",
 			mcp.Description("The ID or URL-encoded path of the project"),
@@ -11660,7 +11660,7 @@ func getProjectsIdPackagesRubygemsGemsFileNameHandler(ctx context.Context, reque
 }
 
 func registerGetProjectsIdPackagesRubygemsApiV1Dependencies(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_pkgs_rubygems_api_v1_dependencies",
+	tool := mcp.NewTool("get_pjs_id_pkgs_rubygems_api_v1_dependencies",
 		mcp.WithDescription("This feature was introduced in GitLab 13.9"),
 		mcp.WithNumber("id",
 			mcp.Description("The ID or URL-encoded path of the project"),
@@ -11698,7 +11698,7 @@ func parseGetProjectsIdPackagesRubygemsApiV1Dependencies(request mcp.CallToolReq
 }
 
 func registerGetProjectsIdRepositoryTags(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_repo_tags",
+	tool := mcp.NewTool("get_pjs_id_repo_tags",
 		mcp.WithDescription("Get a project repository tags"),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project"),
@@ -11785,7 +11785,7 @@ func parseGetProjectsIdRepositoryTags(request mcp.CallToolRequest) client.GetApi
 }
 
 func registerGetProjectsIdRepositoryTagsTagName(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_repo_tags_tag_name",
+	tool := mcp.NewTool("get_pjs_id_repo_tags_tag_name",
 		mcp.WithDescription("Get a single repository tag"),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project"),
@@ -11813,7 +11813,7 @@ func getProjectsIdRepositoryTagsTagNameHandler(ctx context.Context, request mcp.
 }
 
 func registerGetProjectsIdRepositoryTagsTagNameSignature(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_repo_tags_tag_name_signature",
+	tool := mcp.NewTool("get_pjs_id_repo_tags_tag_name_signature",
 		mcp.WithDescription("Get a tag's signature"),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project"),
@@ -11841,7 +11841,7 @@ func getProjectsIdRepositoryTagsTagNameSignatureHandler(ctx context.Context, req
 }
 
 func registerGetProjectsIdPackagesTerraformModulesModuleNameModuleSystem(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_pkgs_terraform_modules_module_name_module_system",
+	tool := mcp.NewTool("get_pjs_id_pkgs_terraform_modules_module_name_module_system",
 		mcp.WithDescription("This feature was introduced in GitLab 16.7"),
 		mcp.WithString("id",
 			mcp.Description("The ID or full path of a project"),
@@ -11891,7 +11891,7 @@ func parseGetProjectsIdPackagesTerraformModulesModuleNameModuleSystem(request mc
 }
 
 func registerGetProjectsIdTerraformStateName(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_terraform_state_name",
+	tool := mcp.NewTool("get_pjs_id_terraform_state_name",
 		mcp.WithDescription("Get a Terraform state by its name"),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project"),
@@ -11934,7 +11934,7 @@ func parseGetProjectsIdTerraformStateName(request mcp.CallToolRequest) client.Ge
 }
 
 func registerGetProjectsIdTerraformStateNameVersionsSerial(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_terraform_state_name_versions_serial",
+	tool := mcp.NewTool("get_pjs_id_terraform_state_name_versions_serial",
 		mcp.WithDescription("Get a Terraform state version"),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the project"),
@@ -11967,7 +11967,7 @@ func getProjectsIdTerraformStateNameVersionsSerialHandler(ctx context.Context, r
 }
 
 func registerGetProjectsIdWikis(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_wikis",
+	tool := mcp.NewTool("get_pjs_id_wikis",
 		mcp.WithDescription("Get a list of wiki pages"),
 		mcp.WithBoolean("with_content",
 			mcp.Description("Include pages' content (default: false)"),
@@ -12002,7 +12002,7 @@ func parseGetProjectsIdWikis(request mcp.CallToolRequest) client.GetApiV4Project
 }
 
 func registerGetProjectsIdWikisSlug(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_wikis_slug",
+	tool := mcp.NewTool("get_pjs_id_wikis_slug",
 		mcp.WithDescription("Get a wiki page"),
 		mcp.WithString("slug",
 			mcp.Description("The slug of a wiki page"),
@@ -12051,7 +12051,7 @@ func parseGetProjectsIdWikisSlug(request mcp.CallToolRequest) client.GetApiV4Pro
 }
 
 func registerGetProjectsIdIssues(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_issues",
+	tool := mcp.NewTool("get_pjs_id_issues",
 		mcp.WithDescription("List project issues"),
 		mcp.WithString("id",
 			mcp.Description("The global ID or URL-encoded path of the project."),
@@ -12313,7 +12313,7 @@ func parseGetProjectsIdIssues(request mcp.CallToolRequest) client.GetApiV4Projec
 }
 
 func registerGetProjectsIdIssuesIssueIid(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_issues_issue_iid",
+	tool := mcp.NewTool("get_pjs_id_issues_issue_iid",
 		mcp.WithDescription("Single project issue"),
 		mcp.WithString("id",
 			mcp.Description("The global ID or URL-encoded path of the project."),
@@ -12341,7 +12341,7 @@ func getProjectsIdIssuesIssueIidHandler(ctx context.Context, request mcp.CallToo
 }
 
 func registerGetProjectsIdIssuesIssueIidTimeStats(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_issues_issue_iid_time_stats",
+	tool := mcp.NewTool("get_pjs_id_issues_issue_iid_time_stats",
 		mcp.WithDescription("Get time tracking stats"),
 		mcp.WithString("id",
 			mcp.Description("The global ID or URL-encoded path of the project."),
@@ -12369,7 +12369,7 @@ func getProjectsIdIssuesIssueIidTimeStatsHandler(ctx context.Context, request mc
 }
 
 func registerGetProjectsIdIssuesIssueIidRelatedMergeRequests(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_issues_issue_iid_related_mrs",
+	tool := mcp.NewTool("get_pjs_id_issues_issue_iid_related_mrs",
 		mcp.WithDescription("List merge requests related to issue"),
 		mcp.WithString("id",
 			mcp.Description("The global ID or URL-encoded path of the project."),
@@ -12397,7 +12397,7 @@ func getProjectsIdIssuesIssueIidRelatedMergeRequestsHandler(ctx context.Context,
 }
 
 func registerGetProjectsIdIssuesIssueIidClosedBy(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_issues_issue_iid_closed_by",
+	tool := mcp.NewTool("get_pjs_id_issues_issue_iid_closed_by",
 		mcp.WithDescription("List merge requests that close a particular issue on merge"),
 		mcp.WithString("id",
 			mcp.Description("The global ID or URL-encoded path of the project."),
@@ -12425,7 +12425,7 @@ func getProjectsIdIssuesIssueIidClosedByHandler(ctx context.Context, request mcp
 }
 
 func registerGetProjectsIdIssuesIssueIidParticipants(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_issues_issue_iid_participants",
+	tool := mcp.NewTool("get_pjs_id_issues_issue_iid_participants",
 		mcp.WithDescription("List participants in an issue"),
 		mcp.WithString("id",
 			mcp.Description("The global ID or URL-encoded path of the project."),
@@ -12453,7 +12453,7 @@ func getProjectsIdIssuesIssueIidParticipantsHandler(ctx context.Context, request
 }
 
 func registerGetProjectsIdIssuesIssueIidUserAgentDetail(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_issues_issue_iid_user_agent_detail",
+	tool := mcp.NewTool("get_pjs_id_issues_issue_iid_user_agent_detail",
 		mcp.WithDescription("Get user agent details"),
 		mcp.WithString("id",
 			mcp.Description("The global ID or URL-encoded path of the project."),
@@ -12481,7 +12481,7 @@ func getProjectsIdIssuesIssueIidUserAgentDetailHandler(ctx context.Context, requ
 }
 
 func registerGetProjectsIdIssuesIssueIidMetricImages(s *server.MCPServer) {
-	tool := mcp.NewTool("pjs_id_issues_issue_iid_metric_images",
+	tool := mcp.NewTool("get_pjs_id_issues_issue_iid_metric_images",
 		mcp.WithDescription("List metric images"),
 		mcp.WithString("id",
 			mcp.Description("The global ID or URL-encoded path of the project."),

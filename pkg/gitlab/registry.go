@@ -10,7 +10,7 @@ import (
 )
 
 func registerGetRegistryRepositoriesId(s *server.MCPServer) {
-	tool := mcp.NewTool("registry_repositories_id",
+	tool := mcp.NewTool("get_registry_repositories_id",
 		mcp.WithDescription("This feature was introduced in GitLab 13.6."),
 		mcp.WithString("id",
 			mcp.Description("The ID of the repository"),

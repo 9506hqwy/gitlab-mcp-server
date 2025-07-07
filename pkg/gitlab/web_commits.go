@@ -8,7 +8,7 @@ import (
 )
 
 func registerGetWebCommitsPublicKey(s *server.MCPServer) {
-	tool := mcp.NewTool("web_commits_public_key",
+	tool := mcp.NewTool("get_web_commits_public_key",
 		mcp.WithDescription("This feature was introduced in GitLab 17.4."),
 	)
 

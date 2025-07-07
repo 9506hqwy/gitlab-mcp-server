@@ -11,7 +11,7 @@ import (
 )
 
 func registerGetBroadcastMessages(s *server.MCPServer) {
-	tool := mcp.NewTool("broadcast_messages_",
+	tool := mcp.NewTool("get_broadcast_messages",
 		mcp.WithDescription("This feature was introduced in GitLab 8.12."),
 		mcp.WithNumber("page",
 			mcp.Description("Current page number (example: 1) (default: 1)"),
@@ -53,7 +53,7 @@ func parseGetBroadcastMessages(request mcp.CallToolRequest) client.GetApiV4Broad
 }
 
 func registerGetBroadcastMessagesId(s *server.MCPServer) {
-	tool := mcp.NewTool("broadcast_messages_id",
+	tool := mcp.NewTool("get_broadcast_messages_id",
 		mcp.WithDescription("This feature was introduced in GitLab 8.12."),
 		mcp.WithNumber("id",
 			mcp.Description("Broadcast message ID"),

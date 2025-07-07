@@ -8,7 +8,7 @@ import (
 )
 
 func registerGetGroupIdPackagesComposerPackages(s *server.MCPServer) {
-	tool := mcp.NewTool("group_id___pkgs_composer_packages",
+	tool := mcp.NewTool("get_group_id_pkgs_composer_packages",
 		mcp.WithDescription("This feature was introduced in GitLab 13.1"),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of a group"),
@@ -31,7 +31,7 @@ func getGroupIdPackagesComposerPackagesHandler(ctx context.Context, request mcp.
 }
 
 func registerGetGroupIdPackagesComposerPSha(s *server.MCPServer) {
-	tool := mcp.NewTool("group_id___pkgs_composer_p_sha",
+	tool := mcp.NewTool("get_group_id_pkgs_composer_p_sha",
 		mcp.WithDescription("This feature was introduced in GitLab 13.1"),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of a group"),

@@ -11,7 +11,7 @@ import (
 )
 
 func registerGetDiscoverCertBasedClusters(s *server.MCPServer) {
-	tool := mcp.NewTool("discover_cert_based_clusters_",
+	tool := mcp.NewTool("get_discover_cert_based_clusters",
 		mcp.WithDescription("This feature was introduced in GitLab 17.9. It will be removed in 18.0."),
 		mcp.WithNumber("group_id",
 			mcp.Description("The group ID to find all certificate-based clusters in the hierarchy"),

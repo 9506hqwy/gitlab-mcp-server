@@ -11,7 +11,7 @@ import (
 )
 
 func registerGetNamespacesId(s *server.MCPServer) {
-	tool := mcp.NewTool("namespaces_id",
+	tool := mcp.NewTool("get_namespaces_id",
 		mcp.WithDescription("Get a namespace by ID"),
 		mcp.WithString("id",
 			mcp.Description("ID or URL-encoded path of the namespace"),
@@ -34,7 +34,7 @@ func getNamespacesIdHandler(ctx context.Context, request mcp.CallToolRequest) (*
 }
 
 func registerGetNamespacesIdGitlabSubscription(s *server.MCPServer) {
-	tool := mcp.NewTool("namespaces_id_gitlab_subscription",
+	tool := mcp.NewTool("get_namespaces_id_gitlab_subscription",
 		mcp.WithDescription("Returns the subscription for the namespace"),
 		mcp.WithNumber("id",
 			mcp.Description("null"),
@@ -57,7 +57,7 @@ func getNamespacesIdGitlabSubscriptionHandler(ctx context.Context, request mcp.C
 }
 
 func registerGetNamespacesStorageLimitExclusions(s *server.MCPServer) {
-	tool := mcp.NewTool("namespaces_storage_limit_exclusions",
+	tool := mcp.NewTool("get_namespaces_storage_limit_exclusions",
 		mcp.WithDescription("Gets all records for namespaces that have been excluded"),
 		mcp.WithNumber("page",
 			mcp.Description("Current page number (example: 1) (default: 1)"),
@@ -99,7 +99,7 @@ func parseGetNamespacesStorageLimitExclusions(request mcp.CallToolRequest) clien
 }
 
 func registerGetNamespaces(s *server.MCPServer) {
-	tool := mcp.NewTool("namespaces_",
+	tool := mcp.NewTool("get_namespaces",
 		mcp.WithDescription("Get a list of the namespaces of the authenticated user. If the user is an administrator, a list of all namespaces in the GitLab instance is shown."),
 		mcp.WithString("search",
 			mcp.Description("Returns a list of namespaces the user is authorized to view based on the search criteria"),
@@ -171,7 +171,7 @@ func parseGetNamespaces(request mcp.CallToolRequest) client.GetApiV4NamespacesPa
 }
 
 func registerGetNamespacesIdExists(s *server.MCPServer) {
-	tool := mcp.NewTool("namespaces_id_exists",
+	tool := mcp.NewTool("get_namespaces_id_exists",
 		mcp.WithDescription("Get existence of a namespace by path. Suggests a new namespace path that does not already exist."),
 		mcp.WithString("id",
 			mcp.Description("Namespace’s path"),

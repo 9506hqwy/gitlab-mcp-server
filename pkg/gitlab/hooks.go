@@ -11,7 +11,7 @@ import (
 )
 
 func registerGetHooks(s *server.MCPServer) {
-	tool := mcp.NewTool("hooks_",
+	tool := mcp.NewTool("get_hooks",
 		mcp.WithDescription("Get a list of all system hooks"),
 		mcp.WithNumber("page",
 			mcp.Description("Current page number (example: 1) (default: 1)"),
@@ -53,7 +53,7 @@ func parseGetHooks(request mcp.CallToolRequest) client.GetApiV4HooksParams {
 }
 
 func registerGetHooksHookId(s *server.MCPServer) {
-	tool := mcp.NewTool("hooks_hook_id",
+	tool := mcp.NewTool("get_hooks_hook_id",
 		mcp.WithDescription("Get a system hook by its ID. Introduced in GitLab 14.9."),
 		mcp.WithNumber("hook_id",
 			mcp.Description("The ID of the system hook"),

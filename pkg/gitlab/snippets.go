@@ -12,7 +12,7 @@ import (
 )
 
 func registerGetSnippets(s *server.MCPServer) {
-	tool := mcp.NewTool("snippets_",
+	tool := mcp.NewTool("get_snippets",
 		mcp.WithDescription("This feature was introduced in GitLab 8.15."),
 		mcp.WithString("created_after",
 			mcp.Description("Return snippets created after the specified time"),
@@ -72,7 +72,7 @@ func parseGetSnippets(request mcp.CallToolRequest) client.GetApiV4SnippetsParams
 }
 
 func registerGetSnippetsPublic(s *server.MCPServer) {
-	tool := mcp.NewTool("snippets_public",
+	tool := mcp.NewTool("get_snippets_public",
 		mcp.WithDescription("This feature was introduced in GitLab 8.15."),
 		mcp.WithString("created_after",
 			mcp.Description("Return snippets created after the specified time"),
@@ -132,7 +132,7 @@ func parseGetSnippetsPublic(request mcp.CallToolRequest) client.GetApiV4Snippets
 }
 
 func registerGetSnippetsAll(s *server.MCPServer) {
-	tool := mcp.NewTool("snippets_all",
+	tool := mcp.NewTool("get_snippets_all",
 		mcp.WithDescription("This feature was introduced in GitLab 16.3."),
 		mcp.WithString("created_after",
 			mcp.Description("Return snippets created after the specified time"),
@@ -201,7 +201,7 @@ func parseGetSnippetsAll(request mcp.CallToolRequest) client.GetApiV4SnippetsAll
 }
 
 func registerGetSnippetsId(s *server.MCPServer) {
-	tool := mcp.NewTool("snippets_id",
+	tool := mcp.NewTool("get_snippets_id",
 		mcp.WithDescription("This feature was introduced in GitLab 8.15."),
 		mcp.WithNumber("id",
 			mcp.Description("The ID of a snippet"),
@@ -224,7 +224,7 @@ func getSnippetsIdHandler(ctx context.Context, request mcp.CallToolRequest) (*mc
 }
 
 func registerGetSnippetsIdRaw(s *server.MCPServer) {
-	tool := mcp.NewTool("snippets_id_raw",
+	tool := mcp.NewTool("get_snippets_id_raw",
 		mcp.WithDescription("This feature was introduced in GitLab 8.15."),
 		mcp.WithNumber("id",
 			mcp.Description("The ID of a snippet"),
@@ -247,7 +247,7 @@ func getSnippetsIdRawHandler(ctx context.Context, request mcp.CallToolRequest) (
 }
 
 func registerGetSnippetsIdFilesRefFilePathRaw(s *server.MCPServer) {
-	tool := mcp.NewTool("snippets_id_files_ref_file_path_raw",
+	tool := mcp.NewTool("get_snippets_id_files_ref_file_path_raw",
 		mcp.WithDescription("Get raw snippet file contents from the repository"),
 		mcp.WithString("file_path",
 			mcp.Description("The url encoded path to the file, e.g. lib%2Fclass%2Erb"),
@@ -280,7 +280,7 @@ func getSnippetsIdFilesRefFilePathRawHandler(ctx context.Context, request mcp.Ca
 }
 
 func registerGetSnippetsIdUserAgentDetail(s *server.MCPServer) {
-	tool := mcp.NewTool("snippets_id_user_agent_detail",
+	tool := mcp.NewTool("get_snippets_id_user_agent_detail",
 		mcp.WithDescription("Get the user agent details for a snippet"),
 		mcp.WithNumber("id",
 			mcp.Description("The ID of a snippet"),

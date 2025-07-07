@@ -15,7 +15,7 @@ import (
 )
 
 func registerGetGroupsIdAccessRequests(s *server.MCPServer) {
-	tool := mcp.NewTool("grps_id_access_requests",
+	tool := mcp.NewTool("get_grps_id_access_requests",
 		mcp.WithDescription("This feature was introduced in GitLab 8.11."),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the group owned by the authenticated user"),
@@ -62,7 +62,7 @@ func parseGetGroupsIdAccessRequests(request mcp.CallToolRequest) client.GetApiV4
 }
 
 func registerGetGroupsIdEpicsEpicIidAwardEmoji(s *server.MCPServer) {
-	tool := mcp.NewTool("grps_id_epics_epic_iid_award_emoji",
+	tool := mcp.NewTool("get_grps_id_epics_epic_iid_award_emoji",
 		mcp.WithDescription("Get a list of all emoji reactions for a specified awardable. This feature was introduced in 8.9"),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the group"),
@@ -114,7 +114,7 @@ func parseGetGroupsIdEpicsEpicIidAwardEmoji(request mcp.CallToolRequest) client.
 }
 
 func registerGetGroupsIdEpicsEpicIidAwardEmojiAwardId(s *server.MCPServer) {
-	tool := mcp.NewTool("grps_id_epics_epic_iid_award_emoji_award_id",
+	tool := mcp.NewTool("get_grps_id_epics_epic_iid_award_emoji_award_id",
 		mcp.WithDescription("Get a single emoji reaction from an issue, snippet, or merge request. This feature was introduced in 8.9"),
 		mcp.WithNumber("award_id",
 			mcp.Description("ID of the emoji reaction."),
@@ -147,7 +147,7 @@ func getGroupsIdEpicsEpicIidAwardEmojiAwardIdHandler(ctx context.Context, reques
 }
 
 func registerGetGroupsIdEpicsEpicIidNotesNoteIdAwardEmoji(s *server.MCPServer) {
-	tool := mcp.NewTool("grps_id_epics_epic_iid_notes_note_id_award_emoji",
+	tool := mcp.NewTool("get_grps_id_epics_epic_iid_notes_note_id_award_emoji",
 		mcp.WithDescription("Get a list of all emoji reactions for a specified awardable. This feature was introduced in 8.9"),
 		mcp.WithNumber("page",
 			mcp.Description("Current page number (example: 1) (default: 1)"),
@@ -204,7 +204,7 @@ func parseGetGroupsIdEpicsEpicIidNotesNoteIdAwardEmoji(request mcp.CallToolReque
 }
 
 func registerGetGroupsIdEpicsEpicIidNotesNoteIdAwardEmojiAwardId(s *server.MCPServer) {
-	tool := mcp.NewTool("grps_id_epics_epic_iid_notes_note_id_award_emoji_award_id",
+	tool := mcp.NewTool("get_grps_id_epics_epic_iid_notes_note_id_award_emoji_award_id",
 		mcp.WithDescription("Get a single emoji reaction from an issue, snippet, or merge request. This feature was introduced in 8.9"),
 		mcp.WithNumber("award_id",
 			mcp.Description("ID of the emoji reaction."),
@@ -242,7 +242,7 @@ func getGroupsIdEpicsEpicIidNotesNoteIdAwardEmojiAwardIdHandler(ctx context.Cont
 }
 
 func registerGetGroupsIdBadges(s *server.MCPServer) {
-	tool := mcp.NewTool("grps_id_badges",
+	tool := mcp.NewTool("get_grps_id_badges",
 		mcp.WithDescription("This feature was introduced in GitLab 10.6."),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the group owned by the authenticated user."),
@@ -298,7 +298,7 @@ func parseGetGroupsIdBadges(request mcp.CallToolRequest) client.GetApiV4GroupsId
 }
 
 func registerGetGroupsIdBadgesRender(s *server.MCPServer) {
-	tool := mcp.NewTool("grps_id_badges_render",
+	tool := mcp.NewTool("get_grps_id_badges_render",
 		mcp.WithDescription("This feature was introduced in GitLab 10.6."),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the group owned by the authenticated user."),
@@ -347,7 +347,7 @@ func parseGetGroupsIdBadgesRender(request mcp.CallToolRequest) client.GetApiV4Gr
 }
 
 func registerGetGroupsIdBadgesBadgeId(s *server.MCPServer) {
-	tool := mcp.NewTool("grps_id_badges_badge_id",
+	tool := mcp.NewTool("get_grps_id_badges_badge_id",
 		mcp.WithDescription("This feature was introduced in GitLab 10.6."),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the group owned by the authenticated user."),
@@ -375,7 +375,7 @@ func getGroupsIdBadgesBadgeIdHandler(ctx context.Context, request mcp.CallToolRe
 }
 
 func registerGetGroupsIdCustomAttributes(s *server.MCPServer) {
-	tool := mcp.NewTool("grps_id_custom_attributes",
+	tool := mcp.NewTool("get_grps_id_custom_attributes",
 		mcp.WithDescription("Get all custom attributes on a group"),
 		mcp.WithNumber("id",
 			mcp.Description("null"),
@@ -398,7 +398,7 @@ func getGroupsIdCustomAttributesHandler(ctx context.Context, request mcp.CallToo
 }
 
 func registerGetGroupsIdCustomAttributesKey(s *server.MCPServer) {
-	tool := mcp.NewTool("grps_id_custom_attributes_key",
+	tool := mcp.NewTool("get_grps_id_custom_attributes_key",
 		mcp.WithDescription("Get a custom attribute on a group"),
 		mcp.WithString("key",
 			mcp.Description("The key of the custom attribute"),
@@ -426,7 +426,7 @@ func getGroupsIdCustomAttributesKeyHandler(ctx context.Context, request mcp.Call
 }
 
 func registerGetGroups(s *server.MCPServer) {
-	tool := mcp.NewTool("grps_",
+	tool := mcp.NewTool("get_grps",
 		mcp.WithDescription("Get a groups list"),
 		mcp.WithBoolean("statistics",
 			mcp.Description("Include project statistics (default: false)"),
@@ -595,7 +595,7 @@ func parseGetGroups(request mcp.CallToolRequest) client.GetApiV4GroupsParams {
 }
 
 func registerGetGroupsId(s *server.MCPServer) {
-	tool := mcp.NewTool("grps_id",
+	tool := mcp.NewTool("get_grps_id",
 		mcp.WithDescription("Get a single group, with containing projects."),
 		mcp.WithString("id",
 			mcp.Description("The ID of a group"),
@@ -636,7 +636,7 @@ func parseGetGroupsId(request mcp.CallToolRequest) client.GetApiV4GroupsIdParams
 }
 
 func registerGetGroupsIdGroupsShared(s *server.MCPServer) {
-	tool := mcp.NewTool("grps_id_groups_shared",
+	tool := mcp.NewTool("get_grps_id_groups_shared",
 		mcp.WithDescription("Get a list of shared groups this group was invited to"),
 		mcp.WithString("id",
 			mcp.Description("The ID of a group"),
@@ -756,7 +756,7 @@ func parseGetGroupsIdGroupsShared(request mcp.CallToolRequest) client.GetApiV4Gr
 }
 
 func registerGetGroupsIdInvitedGroups(s *server.MCPServer) {
-	tool := mcp.NewTool("grps_id_invited_groups",
+	tool := mcp.NewTool("get_grps_id_invited_groups",
 		mcp.WithDescription("Get a list of invited groups in this group"),
 		mcp.WithString("id",
 			mcp.Description("The ID of a group"),
@@ -838,7 +838,7 @@ func parseGetGroupsIdInvitedGroups(request mcp.CallToolRequest) client.GetApiV4G
 }
 
 func registerGetGroupsIdProjects(s *server.MCPServer) {
-	tool := mcp.NewTool("grps_id_pjs",
+	tool := mcp.NewTool("get_grps_id_pjs",
 		mcp.WithDescription("Get a list of projects in this group."),
 		mcp.WithString("id",
 			mcp.Description("The ID of a group"),
@@ -1004,7 +1004,7 @@ func parseGetGroupsIdProjects(request mcp.CallToolRequest) client.GetApiV4Groups
 }
 
 func registerGetGroupsIdProjectsShared(s *server.MCPServer) {
-	tool := mcp.NewTool("grps_id_pjs_shared",
+	tool := mcp.NewTool("get_grps_id_pjs_shared",
 		mcp.WithDescription("Get a list of shared projects in this group"),
 		mcp.WithString("id",
 			mcp.Description("The ID of a group"),
@@ -1140,7 +1140,7 @@ func parseGetGroupsIdProjectsShared(request mcp.CallToolRequest) client.GetApiV4
 }
 
 func registerGetGroupsIdSubgroups(s *server.MCPServer) {
-	tool := mcp.NewTool("grps_id_subgroups",
+	tool := mcp.NewTool("get_grps_id_subgroups",
 		mcp.WithDescription("Get a list of subgroups in this group."),
 		mcp.WithString("id",
 			mcp.Description("The ID of a group"),
@@ -1314,7 +1314,7 @@ func parseGetGroupsIdSubgroups(request mcp.CallToolRequest) client.GetApiV4Group
 }
 
 func registerGetGroupsIdDescendantGroups(s *server.MCPServer) {
-	tool := mcp.NewTool("grps_id_descendant_groups",
+	tool := mcp.NewTool("get_grps_id_descendant_groups",
 		mcp.WithDescription("Get a list of descendant groups of this group."),
 		mcp.WithString("id",
 			mcp.Description("The ID of a group"),
@@ -1488,7 +1488,7 @@ func parseGetGroupsIdDescendantGroups(request mcp.CallToolRequest) client.GetApi
 }
 
 func registerGetGroupsIdTransferLocations(s *server.MCPServer) {
-	tool := mcp.NewTool("grps_id_transfer_locations",
+	tool := mcp.NewTool("get_grps_id_transfer_locations",
 		mcp.WithDescription("Get the groups to where the current group can be transferred to"),
 		mcp.WithString("id",
 			mcp.Description("The ID of a group"),
@@ -1544,7 +1544,7 @@ func parseGetGroupsIdTransferLocations(request mcp.CallToolRequest) client.GetAp
 }
 
 func registerGetGroupsIdAuditEvents(s *server.MCPServer) {
-	tool := mcp.NewTool("grps_id_audit_events",
+	tool := mcp.NewTool("get_grps_id_audit_events",
 		mcp.WithDescription("Get a list of audit events in this group."),
 		mcp.WithString("created_after",
 			mcp.Description("Return audit events created after the specified time (example: 2016-01-19T09:05:50.355Z)"),
@@ -1609,7 +1609,7 @@ func parseGetGroupsIdAuditEvents(request mcp.CallToolRequest) client.GetApiV4Gro
 }
 
 func registerGetGroupsIdAuditEventsAuditEventId(s *server.MCPServer) {
-	tool := mcp.NewTool("grps_id_audit_events_audit_event_id",
+	tool := mcp.NewTool("get_grps_id_audit_events_audit_event_id",
 		mcp.WithDescription("Get a specific audit event in this group."),
 		mcp.WithNumber("audit_event_id",
 			mcp.Description("The ID of the audit event"),
@@ -1637,7 +1637,7 @@ func getGroupsIdAuditEventsAuditEventIdHandler(ctx context.Context, request mcp.
 }
 
 func registerGetGroupsIdSamlUsers(s *server.MCPServer) {
-	tool := mcp.NewTool("grps_id_saml_users",
+	tool := mcp.NewTool("get_grps_id_saml_users",
 		mcp.WithDescription("Get a list of SAML users of the group"),
 		mcp.WithString("username",
 			mcp.Description("Return single user with a specific username."),
@@ -1732,7 +1732,7 @@ func parseGetGroupsIdSamlUsers(request mcp.CallToolRequest) client.GetApiV4Group
 }
 
 func registerGetGroupsIdProvisionedUsers(s *server.MCPServer) {
-	tool := mcp.NewTool("grps_id_provisioned_users",
+	tool := mcp.NewTool("get_grps_id_provisioned_users",
 		mcp.WithDescription("Get a list of users provisioned by the group"),
 		mcp.WithString("username",
 			mcp.Description("Return a single user with a specific username"),
@@ -1827,7 +1827,7 @@ func parseGetGroupsIdProvisionedUsers(request mcp.CallToolRequest) client.GetApi
 }
 
 func registerGetGroupsIdUsers(s *server.MCPServer) {
-	tool := mcp.NewTool("grps_id_users",
+	tool := mcp.NewTool("get_grps_id_users",
 		mcp.WithDescription("Get a list of users for the group"),
 		mcp.WithString("search",
 			mcp.Description("Search users by name, email or username"),
@@ -1901,7 +1901,7 @@ func parseGetGroupsIdUsers(request mcp.CallToolRequest) client.GetApiV4GroupsIdU
 }
 
 func registerGetGroupsIdSshCertificates(s *server.MCPServer) {
-	tool := mcp.NewTool("grps_id_ssh_certificates",
+	tool := mcp.NewTool("get_grps_id_ssh_certificates",
 		mcp.WithDescription("Get a list of ssh certificates created for a group."),
 		mcp.WithNumber("page",
 			mcp.Description("Current page number (example: 1) (default: 1)"),
@@ -1948,7 +1948,7 @@ func parseGetGroupsIdSshCertificates(request mcp.CallToolRequest) client.GetApiV
 }
 
 func registerGetGroupsIdRunners(s *server.MCPServer) {
-	tool := mcp.NewTool("grps_id_runners",
+	tool := mcp.NewTool("get_grps_id_runners",
 		mcp.WithDescription("List all runners available in the group as well as its ancestor groups, including any allowed shared runners."),
 		mcp.WithString("id",
 			mcp.Description("The ID of a group"),
@@ -2041,7 +2041,7 @@ func parseGetGroupsIdRunners(request mcp.CallToolRequest) client.GetApiV4GroupsI
 }
 
 func registerGetGroupsIdPackagesDebianPoolDistributionProjectIdLetterPackageNamePackageVersionFileName(s *server.MCPServer) {
-	tool := mcp.NewTool("grps_id___pkgs_debian_pool_distribution_project_id_letter_package_name_package_version_file_name",
+	tool := mcp.NewTool("get_grps_id_pkgs_debian_pool_distribution_project_id_letter_package_name_package_version_file_name",
 		mcp.WithDescription("This feature was introduced in GitLab 14.2"),
 		mcp.WithString("id",
 			mcp.Description("The group ID or full group path."),
@@ -2094,7 +2094,7 @@ func getGroupsIdPackagesDebianPoolDistributionProjectIdLetterPackageNamePackageV
 }
 
 func registerGetGroupsIdDeployTokens(s *server.MCPServer) {
-	tool := mcp.NewTool("grps_id_deploy_tokens",
+	tool := mcp.NewTool("get_grps_id_deploy_tokens",
 		mcp.WithDescription("Get a list of a group's deploy tokens. This feature was introduced in GitLab 12.9."),
 		mcp.WithNumber("id",
 			mcp.Description("The ID or URL-encoded path of the group owned by the authenticated user"),
@@ -2147,7 +2147,7 @@ func parseGetGroupsIdDeployTokens(request mcp.CallToolRequest) client.GetApiV4Gr
 }
 
 func registerGetGroupsIdDeployTokensTokenId(s *server.MCPServer) {
-	tool := mcp.NewTool("grps_id_deploy_tokens_token_id",
+	tool := mcp.NewTool("get_grps_id_deploy_tokens_token_id",
 		mcp.WithDescription("Get a single group's deploy token by ID. This feature was introduced in GitLab 14.9."),
 		mcp.WithNumber("id",
 			mcp.Description("The ID or URL-encoded path of the group owned by the authenticated user"),
@@ -2175,7 +2175,7 @@ func getGroupsIdDeployTokensTokenIdHandler(ctx context.Context, request mcp.Call
 }
 
 func registerGetGroupsIdAvatar(s *server.MCPServer) {
-	tool := mcp.NewTool("grps_id_avatar",
+	tool := mcp.NewTool("get_grps_id_avatar",
 		mcp.WithDescription("This feature was introduced in GitLab 14.0"),
 		mcp.WithString("id",
 			mcp.Description("The ID of the group"),
@@ -2198,7 +2198,7 @@ func getGroupsIdAvatarHandler(ctx context.Context, request mcp.CallToolRequest) 
 }
 
 func registerGetGroupsIdClusters(s *server.MCPServer) {
-	tool := mcp.NewTool("grps_id_clusters",
+	tool := mcp.NewTool("get_grps_id_clusters",
 		mcp.WithDescription("This feature was introduced in GitLab 12.1. Returns a list of group clusters."),
 		mcp.WithString("id",
 			mcp.Description("The ID of the group"),
@@ -2245,7 +2245,7 @@ func parseGetGroupsIdClusters(request mcp.CallToolRequest) client.GetApiV4Groups
 }
 
 func registerGetGroupsIdClustersClusterId(s *server.MCPServer) {
-	tool := mcp.NewTool("grps_id_clusters_cluster_id",
+	tool := mcp.NewTool("get_grps_id_clusters_cluster_id",
 		mcp.WithDescription("This feature was introduced in GitLab 12.1. Gets a single group cluster."),
 		mcp.WithString("id",
 			mcp.Description("The ID of the group"),
@@ -2273,7 +2273,7 @@ func getGroupsIdClustersClusterIdHandler(ctx context.Context, request mcp.CallTo
 }
 
 func registerGetGroupsIdRegistryRepositories(s *server.MCPServer) {
-	tool := mcp.NewTool("grps_id_registry_repositories",
+	tool := mcp.NewTool("get_grps_id_registry_repositories",
 		mcp.WithDescription("Get a list of registry repositories in a group. This feature was introduced in GitLab 12.2."),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the group accessible by the authenticated user"),
@@ -2320,7 +2320,7 @@ func parseGetGroupsIdRegistryRepositories(request mcp.CallToolRequest) client.Ge
 }
 
 func registerGetGroupsIdDebianDistributions(s *server.MCPServer) {
-	tool := mcp.NewTool("grps_id___debian_distributions",
+	tool := mcp.NewTool("get_grps_id_debian_distributions",
 		mcp.WithDescription("This feature was introduced in 14.0"),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the group"),
@@ -2448,7 +2448,7 @@ func parseGetGroupsIdDebianDistributions(request mcp.CallToolRequest) client.Get
 }
 
 func registerGetGroupsIdDebianDistributionsCodename(s *server.MCPServer) {
-	tool := mcp.NewTool("grps_id___debian_distributions_codename",
+	tool := mcp.NewTool("get_grps_id_debian_distributions_codename",
 		mcp.WithDescription("This feature was introduced in 14.0"),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the group"),
@@ -2476,7 +2476,7 @@ func getGroupsIdDebianDistributionsCodenameHandler(ctx context.Context, request 
 }
 
 func registerGetGroupsIdDebianDistributionsCodenameKeyAsc(s *server.MCPServer) {
-	tool := mcp.NewTool("grps_id___debian_distributions_codename_key_asc",
+	tool := mcp.NewTool("get_grps_id_debian_distributions_codename_key_asc",
 		mcp.WithDescription("This feature was introduced in 14.4"),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the group"),
@@ -2504,7 +2504,7 @@ func getGroupsIdDebianDistributionsCodenameKeyAscHandler(ctx context.Context, re
 }
 
 func registerGetGroupsIdExportDownload(s *server.MCPServer) {
-	tool := mcp.NewTool("grps_id_export_download",
+	tool := mcp.NewTool("get_grps_id_export_download",
 		mcp.WithDescription("This feature was introduced in GitLab 12.5."),
 		mcp.WithString("id",
 			mcp.Description("The ID of a group"),
@@ -2527,7 +2527,7 @@ func getGroupsIdExportDownloadHandler(ctx context.Context, request mcp.CallToolR
 }
 
 func registerGetGroupsIdExportRelationsDownload(s *server.MCPServer) {
-	tool := mcp.NewTool("grps_id_export_relations_download",
+	tool := mcp.NewTool("get_grps_id_export_relations_download",
 		mcp.WithDescription("This feature was introduced in GitLab 13.12"),
 		mcp.WithString("id",
 			mcp.Description("The ID of a group"),
@@ -2581,7 +2581,7 @@ func parseGetGroupsIdExportRelationsDownload(request mcp.CallToolRequest) client
 }
 
 func registerGetGroupsIdExportRelationsStatus(s *server.MCPServer) {
-	tool := mcp.NewTool("grps_id_export_relations_status",
+	tool := mcp.NewTool("get_grps_id_export_relations_status",
 		mcp.WithDescription("This feature was introduced in GitLab 13.12"),
 		mcp.WithString("id",
 			mcp.Description("The ID of a group"),
@@ -2619,7 +2619,7 @@ func parseGetGroupsIdExportRelationsStatus(request mcp.CallToolRequest) client.G
 }
 
 func registerGetGroupsIdPackages(s *server.MCPServer) {
-	tool := mcp.NewTool("grps_id_pkgs",
+	tool := mcp.NewTool("get_grps_id_pkgs",
 		mcp.WithDescription("Get a list of project packages at the group level. This feature was introduced in GitLab 12.5"),
 		mcp.WithString("id",
 			mcp.Description("ID or URL-encoded path of the group"),
@@ -2740,7 +2740,7 @@ func parseGetGroupsIdPackages(request mcp.CallToolRequest) client.GetApiV4Groups
 }
 
 func registerGetGroupsIdPlaceholderReassignments(s *server.MCPServer) {
-	tool := mcp.NewTool("grps_id_placeholder_reassignments",
+	tool := mcp.NewTool("get_grps_id_placeholder_reassignments",
 		mcp.WithDescription("This feature was added in GitLab 17.10"),
 		mcp.WithString("id",
 			mcp.Description("The ID of a group"),
@@ -2763,7 +2763,7 @@ func getGroupsIdPlaceholderReassignmentsHandler(ctx context.Context, request mcp
 }
 
 func registerGetGroupsIdVariables(s *server.MCPServer) {
-	tool := mcp.NewTool("grps_id_variables",
+	tool := mcp.NewTool("get_grps_id_variables",
 		mcp.WithDescription("Get a list of group-level variables"),
 		mcp.WithString("id",
 			mcp.Description("The ID of a group or URL-encoded path of the group owned by the authenticated user"),
@@ -2810,7 +2810,7 @@ func parseGetGroupsIdVariables(request mcp.CallToolRequest) client.GetApiV4Group
 }
 
 func registerGetGroupsIdVariablesKey(s *server.MCPServer) {
-	tool := mcp.NewTool("grps_id_variables_key",
+	tool := mcp.NewTool("get_grps_id_variables_key",
 		mcp.WithDescription("Get the details of a group’s specific variable"),
 		mcp.WithString("id",
 			mcp.Description("The ID of a group or URL-encoded path of the group owned by the authenticated user"),
@@ -2838,7 +2838,7 @@ func getGroupsIdVariablesKeyHandler(ctx context.Context, request mcp.CallToolReq
 }
 
 func registerGetGroupsIdIntegrations(s *server.MCPServer) {
-	tool := mcp.NewTool("grps_id_integrations",
+	tool := mcp.NewTool("get_grps_id_integrations",
 		mcp.WithDescription("Get a list of all active integrations."),
 		mcp.WithNumber("id",
 			mcp.Description("null"),
@@ -2861,7 +2861,7 @@ func getGroupsIdIntegrationsHandler(ctx context.Context, request mcp.CallToolReq
 }
 
 func registerGetGroupsIdIntegrationsSlug(s *server.MCPServer) {
-	tool := mcp.NewTool("grps_id_integrations_slug",
+	tool := mcp.NewTool("get_grps_id_integrations_slug",
 		mcp.WithDescription("Get the integration settings."),
 		mcp.WithString("slug",
 			mcp.Description("The name of the integration"),
@@ -2890,7 +2890,7 @@ func getGroupsIdIntegrationsSlugHandler(ctx context.Context, request mcp.CallToo
 }
 
 func registerGetGroupsIdInvitations(s *server.MCPServer) {
-	tool := mcp.NewTool("grps_id_invitations",
+	tool := mcp.NewTool("get_grps_id_invitations",
 		mcp.WithDescription("This feature was introduced in GitLab 13.6"),
 		mcp.WithString("id",
 			mcp.Description("The group ID"),
@@ -2946,7 +2946,7 @@ func parseGetGroupsIdInvitations(request mcp.CallToolRequest) client.GetApiV4Gro
 }
 
 func registerGetGroupsIdUploads(s *server.MCPServer) {
-	tool := mcp.NewTool("grps_id_uploads",
+	tool := mcp.NewTool("get_grps_id_uploads",
 		mcp.WithDescription("Get the list of uploads of a group"),
 		mcp.WithNumber("page",
 			mcp.Description("Current page number (example: 1) (default: 1)"),
@@ -2993,7 +2993,7 @@ func parseGetGroupsIdUploads(request mcp.CallToolRequest) client.GetApiV4GroupsI
 }
 
 func registerGetGroupsIdUploadsUploadId(s *server.MCPServer) {
-	tool := mcp.NewTool("grps_id_uploads_upload_id",
+	tool := mcp.NewTool("get_grps_id_uploads_upload_id",
 		mcp.WithDescription("Download a single group upload by ID"),
 		mcp.WithNumber("upload_id",
 			mcp.Description("The ID of a group upload"),
@@ -3021,7 +3021,7 @@ func getGroupsIdUploadsUploadIdHandler(ctx context.Context, request mcp.CallTool
 }
 
 func registerGetGroupsIdUploadsSecretFilename(s *server.MCPServer) {
-	tool := mcp.NewTool("grps_id_uploads_secret_filename",
+	tool := mcp.NewTool("get_grps_id_uploads_secret_filename",
 		mcp.WithDescription("Download a single project upload by secret and filename"),
 		mcp.WithString("secret",
 			mcp.Description("The 32-character secret of a group upload"),
@@ -3054,7 +3054,7 @@ func getGroupsIdUploadsSecretFilenameHandler(ctx context.Context, request mcp.Ca
 }
 
 func registerGetGroupsIdMembers(s *server.MCPServer) {
-	tool := mcp.NewTool("grps_id_members",
+	tool := mcp.NewTool("get_grps_id_members",
 		mcp.WithDescription("Gets a list of group or project members viewable by the authenticated user."),
 		mcp.WithString("id",
 			mcp.Description("The group ID"),
@@ -3150,7 +3150,7 @@ func parseGetGroupsIdMembers(request mcp.CallToolRequest) client.GetApiV4GroupsI
 }
 
 func registerGetGroupsIdMembersAll(s *server.MCPServer) {
-	tool := mcp.NewTool("grps_id_members_all",
+	tool := mcp.NewTool("get_grps_id_members_all",
 		mcp.WithDescription("Gets a list of group or project members viewable by the authenticated user, including those who gained membership through ancestor group."),
 		mcp.WithString("id",
 			mcp.Description("The group ID"),
@@ -3237,7 +3237,7 @@ func parseGetGroupsIdMembersAll(request mcp.CallToolRequest) client.GetApiV4Grou
 }
 
 func registerGetGroupsIdMembersUserId(s *server.MCPServer) {
-	tool := mcp.NewTool("grps_id_members_user_id",
+	tool := mcp.NewTool("get_grps_id_members_user_id",
 		mcp.WithDescription("Gets a member of a group or project."),
 		mcp.WithString("id",
 			mcp.Description("The group ID"),
@@ -3265,7 +3265,7 @@ func getGroupsIdMembersUserIdHandler(ctx context.Context, request mcp.CallToolRe
 }
 
 func registerGetGroupsIdMembersAllUserId(s *server.MCPServer) {
-	tool := mcp.NewTool("grps_id_members_all_user_id",
+	tool := mcp.NewTool("get_grps_id_members_all_user_id",
 		mcp.WithDescription("Gets a member of a group or project, including those who gained membership through ancestor group"),
 		mcp.WithString("id",
 			mcp.Description("The group ID"),
@@ -3293,7 +3293,7 @@ func getGroupsIdMembersAllUserIdHandler(ctx context.Context, request mcp.CallToo
 }
 
 func registerGetGroupsIdPendingMembers(s *server.MCPServer) {
-	tool := mcp.NewTool("grps_id_pending_members",
+	tool := mcp.NewTool("get_grps_id_pending_members",
 		mcp.WithDescription("Lists all pending members for a group including invited users"),
 		mcp.WithString("id",
 			mcp.Description("The ID of a group"),
@@ -3340,7 +3340,7 @@ func parseGetGroupsIdPendingMembers(request mcp.CallToolRequest) client.GetApiV4
 }
 
 func registerGetGroupsIdBillableMembers(s *server.MCPServer) {
-	tool := mcp.NewTool("grps_id_billable_members",
+	tool := mcp.NewTool("get_grps_id_billable_members",
 		mcp.WithDescription("Gets a list of billable users of top-level group."),
 		mcp.WithString("id",
 			mcp.Description("The ID of a group"),
@@ -3407,7 +3407,7 @@ func parseGetGroupsIdBillableMembers(request mcp.CallToolRequest) client.GetApiV
 }
 
 func registerGetGroupsIdBillableMembersUserIdMemberships(s *server.MCPServer) {
-	tool := mcp.NewTool("grps_id_billable_members_user_id_memberships",
+	tool := mcp.NewTool("get_grps_id_billable_members_user_id_memberships",
 		mcp.WithDescription("Get the direct memberships of a billable user of a top-level group."),
 		mcp.WithString("id",
 			mcp.Description("The ID of a group"),
@@ -3459,7 +3459,7 @@ func parseGetGroupsIdBillableMembersUserIdMemberships(request mcp.CallToolReques
 }
 
 func registerGetGroupsIdBillableMembersUserIdIndirect(s *server.MCPServer) {
-	tool := mcp.NewTool("grps_id_billable_members_user_id_indirect",
+	tool := mcp.NewTool("get_grps_id_billable_members_user_id_indirect",
 		mcp.WithDescription("Get the indirect memberships of a billable user of a top-level group."),
 		mcp.WithString("id",
 			mcp.Description("The ID of a group"),
@@ -3511,7 +3511,7 @@ func parseGetGroupsIdBillableMembersUserIdIndirect(request mcp.CallToolRequest) 
 }
 
 func registerGetGroupsIdMergeRequests(s *server.MCPServer) {
-	tool := mcp.NewTool("grps_id_mrs",
+	tool := mcp.NewTool("get_grps_id_mrs",
 		mcp.WithDescription("Get all merge requests for this group and its subgroups."),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the group owned by the authenticated user."),
@@ -3968,7 +3968,7 @@ func parseGetGroupsIdMergeRequests(request mcp.CallToolRequest) client.GetApiV4G
 }
 
 func registerGetGroupsIdPackagesNugetIndex(s *server.MCPServer) {
-	tool := mcp.NewTool("grps_id___pkgs_nuget_index",
+	tool := mcp.NewTool("get_grps_id_pkgs_nuget_index",
 		mcp.WithDescription("This feature was introduced in GitLab 12.6"),
 		mcp.WithNumber("id",
 			mcp.Description("The group ID or full group path."),
@@ -3991,7 +3991,7 @@ func getGroupsIdPackagesNugetIndexHandler(ctx context.Context, request mcp.CallT
 }
 
 func registerGetGroupsIdPackagesNugetV2(s *server.MCPServer) {
-	tool := mcp.NewTool("grps_id___pkgs_nuget_v2",
+	tool := mcp.NewTool("get_grps_id_pkgs_nuget_v2",
 		mcp.WithDescription("This feature was introduced in GitLab 16.2"),
 		mcp.WithNumber("id",
 			mcp.Description("The group ID or full group path."),
@@ -4014,7 +4014,7 @@ func getGroupsIdPackagesNugetV2Handler(ctx context.Context, request mcp.CallTool
 }
 
 func registerGetGroupsIdPackagesNugetV2Metadata(s *server.MCPServer) {
-	tool := mcp.NewTool("grps_id___pkgs_nuget_v2__metadata",
+	tool := mcp.NewTool("get_grps_id_pkgs_nuget_v2_metadata",
 		mcp.WithDescription("This feature was introduced in GitLab 16.3"),
 		mcp.WithNumber("id",
 			mcp.Description("The group ID or full group path."),
@@ -4037,7 +4037,7 @@ func getGroupsIdPackagesNugetV2MetadataHandler(ctx context.Context, request mcp.
 }
 
 func registerGetGroupsIdPackagesNugetQuery(s *server.MCPServer) {
-	tool := mcp.NewTool("grps_id___pkgs_nuget_query",
+	tool := mcp.NewTool("get_grps_id_pkgs_nuget_query",
 		mcp.WithDescription("This feature was introduced in GitLab 12.8"),
 		mcp.WithNumber("id",
 			mcp.Description("The group ID or full group path."),
@@ -4099,7 +4099,7 @@ func parseGetGroupsIdPackagesNugetQuery(request mcp.CallToolRequest) client.GetA
 }
 
 func registerGetGroupsIdPackagesPypiSimple(s *server.MCPServer) {
-	tool := mcp.NewTool("grps_id___pkgs_pypi_simple",
+	tool := mcp.NewTool("get_grps_id_pkgs_pypi_simple",
 		mcp.WithDescription("This feature was introduced in GitLab 15.1"),
 		mcp.WithNumber("id",
 			mcp.Description("The ID or full path of the group."),
@@ -4122,7 +4122,7 @@ func getGroupsIdPackagesPypiSimpleHandler(ctx context.Context, request mcp.CallT
 }
 
 func registerGetGroupsIdReleases(s *server.MCPServer) {
-	tool := mcp.NewTool("grps_id_releases",
+	tool := mcp.NewTool("get_grps_id_releases",
 		mcp.WithDescription("Returns a list of group releases."),
 		mcp.WithString("id",
 			mcp.Description("The ID or URL-encoded path of the group owned by the authenticated user"),
@@ -4186,7 +4186,7 @@ func parseGetGroupsIdReleases(request mcp.CallToolRequest) client.GetApiV4Groups
 }
 
 func registerGetGroupsIdWikis(s *server.MCPServer) {
-	tool := mcp.NewTool("grps_id_wikis",
+	tool := mcp.NewTool("get_grps_id_wikis",
 		mcp.WithDescription("Get a list of wiki pages"),
 		mcp.WithBoolean("with_content",
 			mcp.Description("Include pages' content (default: false)"),
@@ -4221,7 +4221,7 @@ func parseGetGroupsIdWikis(request mcp.CallToolRequest) client.GetApiV4GroupsIdW
 }
 
 func registerGetGroupsIdWikisSlug(s *server.MCPServer) {
-	tool := mcp.NewTool("grps_id_wikis_slug",
+	tool := mcp.NewTool("get_grps_id_wikis_slug",
 		mcp.WithDescription("Get a wiki page"),
 		mcp.WithString("slug",
 			mcp.Description("The slug of a wiki page"),
@@ -4270,7 +4270,7 @@ func parseGetGroupsIdWikisSlug(request mcp.CallToolRequest) client.GetApiV4Group
 }
 
 func registerGetGroupsIdIssues(s *server.MCPServer) {
-	tool := mcp.NewTool("grps_id_issues",
+	tool := mcp.NewTool("get_grps_id_issues",
 		mcp.WithDescription("List group issues"),
 		mcp.WithString("id",
 			mcp.Description("The global ID or URL-encoded path of the group."),

@@ -9,7 +9,7 @@ import (
 )
 
 func registerGetGeoProxy(s *server.MCPServer) {
-	tool := mcp.NewTool("geo_proxy",
+	tool := mcp.NewTool("get_geo_proxy",
 		mcp.WithDescription("Returns a Geo proxy response"),
 	)
 
@@ -26,7 +26,7 @@ func getGeoProxyHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.
 }
 
 func registerGetGeoRetrieveReplicableNameReplicableId(s *server.MCPServer) {
-	tool := mcp.NewTool("geo_retrieve_replicable_name_replicable_id",
+	tool := mcp.NewTool("get_geo_retrieve_replicable_name_replicable_id",
 		mcp.WithDescription("Returns a replicable file from store (via CDN or sendfile)"),
 		mcp.WithString("replicable_name",
 			mcp.Description("The replicable name of a replicator instance (example: package_file)"),
@@ -54,7 +54,7 @@ func getGeoRetrieveReplicableNameReplicableIdHandler(ctx context.Context, reques
 }
 
 func registerGetGeoRepositoriesGlRepositoryPipelineRefs(s *server.MCPServer) {
-	tool := mcp.NewTool("geo_repositories_gl_repo_pipeline_refs",
+	tool := mcp.NewTool("get_geo_repositories_gl_repo_pipeline_refs",
 		mcp.WithDescription("Returns the list of pipeline refs for the project"),
 		mcp.WithString("gl_repository",
 			mcp.Description("The repository to check"),

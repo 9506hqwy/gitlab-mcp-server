@@ -10,7 +10,7 @@ import (
 )
 
 func registerGetPackagesConanV1UsersAuthenticate(s *server.MCPServer) {
-	tool := mcp.NewTool("pkgs_conan_v1_users_authenticate",
+	tool := mcp.NewTool("get_pkgs_conan_v1_users_authenticate",
 		mcp.WithDescription("This feature was introduced in GitLab 12.2"),
 	)
 
@@ -27,7 +27,7 @@ func getPackagesConanV1UsersAuthenticateHandler(ctx context.Context, request mcp
 }
 
 func registerGetPackagesConanV1UsersCheckCredentials(s *server.MCPServer) {
-	tool := mcp.NewTool("pkgs_conan_v1_users_check_credentials",
+	tool := mcp.NewTool("get_pkgs_conan_v1_users_check_credentials",
 		mcp.WithDescription("This feature was introduced in GitLab 12.4"),
 	)
 
@@ -44,7 +44,7 @@ func getPackagesConanV1UsersCheckCredentialsHandler(ctx context.Context, request
 }
 
 func registerGetPackagesConanV1ConansSearch(s *server.MCPServer) {
-	tool := mcp.NewTool("pkgs_conan_v1_conans_search",
+	tool := mcp.NewTool("get_pkgs_conan_v1_conans_search",
 		mcp.WithDescription("This feature was introduced in GitLab 12.4"),
 		mcp.WithString("q",
 			mcp.Description("Search query (example: Hello*)"),
@@ -78,7 +78,7 @@ func parseGetPackagesConanV1ConansSearch(request mcp.CallToolRequest) client.Get
 }
 
 func registerGetPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelSearch(s *server.MCPServer) {
-	tool := mcp.NewTool("pkgs_conan_v1_conans_package_name_package_version_package_username_package_channel_search",
+	tool := mcp.NewTool("get_pkgs_conan_v1_conans_package_name_package_version_package_username_package_channel_search",
 		mcp.WithDescription("This feature was introduced in GitLab 18.0"),
 		mcp.WithString("package_name",
 			mcp.Description("Package name (example: my-package)"),
@@ -116,7 +116,7 @@ func getPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChan
 }
 
 func registerGetPackagesConanV1Ping(s *server.MCPServer) {
-	tool := mcp.NewTool("pkgs_conan_v1_ping",
+	tool := mcp.NewTool("get_pkgs_conan_v1_ping",
 		mcp.WithDescription("This feature was introduced in GitLab 12.2"),
 	)
 
@@ -133,7 +133,7 @@ func getPackagesConanV1PingHandler(ctx context.Context, request mcp.CallToolRequ
 }
 
 func registerGetPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelPackagesConanPackageReference(s *server.MCPServer) {
-	tool := mcp.NewTool("pkgs_conan_v1_conans_package_name_package_version_package_username_package_channel_packages_conan_package_reference",
+	tool := mcp.NewTool("get_pkgs_conan_v1_conans_package_name_package_version_package_username_package_channel_packages_conan_package_reference",
 		mcp.WithDescription("This feature was introduced in GitLab 12.5"),
 		mcp.WithString("package_name",
 			mcp.Description("Package name (example: my-package)"),
@@ -176,7 +176,7 @@ func getPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChan
 }
 
 func registerGetPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannel(s *server.MCPServer) {
-	tool := mcp.NewTool("pkgs_conan_v1_conans_package_name_package_version_package_username_package_channel",
+	tool := mcp.NewTool("get_pkgs_conan_v1_conans_package_name_package_version_package_username_package_channel",
 		mcp.WithDescription("This feature was introduced in GitLab 12.5"),
 		mcp.WithString("package_name",
 			mcp.Description("Package name (example: my-package)"),
@@ -214,7 +214,7 @@ func getPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChan
 }
 
 func registerGetPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelPackagesConanPackageReferenceDigest(s *server.MCPServer) {
-	tool := mcp.NewTool("pkgs_conan_v1_conans_package_name_package_version_package_username_package_channel_packages_conan_package_reference_digest",
+	tool := mcp.NewTool("get_pkgs_conan_v1_conans_package_name_package_version_package_username_package_channel_packages_conan_package_reference_digest",
 		mcp.WithDescription("This feature was introduced in GitLab 12.5"),
 		mcp.WithString("package_name",
 			mcp.Description("Package name (example: my-package)"),
@@ -257,7 +257,7 @@ func getPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChan
 }
 
 func registerGetPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelDigest(s *server.MCPServer) {
-	tool := mcp.NewTool("pkgs_conan_v1_conans_package_name_package_version_package_username_package_channel_digest",
+	tool := mcp.NewTool("get_pkgs_conan_v1_conans_package_name_package_version_package_username_package_channel_digest",
 		mcp.WithDescription("This feature was introduced in GitLab 12.5"),
 		mcp.WithString("package_name",
 			mcp.Description("Package name (example: my-package)"),
@@ -295,7 +295,7 @@ func getPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChan
 }
 
 func registerGetPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelPackagesConanPackageReferenceDownloadUrls(s *server.MCPServer) {
-	tool := mcp.NewTool("pkgs_conan_v1_conans_package_name_package_version_package_username_package_channel_packages_conan_package_reference_download_urls",
+	tool := mcp.NewTool("get_pkgs_conan_v1_conans_package_name_package_version_package_username_package_channel_packages_conan_package_reference_download_urls",
 		mcp.WithDescription("This feature was introduced in GitLab 12.5"),
 		mcp.WithString("package_name",
 			mcp.Description("Package name (example: my-package)"),
@@ -338,7 +338,7 @@ func getPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChan
 }
 
 func registerGetPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelDownloadUrls(s *server.MCPServer) {
-	tool := mcp.NewTool("pkgs_conan_v1_conans_package_name_package_version_package_username_package_channel_download_urls",
+	tool := mcp.NewTool("get_pkgs_conan_v1_conans_package_name_package_version_package_username_package_channel_download_urls",
 		mcp.WithDescription("This feature was introduced in GitLab 12.5"),
 		mcp.WithString("package_name",
 			mcp.Description("Package name (example: my-package)"),
@@ -376,7 +376,7 @@ func getPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChan
 }
 
 func registerGetPackagesConanV1FilesPackageNamePackageVersionPackageUsernamePackageChannelRecipeRevisionExportFileName(s *server.MCPServer) {
-	tool := mcp.NewTool("pkgs_conan_v1_files_package_name_package_version_package_username_package_channel_recipe_revision_export_file_name",
+	tool := mcp.NewTool("get_pkgs_conan_v1_files_package_name_package_version_package_username_package_channel_recipe_revision_export_file_name",
 		mcp.WithDescription("This feature was introduced in GitLab 12.6"),
 		mcp.WithString("package_name",
 			mcp.Description("Package name (example: my-package)"),
@@ -425,7 +425,7 @@ func getPackagesConanV1FilesPackageNamePackageVersionPackageUsernamePackageChann
 }
 
 func registerGetPackagesConanV1FilesPackageNamePackageVersionPackageUsernamePackageChannelRecipeRevisionPackageConanPackageReferencePackageRevisionFileName(s *server.MCPServer) {
-	tool := mcp.NewTool("pkgs_conan_v1_files_package_name_package_version_package_username_package_channel_recipe_revision_package_conan_package_reference_package_revision_file_name",
+	tool := mcp.NewTool("get_pkgs_conan_v1_files_package_name_package_version_package_username_package_channel_recipe_revision_package_conan_package_reference_package_revision_file_name",
 		mcp.WithDescription("This feature was introduced in GitLab 12.5"),
 		mcp.WithString("package_name",
 			mcp.Description("Package name (example: my-package)"),
@@ -484,7 +484,7 @@ func getPackagesConanV1FilesPackageNamePackageVersionPackageUsernamePackageChann
 }
 
 func registerGetPackagesTerraformModulesV1ModuleNamespaceModuleNameModuleSystemVersions(s *server.MCPServer) {
-	tool := mcp.NewTool("pkgs_terraform_modules_v1_module_namespace_module_name_module_system_versions",
+	tool := mcp.NewTool("get_pkgs_terraform_modules_v1_module_namespace_module_name_module_system_versions",
 		mcp.WithDescription("List versions for a module"),
 		mcp.WithString("module_namespace",
 			mcp.Description("Group's ID or slug"),
@@ -517,7 +517,7 @@ func getPackagesTerraformModulesV1ModuleNamespaceModuleNameModuleSystemVersionsH
 }
 
 func registerGetPackagesTerraformModulesV1ModuleNamespaceModuleNameModuleSystemDownload(s *server.MCPServer) {
-	tool := mcp.NewTool("pkgs_terraform_modules_v1_module_namespace_module_name_module_system_download",
+	tool := mcp.NewTool("get_pkgs_terraform_modules_v1_module_namespace_module_name_module_system_download",
 		mcp.WithDescription("Download the latest version of a module"),
 		mcp.WithString("module_namespace",
 			mcp.Description("Group's ID or slug"),
@@ -550,7 +550,7 @@ func getPackagesTerraformModulesV1ModuleNamespaceModuleNameModuleSystemDownloadH
 }
 
 func registerGetPackagesTerraformModulesV1ModuleNamespaceModuleNameModuleSystem(s *server.MCPServer) {
-	tool := mcp.NewTool("pkgs_terraform_modules_v1_module_namespace_module_name_module_system",
+	tool := mcp.NewTool("get_pkgs_terraform_modules_v1_module_namespace_module_name_module_system",
 		mcp.WithDescription("Get details about the latest version of a module"),
 		mcp.WithString("module_namespace",
 			mcp.Description("Group's ID or slug"),

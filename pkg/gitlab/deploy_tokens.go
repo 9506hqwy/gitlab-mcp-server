@@ -11,7 +11,7 @@ import (
 )
 
 func registerGetDeployTokens(s *server.MCPServer) {
-	tool := mcp.NewTool("deploy_tokens_",
+	tool := mcp.NewTool("get_deploy_tokens",
 		mcp.WithDescription("Get a list of all deploy tokens across the GitLab instance. This endpoint requires administrator access. This feature was introduced in GitLab 12.9."),
 		mcp.WithNumber("page",
 			mcp.Description("Current page number (example: 1) (default: 1)"),

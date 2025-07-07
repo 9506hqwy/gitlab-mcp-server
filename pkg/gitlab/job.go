@@ -8,7 +8,7 @@ import (
 )
 
 func registerGetJob(s *server.MCPServer) {
-	tool := mcp.NewTool("job_",
+	tool := mcp.NewTool("get_job",
 		mcp.WithDescription("Get current job using job token"),
 	)
 
@@ -25,7 +25,7 @@ func getJobHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallT
 }
 
 func registerGetJobAllowedAgents(s *server.MCPServer) {
-	tool := mcp.NewTool("job_allowed_agents",
+	tool := mcp.NewTool("get_job_allowed_agents",
 		mcp.WithDescription("Retrieves a list of agents for the given job token"),
 	)
 

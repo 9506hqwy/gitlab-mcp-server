@@ -8,7 +8,7 @@ import (
 )
 
 func registerGetApplications(s *server.MCPServer) {
-	tool := mcp.NewTool("applications_",
+	tool := mcp.NewTool("get_applications",
 		mcp.WithDescription("List all registered applications"),
 	)
 

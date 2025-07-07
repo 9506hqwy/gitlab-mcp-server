@@ -11,7 +11,7 @@ import (
 )
 
 func registerGetDeployKeys(s *server.MCPServer) {
-	tool := mcp.NewTool("deploy_keys_",
+	tool := mcp.NewTool("get_deploy_keys",
 		mcp.WithDescription("Get a list of all deploy keys across all projects of the GitLab instance. This endpoint requires administrator access and is not available on GitLab.com."),
 		mcp.WithNumber("page",
 			mcp.Description("Current page number (example: 1) (default: 1)"),

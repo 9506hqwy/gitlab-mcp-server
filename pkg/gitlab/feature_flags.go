@@ -10,7 +10,7 @@ import (
 )
 
 func registerGetFeatureFlagsUnleashProjectId(s *server.MCPServer) {
-	tool := mcp.NewTool("feature_flags_unleash_project_id",
+	tool := mcp.NewTool("get_feature_flags_unleash_project_id",
 		mcp.WithDescription("null"),
 		mcp.WithString("project_id",
 			mcp.Description("The ID of a project"),
@@ -57,7 +57,7 @@ func parseGetFeatureFlagsUnleashProjectId(request mcp.CallToolRequest) client.Ge
 }
 
 func registerGetFeatureFlagsUnleashProjectIdFeatures(s *server.MCPServer) {
-	tool := mcp.NewTool("feature_flags_unleash_project_id_features",
+	tool := mcp.NewTool("get_feature_flags_unleash_project_id_features",
 		mcp.WithDescription("Get a list of features (deprecated, v2 client support)"),
 		mcp.WithString("project_id",
 			mcp.Description("The ID of a project"),
@@ -104,7 +104,7 @@ func parseGetFeatureFlagsUnleashProjectIdFeatures(request mcp.CallToolRequest) c
 }
 
 func registerGetFeatureFlagsUnleashProjectIdClientFeatures(s *server.MCPServer) {
-	tool := mcp.NewTool("feature_flags_unleash_project_id_client_features",
+	tool := mcp.NewTool("get_feature_flags_unleash_project_id_client_features",
 		mcp.WithDescription("Get a list of features"),
 		mcp.WithString("project_id",
 			mcp.Description("The ID of a project"),

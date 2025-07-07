@@ -11,7 +11,7 @@ import (
 )
 
 func registerGetTopics(s *server.MCPServer) {
-	tool := mcp.NewTool("topics_",
+	tool := mcp.NewTool("get_topics",
 		mcp.WithDescription("This feature was introduced in GitLab 14.5."),
 		mcp.WithString("search",
 			mcp.Description("Return list of topics matching the search criteria (example: search)"),
@@ -77,7 +77,7 @@ func parseGetTopics(request mcp.CallToolRequest) client.GetApiV4TopicsParams {
 }
 
 func registerGetTopicsId(s *server.MCPServer) {
-	tool := mcp.NewTool("topics_id",
+	tool := mcp.NewTool("get_topics_id",
 		mcp.WithDescription("This feature was introduced in GitLab 14.5."),
 		mcp.WithNumber("id",
 			mcp.Description("ID of project topic"),

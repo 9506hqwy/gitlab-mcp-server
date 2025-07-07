@@ -8,7 +8,7 @@ import (
 )
 
 func registerGetFeatures(s *server.MCPServer) {
-	tool := mcp.NewTool("features_",
+	tool := mcp.NewTool("get_features",
 		mcp.WithDescription("Get a list of all persisted features, with its gate values."),
 	)
 
@@ -25,7 +25,7 @@ func getFeaturesHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.
 }
 
 func registerGetFeaturesDefinitions(s *server.MCPServer) {
-	tool := mcp.NewTool("features_definitions",
+	tool := mcp.NewTool("get_features_definitions",
 		mcp.WithDescription("Get a list of all feature definitions."),
 	)
 

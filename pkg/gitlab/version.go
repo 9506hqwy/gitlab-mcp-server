@@ -8,7 +8,7 @@ import (
 )
 
 func registerGetVersion(s *server.MCPServer) {
-	tool := mcp.NewTool("version_",
+	tool := mcp.NewTool("get_version",
 		mcp.WithDescription("This feature was introduced in GitLab 8.13 and deprecated in 15.5. We recommend you instead use the Metadata API."),
 	)
 

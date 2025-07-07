@@ -11,7 +11,7 @@ import (
 )
 
 func registerGetJobsIdArtifacts(s *server.MCPServer) {
-	tool := mcp.NewTool("jobs_id_artifacts",
+	tool := mcp.NewTool("get_jobs_id_artifacts",
 		mcp.WithDescription("Download the artifacts file for job"),
 		mcp.WithNumber("id",
 			mcp.Description("Job's ID"),

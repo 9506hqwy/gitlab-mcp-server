@@ -13,7 +13,7 @@ import (
 )
 
 func registerGetMergeRequests(s *server.MCPServer) {
-	tool := mcp.NewTool("mrs_",
+	tool := mcp.NewTool("get_mrs",
 		mcp.WithDescription("Get all merge requests the authenticated user has access to. By default it returns only merge requests created by the current user. To get all merge requests, use parameter `scope=all`."),
 		mcp.WithNumber("author_id",
 			mcp.Description("Returns merge requests created by the given user `id`. Mutually exclusive with `author_username`. Combine with `scope=all` or `scope=assigned_to_me`."),

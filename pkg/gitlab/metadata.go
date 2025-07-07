@@ -8,7 +8,7 @@ import (
 )
 
 func registerGetMetadata(s *server.MCPServer) {
-	tool := mcp.NewTool("metadata_",
+	tool := mcp.NewTool("get_metadata",
 		mcp.WithDescription("This feature was introduced in GitLab 15.2."),
 	)
 

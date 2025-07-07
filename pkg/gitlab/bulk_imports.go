@@ -11,7 +11,7 @@ import (
 )
 
 func registerGetBulkImports(s *server.MCPServer) {
-	tool := mcp.NewTool("bulk_imports_",
+	tool := mcp.NewTool("get_bulk_imports",
 		mcp.WithDescription("This feature was introduced in GitLab 14.1."),
 		mcp.WithNumber("page",
 			mcp.Description("Current page number (example: 1) (default: 1)"),
@@ -75,7 +75,7 @@ func parseGetBulkImports(request mcp.CallToolRequest) client.GetApiV4BulkImports
 }
 
 func registerGetBulkImportsEntities(s *server.MCPServer) {
-	tool := mcp.NewTool("bulk_imports_entities",
+	tool := mcp.NewTool("get_bulk_imports_entities",
 		mcp.WithDescription("This feature was introduced in GitLab 14.1."),
 		mcp.WithNumber("page",
 			mcp.Description("Current page number (example: 1) (default: 1)"),
@@ -139,7 +139,7 @@ func parseGetBulkImportsEntities(request mcp.CallToolRequest) client.GetApiV4Bul
 }
 
 func registerGetBulkImportsImportId(s *server.MCPServer) {
-	tool := mcp.NewTool("bulk_imports_import_id",
+	tool := mcp.NewTool("get_bulk_imports_import_id",
 		mcp.WithDescription("This feature was introduced in GitLab 14.1."),
 		mcp.WithNumber("import_id",
 			mcp.Description("The ID of user's GitLab Migration"),
@@ -162,7 +162,7 @@ func getBulkImportsImportIdHandler(ctx context.Context, request mcp.CallToolRequ
 }
 
 func registerGetBulkImportsImportIdEntities(s *server.MCPServer) {
-	tool := mcp.NewTool("bulk_imports_import_id_entities",
+	tool := mcp.NewTool("get_bulk_imports_import_id_entities",
 		mcp.WithDescription("This feature was introduced in GitLab 14.1."),
 		mcp.WithNumber("import_id",
 			mcp.Description("The ID of user's GitLab Migration"),
@@ -220,7 +220,7 @@ func parseGetBulkImportsImportIdEntities(request mcp.CallToolRequest) client.Get
 }
 
 func registerGetBulkImportsImportIdEntitiesEntityId(s *server.MCPServer) {
-	tool := mcp.NewTool("bulk_imports_import_id_entities_entity_id",
+	tool := mcp.NewTool("get_bulk_imports_import_id_entities_entity_id",
 		mcp.WithDescription("This feature was introduced in GitLab 14.1."),
 		mcp.WithNumber("import_id",
 			mcp.Description("The ID of user's GitLab Migration"),
@@ -248,7 +248,7 @@ func getBulkImportsImportIdEntitiesEntityIdHandler(ctx context.Context, request 
 }
 
 func registerGetBulkImportsImportIdEntitiesEntityIdFailures(s *server.MCPServer) {
-	tool := mcp.NewTool("bulk_imports_import_id_entities_entity_id_failures",
+	tool := mcp.NewTool("get_bulk_imports_import_id_entities_entity_id_failures",
 		mcp.WithDescription("This feature was introduced in GitLab 16.6"),
 		mcp.WithNumber("import_id",
 			mcp.Description("The ID of user's GitLab Migration"),
