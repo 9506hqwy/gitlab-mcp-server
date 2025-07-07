@@ -90,6 +90,9 @@ func RegisterTools(s *server.MCPServer, readonly bool) {
 		registerPostGroupsIdMembersUserIdOverride(s)
 	}
 	if !readonly {
+		registerPutGroupsIdMembersMemberIdApprove(s)
+	}
+	if !readonly {
 		registerPostGroupsIdMembersApproveAll(s)
 	}
 	registerGetGroupsIdPendingMembers(s)
@@ -130,6 +133,9 @@ func RegisterTools(s *server.MCPServer, readonly bool) {
 	registerGetProjectsIdBadgesBadgeId(s)
 	registerGetProjectsIdRepositoryBranches(s)
 	registerGetProjectsIdRepositoryBranchesBranch(s)
+	if !readonly {
+		registerPutProjectsIdRepositoryBranchesBranchUnprotect(s)
+	}
 	registerGetProjectsIdJobsArtifactsRefNameDownload(s)
 	registerGetProjectsIdJobsJobIdArtifacts(s)
 	if !readonly {
@@ -205,7 +211,9 @@ func RegisterTools(s *server.MCPServer, readonly bool) {
 	// if !readonly { registerPostProjectsIdPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelPackagesConanPackageReferenceUploadUrls(s) }
 	// if !readonly { registerPostProjectsIdPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelUploadUrls(s) }
 	// registerGetProjectsIdPackagesConanV1FilesPackageNamePackageVersionPackageUsernamePackageChannelRecipeRevisionExportFileName(s)
+	// if !readonly { registerPutProjectsIdPackagesConanV1FilesPackageNamePackageVersionPackageUsernamePackageChannelRecipeRevisionExportFileNameAuthorize(s) }
 	// registerGetProjectsIdPackagesConanV1FilesPackageNamePackageVersionPackageUsernamePackageChannelRecipeRevisionPackageConanPackageReferencePackageRevisionFileName(s)
+	// if !readonly { registerPutProjectsIdPackagesConanV1FilesPackageNamePackageVersionPackageUsernamePackageChannelRecipeRevisionPackageConanPackageReferencePackageRevisionFileNameAuthorize(s) }
 	registerGetProjectsIdPackagesConanV2UsersAuthenticate(s)
 	// registerGetProjectsIdPackagesConanV2UsersCheckCredentials(s)
 	registerGetProjectsIdPackagesConanV2ConansSearch(s)
@@ -214,11 +222,13 @@ func RegisterTools(s *server.MCPServer, readonly bool) {
 	// registerGetProjectsIdPackagesConanV2ConansPackageNamePackageVersionPackageUsernamePackageChannelRevisions(s)
 	// registerGetProjectsIdPackagesConanV2ConansPackageNamePackageVersionPackageUsernamePackageChannelRevisionsRecipeRevisionFiles(s)
 	// registerGetProjectsIdPackagesConanV2ConansPackageNamePackageVersionPackageUsernamePackageChannelRevisionsRecipeRevisionFilesFileName(s)
+	// if !readonly { registerPutProjectsIdPackagesConanV2ConansPackageNamePackageVersionPackageUsernamePackageChannelRevisionsRecipeRevisionFilesFileNameAuthorize(s) }
 	// registerGetProjectsIdPackagesConanV2ConansPackageNamePackageVersionPackageUsernamePackageChannelRevisionsRecipeRevisionSearch(s)
 	// registerGetProjectsIdPackagesConanV2ConansPackageNamePackageVersionPackageUsernamePackageChannelRevisionsRecipeRevisionPackagesConanPackageReferenceLatest(s)
 	// registerGetProjectsIdPackagesConanV2ConansPackageNamePackageVersionPackageUsernamePackageChannelRevisionsRecipeRevisionPackagesConanPackageReferenceRevisions(s)
 	// registerGetProjectsIdPackagesConanV2ConansPackageNamePackageVersionPackageUsernamePackageChannelRevisionsRecipeRevisionPackagesConanPackageReferenceRevisionsPackageRevisionFiles(s)
 	// registerGetProjectsIdPackagesConanV2ConansPackageNamePackageVersionPackageUsernamePackageChannelRevisionsRecipeRevisionPackagesConanPackageReferenceRevisionsPackageRevisionFilesFileName(s)
+	// if !readonly { registerPutProjectsIdPackagesConanV2ConansPackageNamePackageVersionPackageUsernamePackageChannelRevisionsRecipeRevisionPackagesConanPackageReferenceRevisionsPackageRevisionFilesFileNameAuthorize(s) }
 	// registerGetProjectsIdPackagesDebianPoolDistributionLetterPackageNamePackageVersionFileName(s)
 	registerGetProjectsIdDeployKeys(s)
 	registerGetProjectsIdDeployKeysKeyId(s)
@@ -232,6 +242,7 @@ func RegisterTools(s *server.MCPServer, readonly bool) {
 	registerGetProjectsIdDeploymentsDeploymentIdMergeRequests(s)
 	registerGetProjectsIdMergeRequestsMergeRequestIidDraftNotes(s)
 	// registerGetProjectsIdMergeRequestsMergeRequestIidDraftNotesDraftNoteId(s)
+	// if !readonly { registerPutProjectsIdMergeRequestsMergeRequestIidDraftNotesDraftNoteIdPublish(s) }
 	// if !readonly { registerPostProjectsIdMergeRequestsMergeRequestIidDraftNotesBulkPublish(s) }
 	registerGetProjectsIdEnvironments(s)
 	registerGetProjectsIdEnvironmentsEnvironmentId(s)
@@ -274,6 +285,7 @@ func RegisterTools(s *server.MCPServer, readonly bool) {
 	if !readonly {
 		registerPostProjectsIdMergeRequestsMergeRequestIidUnapprove(s)
 	}
+	// if !readonly { registerPutProjectsIdMergeRequestsMergeRequestIidResetApprovals(s) }
 	// registerGetProjectsIdMergeRequestsMergeRequestIidApprovalState(s)
 	if !readonly {
 		registerPostProjectsIdCreateCiConfig(s)
@@ -303,10 +315,22 @@ func RegisterTools(s *server.MCPServer, readonly bool) {
 	registerGetProjectsIdPackagesNugetV2(s)
 	registerGetProjectsIdPackagesNugetV2Metadata(s)
 	registerGetProjectsIdPackagesNugetQuery(s)
+	if !readonly {
+		registerPutProjectsIdPackagesNugetAuthorize(s)
+	}
+	if !readonly {
+		registerPutProjectsIdPackagesNugetSymbolpackageAuthorize(s)
+	}
+	if !readonly {
+		registerPutProjectsIdPackagesNugetV2Authorize(s)
+	}
 	registerGetProjectsIdPackagesPackageIdPackageFiles(s)
 	registerGetProjectsIdPages(s)
 	registerGetProjectsIdPagesDomains(s)
 	registerGetProjectsIdPagesDomainsDomain(s)
+	if !readonly {
+		registerPutProjectsIdPagesDomainsDomainVerify(s)
+	}
 	registerGetProjectsIdAvatar(s)
 	registerGetProjectsIdClusters(s)
 	registerGetProjectsIdClustersClusterId(s)
@@ -502,7 +526,9 @@ func RegisterTools(s *server.MCPServer, readonly bool) {
 	// if !readonly { registerPostPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelPackagesConanPackageReferenceUploadUrls(s) }
 	// if !readonly { registerPostPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelUploadUrls(s) }
 	// registerGetPackagesConanV1FilesPackageNamePackageVersionPackageUsernamePackageChannelRecipeRevisionExportFileName(s)
+	// if !readonly { registerPutPackagesConanV1FilesPackageNamePackageVersionPackageUsernamePackageChannelRecipeRevisionExportFileNameAuthorize(s) }
 	// registerGetPackagesConanV1FilesPackageNamePackageVersionPackageUsernamePackageChannelRecipeRevisionPackageConanPackageReferencePackageRevisionFileName(s)
+	// if !readonly { registerPutPackagesConanV1FilesPackageNamePackageVersionPackageUsernamePackageChannelRecipeRevisionPackageConanPackageReferencePackageRevisionFileNameAuthorize(s) }
 	if !readonly {
 		registerPostPackagesNpmNpmV1SecurityAdvisoriesBulk(s)
 	}
@@ -586,7 +612,13 @@ func RegisterTools(s *server.MCPServer, readonly bool) {
 	}
 	registerGetProjectsIdIssues(s)
 	registerGetIssuesId(s)
+	if !readonly {
+		registerPutProjectsIdIssuesIssueIid(s)
+	}
 	registerGetProjectsIdIssuesIssueIid(s)
+	if !readonly {
+		registerPutProjectsIdIssuesIssueIidReorder(s)
+	}
 	if !readonly {
 		registerPostProjectsIdIssuesIssueIidClone(s)
 	}

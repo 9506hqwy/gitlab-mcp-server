@@ -440,6 +440,15 @@ do
         write-parser-func "Post" "${OP_PATH}" "${OP_QUERY}"
     fi
 
+    OP_QUERY=".paths.\"${OP_PATH}\".put"
+    OP_PUT=$(yq "${OP_QUERY}" "${TMP_DIR}/openapi.yml")
+    OP_REQ_BODY=$(yq "${OP_QUERY}.requestBody" "${TMP_DIR}/openapi.yml")
+    if [[ "$OP_PUT" != 'null' && "$OP_REQ_BODY" == 'null' ]]; then
+        write-register-func "Put" "${OP_PATH}" "${OP_QUERY}"
+        write-handler-func "Put" "${OP_PATH}" "${OP_QUERY}"
+        write-parser-func "Put" "${OP_PATH}" "${OP_QUERY}"
+    fi
+
     OP_QUERY=".paths.\"${OP_PATH}\".get"
     OP_GET=$(yq "${OP_QUERY}" "${TMP_DIR}/openapi.yml")
     if [[ "$OP_GET" != 'null' ]]; then
@@ -476,6 +485,17 @@ do
     if [[ "$OP_POST" != 'null' && "$OP_REQ_BODY" == 'null' ]]; then
         METHOD="Post"
         if [[ ${#TOOL_SNAME} -gt 41 ]]; then # post_XXX
+            echo "//if !readonly { register${METHOD}${API_NAME}(s) }" >> "${TOOLS_PATH}"
+        else
+            echo "if !readonly { register${METHOD}${API_NAME}(s) }" >> "${TOOLS_PATH}"
+        fi
+    fi
+
+    OP_PUT=$(yq ".paths.\"${OP_PATH}\".put" "${TMP_DIR}/openapi.yml")
+    OP_REQ_BODY=$(yq ".paths.\"${OP_PATH}\".put.requestBody" "${TMP_DIR}/openapi.yml")
+    if [[ "$OP_PUT" != 'null' && "$OP_REQ_BODY" == 'null' ]]; then
+        METHOD="Put"
+        if [[ ${#TOOL_SNAME} -gt 42 ]]; then # put_XXX
             echo "//if !readonly { register${METHOD}${API_NAME}(s) }" >> "${TOOLS_PATH}"
         else
             echo "if !readonly { register${METHOD}${API_NAME}(s) }" >> "${TOOLS_PATH}"

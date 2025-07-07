@@ -3549,6 +3549,34 @@ func postGroupsIdMembersUserIdOverrideHandler(ctx context.Context, request mcp.C
 	return toResult(c.PostApiV4GroupsIdMembersUserIdOverride(ctx, id, user_id, authorizationHeader))
 }
 
+func registerPutGroupsIdMembersMemberIdApprove(s *server.MCPServer) {
+	tool := mcp.NewTool("put_grps_id_members_member_id_approve",
+		mcp.WithDescription("Approves a pending member"),
+		mcp.WithString("id",
+			mcp.Description("The ID of a group"),
+			mcp.Required(),
+		),
+		mcp.WithNumber("member_id",
+			mcp.Description("The ID of the member requiring approval"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, putGroupsIdMembersMemberIdApproveHandler)
+}
+
+func putGroupsIdMembersMemberIdApproveHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := request.GetString("id", "")
+	member_id := int32(request.GetInt("member_id", math.MinInt))
+
+	return toResult(c.PutApiV4GroupsIdMembersMemberIdApprove(ctx, id, member_id, authorizationHeader))
+}
+
 func registerPostGroupsIdMembersApproveAll(s *server.MCPServer) {
 	tool := mcp.NewTool("post_grps_id_members_approve_all",
 		mcp.WithDescription("Approves all pending members"),

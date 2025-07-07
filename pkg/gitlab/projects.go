@@ -926,6 +926,34 @@ func getProjectsIdRepositoryBranchesBranchHandler(ctx context.Context, request m
 	return toResult(c.GetApiV4ProjectsIdRepositoryBranchesBranch(ctx, id, branch, authorizationHeader))
 }
 
+func registerPutProjectsIdRepositoryBranchesBranchUnprotect(s *server.MCPServer) {
+	tool := mcp.NewTool("put_pjs_id_repo_branches_branch_unprotect",
+		mcp.WithDescription("Unprotect a single branch"),
+		mcp.WithString("id",
+			mcp.Description("The ID or URL-encoded path of the project"),
+			mcp.Required(),
+		),
+		mcp.WithString("branch",
+			mcp.Description("The name of the branch"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, putProjectsIdRepositoryBranchesBranchUnprotectHandler)
+}
+
+func putProjectsIdRepositoryBranchesBranchUnprotectHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := request.GetString("id", "")
+	branch := request.GetString("branch", "")
+
+	return toResult(c.PutApiV4ProjectsIdRepositoryBranchesBranchUnprotect(ctx, id, branch, authorizationHeader))
+}
+
 func registerGetProjectsIdJobsArtifactsRefNameDownload(s *server.MCPServer) {
 	tool := mcp.NewTool("get_pjs_id_jobs_artifacts_ref_name_download",
 		mcp.WithDescription("This feature was introduced in GitLab 8.10"),
@@ -3765,6 +3793,60 @@ func getProjectsIdPackagesConanV1FilesPackageNamePackageVersionPackageUsernamePa
 	return toResult(c.GetApiV4ProjectsIdPackagesConanV1FilesPackageNamePackageVersionPackageUsernamePackageChannelRecipeRevisionExportFileName(ctx, id, package_name, package_version, package_username, package_channel, recipe_revision, file_name, authorizationHeader))
 }
 
+func registerPutProjectsIdPackagesConanV1FilesPackageNamePackageVersionPackageUsernamePackageChannelRecipeRevisionExportFileNameAuthorize(s *server.MCPServer) {
+	tool := mcp.NewTool("put_pjs_id_pkgs_conan_v1_files_package_name_package_version_package_username_package_channel_recipe_revision_export_file_name_authorize",
+		mcp.WithDescription("This feature was introduced in GitLab 12.6"),
+		mcp.WithString("id",
+			mcp.Description("The ID or URL-encoded path of the project"),
+			mcp.Required(),
+		),
+		mcp.WithString("package_name",
+			mcp.Description("Package name (example: my-package)"),
+			mcp.Required(),
+		),
+		mcp.WithString("package_version",
+			mcp.Description("Package version (example: 1.0)"),
+			mcp.Required(),
+		),
+		mcp.WithString("package_username",
+			mcp.Description("Package username (example: my-group+my-project)"),
+			mcp.Required(),
+		),
+		mcp.WithString("package_channel",
+			mcp.Description("Package channel (example: stable)"),
+			mcp.Required(),
+		),
+		mcp.WithString("recipe_revision",
+			mcp.Description("Conan Recipe Revision (example: 0)"),
+			mcp.Required(),
+		),
+		mcp.WithString("file_name",
+			mcp.Description("Package file name (example: conanfile.py)"),
+			mcp.Required(),
+			mcp.Enum("conanfile.py", "conanmanifest.txt", "conan_sources.tgz", "conan_export.tgz", "conaninfo.txt", "conan_package.tgz"),
+		),
+	)
+
+	s.AddTool(tool, putProjectsIdPackagesConanV1FilesPackageNamePackageVersionPackageUsernamePackageChannelRecipeRevisionExportFileNameAuthorizeHandler)
+}
+
+func putProjectsIdPackagesConanV1FilesPackageNamePackageVersionPackageUsernamePackageChannelRecipeRevisionExportFileNameAuthorizeHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := request.GetString("id", "")
+	package_name := request.GetString("package_name", "")
+	package_version := request.GetString("package_version", "")
+	package_username := request.GetString("package_username", "")
+	package_channel := request.GetString("package_channel", "")
+	recipe_revision := request.GetString("recipe_revision", "")
+	file_name := request.GetString("file_name", "")
+
+	return toResult(c.PutApiV4ProjectsIdPackagesConanV1FilesPackageNamePackageVersionPackageUsernamePackageChannelRecipeRevisionExportFileNameAuthorize(ctx, id, package_name, package_version, package_username, package_channel, recipe_revision, file_name, authorizationHeader))
+}
+
 func registerGetProjectsIdPackagesConanV1FilesPackageNamePackageVersionPackageUsernamePackageChannelRecipeRevisionPackageConanPackageReferencePackageRevisionFileName(s *server.MCPServer) {
 	tool := mcp.NewTool("get_pjs_id_pkgs_conan_v1_files_package_name_package_version_package_username_package_channel_recipe_revision_package_conan_package_reference_package_revision_file_name",
 		mcp.WithDescription("This feature was introduced in GitLab 12.5"),
@@ -3827,6 +3909,70 @@ func getProjectsIdPackagesConanV1FilesPackageNamePackageVersionPackageUsernamePa
 	file_name := request.GetString("file_name", "")
 
 	return toResult(c.GetApiV4ProjectsIdPackagesConanV1FilesPackageNamePackageVersionPackageUsernamePackageChannelRecipeRevisionPackageConanPackageReferencePackageRevisionFileName(ctx, id, package_name, package_version, package_username, package_channel, recipe_revision, conan_package_reference, package_revision, file_name, authorizationHeader))
+}
+
+func registerPutProjectsIdPackagesConanV1FilesPackageNamePackageVersionPackageUsernamePackageChannelRecipeRevisionPackageConanPackageReferencePackageRevisionFileNameAuthorize(s *server.MCPServer) {
+	tool := mcp.NewTool("put_pjs_id_pkgs_conan_v1_files_package_name_package_version_package_username_package_channel_recipe_revision_package_conan_package_reference_package_revision_file_name_authorize",
+		mcp.WithDescription("This feature was introduced in GitLab 12.6"),
+		mcp.WithString("id",
+			mcp.Description("The ID or URL-encoded path of the project"),
+			mcp.Required(),
+		),
+		mcp.WithString("package_name",
+			mcp.Description("Package name (example: my-package)"),
+			mcp.Required(),
+		),
+		mcp.WithString("package_version",
+			mcp.Description("Package version (example: 1.0)"),
+			mcp.Required(),
+		),
+		mcp.WithString("package_username",
+			mcp.Description("Package username (example: my-group+my-project)"),
+			mcp.Required(),
+		),
+		mcp.WithString("package_channel",
+			mcp.Description("Package channel (example: stable)"),
+			mcp.Required(),
+		),
+		mcp.WithString("recipe_revision",
+			mcp.Description("Conan Recipe Revision (example: 0)"),
+			mcp.Required(),
+		),
+		mcp.WithString("conan_package_reference",
+			mcp.Description("Conan Package ID (example: 103f6067a947f366ef91fc1b7da351c588d1827f)"),
+			mcp.Required(),
+		),
+		mcp.WithString("package_revision",
+			mcp.Description("Conan Package Revision (example: 0)"),
+			mcp.Required(),
+		),
+		mcp.WithString("file_name",
+			mcp.Description("Package file name (example: conaninfo.txt)"),
+			mcp.Required(),
+			mcp.Enum("conanfile.py", "conanmanifest.txt", "conan_sources.tgz", "conan_export.tgz", "conaninfo.txt", "conan_package.tgz"),
+		),
+	)
+
+	s.AddTool(tool, putProjectsIdPackagesConanV1FilesPackageNamePackageVersionPackageUsernamePackageChannelRecipeRevisionPackageConanPackageReferencePackageRevisionFileNameAuthorizeHandler)
+}
+
+func putProjectsIdPackagesConanV1FilesPackageNamePackageVersionPackageUsernamePackageChannelRecipeRevisionPackageConanPackageReferencePackageRevisionFileNameAuthorizeHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := request.GetString("id", "")
+	package_name := request.GetString("package_name", "")
+	package_version := request.GetString("package_version", "")
+	package_username := request.GetString("package_username", "")
+	package_channel := request.GetString("package_channel", "")
+	recipe_revision := request.GetString("recipe_revision", "")
+	conan_package_reference := request.GetString("conan_package_reference", "")
+	package_revision := request.GetString("package_revision", "")
+	file_name := request.GetString("file_name", "")
+
+	return toResult(c.PutApiV4ProjectsIdPackagesConanV1FilesPackageNamePackageVersionPackageUsernamePackageChannelRecipeRevisionPackageConanPackageReferencePackageRevisionFileNameAuthorize(ctx, id, package_name, package_version, package_username, package_channel, recipe_revision, conan_package_reference, package_revision, file_name, authorizationHeader))
 }
 
 func registerGetProjectsIdPackagesConanV2UsersAuthenticate(s *server.MCPServer) {
@@ -4145,6 +4291,60 @@ func getProjectsIdPackagesConanV2ConansPackageNamePackageVersionPackageUsernameP
 	return toResult(c.GetApiV4ProjectsIdPackagesConanV2ConansPackageNamePackageVersionPackageUsernamePackageChannelRevisionsRecipeRevisionFilesFileName(ctx, id, package_name, package_version, package_username, package_channel, recipe_revision, file_name, authorizationHeader))
 }
 
+func registerPutProjectsIdPackagesConanV2ConansPackageNamePackageVersionPackageUsernamePackageChannelRevisionsRecipeRevisionFilesFileNameAuthorize(s *server.MCPServer) {
+	tool := mcp.NewTool("put_pjs_id_pkgs_conan_v2_conans_package_name_package_version_package_username_package_channel_revisions_recipe_revision_files_file_name_authorize",
+		mcp.WithDescription("This feature was introduced in GitLab 17.10"),
+		mcp.WithString("id",
+			mcp.Description("The ID or URL-encoded path of the project"),
+			mcp.Required(),
+		),
+		mcp.WithString("package_name",
+			mcp.Description("Package name (example: my-package)"),
+			mcp.Required(),
+		),
+		mcp.WithString("package_version",
+			mcp.Description("Package version (example: 1.0)"),
+			mcp.Required(),
+		),
+		mcp.WithString("package_username",
+			mcp.Description("Package username (example: my-group+my-project)"),
+			mcp.Required(),
+		),
+		mcp.WithString("package_channel",
+			mcp.Description("Package channel (example: stable)"),
+			mcp.Required(),
+		),
+		mcp.WithString("recipe_revision",
+			mcp.Description("Recipe revision (example: df28fd816be3a119de5ce4d374436b25)"),
+			mcp.Required(),
+		),
+		mcp.WithString("file_name",
+			mcp.Description("Package file name (example: conanfile.py)"),
+			mcp.Required(),
+			mcp.Enum("conanfile.py", "conanmanifest.txt", "conan_sources.tgz", "conan_export.tgz", "conaninfo.txt", "conan_package.tgz"),
+		),
+	)
+
+	s.AddTool(tool, putProjectsIdPackagesConanV2ConansPackageNamePackageVersionPackageUsernamePackageChannelRevisionsRecipeRevisionFilesFileNameAuthorizeHandler)
+}
+
+func putProjectsIdPackagesConanV2ConansPackageNamePackageVersionPackageUsernamePackageChannelRevisionsRecipeRevisionFilesFileNameAuthorizeHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := request.GetString("id", "")
+	package_name := request.GetString("package_name", "")
+	package_version := request.GetString("package_version", "")
+	package_username := request.GetString("package_username", "")
+	package_channel := request.GetString("package_channel", "")
+	recipe_revision := request.GetString("recipe_revision", "")
+	file_name := request.GetString("file_name", "")
+
+	return toResult(c.PutApiV4ProjectsIdPackagesConanV2ConansPackageNamePackageVersionPackageUsernamePackageChannelRevisionsRecipeRevisionFilesFileNameAuthorize(ctx, id, package_name, package_version, package_username, package_channel, recipe_revision, file_name, authorizationHeader))
+}
+
 func registerGetProjectsIdPackagesConanV2ConansPackageNamePackageVersionPackageUsernamePackageChannelRevisionsRecipeRevisionSearch(s *server.MCPServer) {
 	tool := mcp.NewTool("get_pjs_id_pkgs_conan_v2_conans_package_name_package_version_package_username_package_channel_revisions_recipe_revision_search",
 		mcp.WithDescription("This feature was introduced in GitLab 18.1"),
@@ -4419,6 +4619,70 @@ func getProjectsIdPackagesConanV2ConansPackageNamePackageVersionPackageUsernameP
 	file_name := request.GetString("file_name", "")
 
 	return toResult(c.GetApiV4ProjectsIdPackagesConanV2ConansPackageNamePackageVersionPackageUsernamePackageChannelRevisionsRecipeRevisionPackagesConanPackageReferenceRevisionsPackageRevisionFilesFileName(ctx, id, package_name, package_version, package_username, package_channel, recipe_revision, conan_package_reference, package_revision, file_name, authorizationHeader))
+}
+
+func registerPutProjectsIdPackagesConanV2ConansPackageNamePackageVersionPackageUsernamePackageChannelRevisionsRecipeRevisionPackagesConanPackageReferenceRevisionsPackageRevisionFilesFileNameAuthorize(s *server.MCPServer) {
+	tool := mcp.NewTool("put_pjs_id_pkgs_conan_v2_conans_package_name_package_version_package_username_package_channel_revisions_recipe_revision_packages_conan_package_reference_revisions_package_revision_files_file_name_authorize",
+		mcp.WithDescription("This feature was introduced in GitLab 17.11"),
+		mcp.WithString("id",
+			mcp.Description("The ID or URL-encoded path of the project"),
+			mcp.Required(),
+		),
+		mcp.WithString("package_name",
+			mcp.Description("Package name (example: my-package)"),
+			mcp.Required(),
+		),
+		mcp.WithString("package_version",
+			mcp.Description("Package version (example: 1.0)"),
+			mcp.Required(),
+		),
+		mcp.WithString("package_username",
+			mcp.Description("Package username (example: my-group+my-project)"),
+			mcp.Required(),
+		),
+		mcp.WithString("package_channel",
+			mcp.Description("Package channel (example: stable)"),
+			mcp.Required(),
+		),
+		mcp.WithString("recipe_revision",
+			mcp.Description("Recipe revision (example: df28fd816be3a119de5ce4d374436b25)"),
+			mcp.Required(),
+		),
+		mcp.WithString("conan_package_reference",
+			mcp.Description("Package reference (example: 5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9)"),
+			mcp.Required(),
+		),
+		mcp.WithString("package_revision",
+			mcp.Description("Package revision (example: 3bdd2d8c8e76c876ebd1ac0469a4e72c)"),
+			mcp.Required(),
+		),
+		mcp.WithString("file_name",
+			mcp.Description("Package file name (example: conaninfo.txt)"),
+			mcp.Required(),
+			mcp.Enum("conanfile.py", "conanmanifest.txt", "conan_sources.tgz", "conan_export.tgz", "conaninfo.txt", "conan_package.tgz"),
+		),
+	)
+
+	s.AddTool(tool, putProjectsIdPackagesConanV2ConansPackageNamePackageVersionPackageUsernamePackageChannelRevisionsRecipeRevisionPackagesConanPackageReferenceRevisionsPackageRevisionFilesFileNameAuthorizeHandler)
+}
+
+func putProjectsIdPackagesConanV2ConansPackageNamePackageVersionPackageUsernamePackageChannelRevisionsRecipeRevisionPackagesConanPackageReferenceRevisionsPackageRevisionFilesFileNameAuthorizeHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := request.GetString("id", "")
+	package_name := request.GetString("package_name", "")
+	package_version := request.GetString("package_version", "")
+	package_username := request.GetString("package_username", "")
+	package_channel := request.GetString("package_channel", "")
+	recipe_revision := request.GetString("recipe_revision", "")
+	conan_package_reference := request.GetString("conan_package_reference", "")
+	package_revision := request.GetString("package_revision", "")
+	file_name := request.GetString("file_name", "")
+
+	return toResult(c.PutApiV4ProjectsIdPackagesConanV2ConansPackageNamePackageVersionPackageUsernamePackageChannelRevisionsRecipeRevisionPackagesConanPackageReferenceRevisionsPackageRevisionFilesFileNameAuthorize(ctx, id, package_name, package_version, package_username, package_channel, recipe_revision, conan_package_reference, package_revision, file_name, authorizationHeader))
 }
 
 func registerGetProjectsIdPackagesDebianPoolDistributionLetterPackageNamePackageVersionFileName(s *server.MCPServer) {
@@ -5294,6 +5558,39 @@ func getProjectsIdMergeRequestsMergeRequestIidDraftNotesDraftNoteIdHandler(ctx c
 	draft_note_id := int32(request.GetInt("draft_note_id", math.MinInt))
 
 	return toResult(c.GetApiV4ProjectsIdMergeRequestsMergeRequestIidDraftNotesDraftNoteId(ctx, id, merge_request_iid, draft_note_id, authorizationHeader))
+}
+
+func registerPutProjectsIdMergeRequestsMergeRequestIidDraftNotesDraftNoteIdPublish(s *server.MCPServer) {
+	tool := mcp.NewTool("put_pjs_id_mrs_merge_request_iid_draft_notes_draft_note_id_publish",
+		mcp.WithDescription("Publish a pending draft note"),
+		mcp.WithString("id",
+			mcp.Description("The ID of a project"),
+			mcp.Required(),
+		),
+		mcp.WithNumber("merge_request_iid",
+			mcp.Description("The ID of a merge request"),
+			mcp.Required(),
+		),
+		mcp.WithNumber("draft_note_id",
+			mcp.Description("The ID of a draft note"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, putProjectsIdMergeRequestsMergeRequestIidDraftNotesDraftNoteIdPublishHandler)
+}
+
+func putProjectsIdMergeRequestsMergeRequestIidDraftNotesDraftNoteIdPublishHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := request.GetString("id", "")
+	merge_request_iid := int32(request.GetInt("merge_request_iid", math.MinInt))
+	draft_note_id := int32(request.GetInt("draft_note_id", math.MinInt))
+
+	return toResult(c.PutApiV4ProjectsIdMergeRequestsMergeRequestIidDraftNotesDraftNoteIdPublish(ctx, id, merge_request_iid, draft_note_id, authorizationHeader))
 }
 
 func registerPostProjectsIdMergeRequestsMergeRequestIidDraftNotesBulkPublish(s *server.MCPServer) {
@@ -6712,6 +7009,34 @@ func postProjectsIdMergeRequestsMergeRequestIidUnapproveHandler(ctx context.Cont
 	return toResult(c.PostApiV4ProjectsIdMergeRequestsMergeRequestIidUnapprove(ctx, id, merge_request_iid, authorizationHeader))
 }
 
+func registerPutProjectsIdMergeRequestsMergeRequestIidResetApprovals(s *server.MCPServer) {
+	tool := mcp.NewTool("put_pjs_id_mrs_merge_request_iid_reset_approvals",
+		mcp.WithDescription("Clear all approvals of merge request. This feature was added in GitLab 15.4"),
+		mcp.WithNumber("id",
+			mcp.Description("null"),
+			mcp.Required(),
+		),
+		mcp.WithNumber("merge_request_iid",
+			mcp.Description("null"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, putProjectsIdMergeRequestsMergeRequestIidResetApprovalsHandler)
+}
+
+func putProjectsIdMergeRequestsMergeRequestIidResetApprovalsHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := int32(request.GetInt("id", math.MinInt))
+	merge_request_iid := int32(request.GetInt("merge_request_iid", math.MinInt))
+
+	return toResult(c.PutApiV4ProjectsIdMergeRequestsMergeRequestIidResetApprovals(ctx, id, merge_request_iid, authorizationHeader))
+}
+
 func registerGetProjectsIdMergeRequestsMergeRequestIidApprovalState(s *server.MCPServer) {
 	tool := mcp.NewTool("get_pjs_id_mrs_merge_request_iid_approval_state",
 		mcp.WithDescription("Get approval state of merge request"),
@@ -8088,6 +8413,75 @@ func parseGetProjectsIdPackagesNugetQuery(request mcp.CallToolRequest) client.Ge
 	return params
 }
 
+func registerPutProjectsIdPackagesNugetAuthorize(s *server.MCPServer) {
+	tool := mcp.NewTool("put_pjs_id_pkgs_nuget_authorize",
+		mcp.WithDescription("This feature was introduced in GitLab 14.1"),
+		mcp.WithString("id",
+			mcp.Description("The ID or URL-encoded path of the project"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, putProjectsIdPackagesNugetAuthorizeHandler)
+}
+
+func putProjectsIdPackagesNugetAuthorizeHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := request.GetString("id", "")
+
+	return toResult(c.PutApiV4ProjectsIdPackagesNugetAuthorize(ctx, id, authorizationHeader))
+}
+
+func registerPutProjectsIdPackagesNugetSymbolpackageAuthorize(s *server.MCPServer) {
+	tool := mcp.NewTool("put_pjs_id_pkgs_nuget_symbolpackage_authorize",
+		mcp.WithDescription("This feature was introduced in GitLab 14.1"),
+		mcp.WithString("id",
+			mcp.Description("The ID or URL-encoded path of the project"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, putProjectsIdPackagesNugetSymbolpackageAuthorizeHandler)
+}
+
+func putProjectsIdPackagesNugetSymbolpackageAuthorizeHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := request.GetString("id", "")
+
+	return toResult(c.PutApiV4ProjectsIdPackagesNugetSymbolpackageAuthorize(ctx, id, authorizationHeader))
+}
+
+func registerPutProjectsIdPackagesNugetV2Authorize(s *server.MCPServer) {
+	tool := mcp.NewTool("put_pjs_id_pkgs_nuget_v2_authorize",
+		mcp.WithDescription("This feature was introduced in GitLab 16.2"),
+		mcp.WithString("id",
+			mcp.Description("The ID or URL-encoded path of the project"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, putProjectsIdPackagesNugetV2AuthorizeHandler)
+}
+
+func putProjectsIdPackagesNugetV2AuthorizeHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := request.GetString("id", "")
+
+	return toResult(c.PutApiV4ProjectsIdPackagesNugetV2Authorize(ctx, id, authorizationHeader))
+}
+
 func registerGetProjectsIdPackagesPackageIdPackageFiles(s *server.MCPServer) {
 	tool := mcp.NewTool("get_pjs_id_pkgs_package_id_package_files",
 		mcp.WithDescription("Get a list of package files of a single package"),
@@ -8258,6 +8652,34 @@ func getProjectsIdPagesDomainsDomainHandler(ctx context.Context, request mcp.Cal
 	domain := request.GetString("domain", "")
 
 	return toResult(c.GetApiV4ProjectsIdPagesDomainsDomain(ctx, id, domain, authorizationHeader))
+}
+
+func registerPutProjectsIdPagesDomainsDomainVerify(s *server.MCPServer) {
+	tool := mcp.NewTool("put_pjs_id_pages_domains_domain_verify",
+		mcp.WithDescription("Verify a pages domain"),
+		mcp.WithString("id",
+			mcp.Description("The ID or URL-encoded path of the project owned by the authenticated user"),
+			mcp.Required(),
+		),
+		mcp.WithString("domain",
+			mcp.Description("The domain to verify"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, putProjectsIdPagesDomainsDomainVerifyHandler)
+}
+
+func putProjectsIdPagesDomainsDomainVerifyHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := request.GetString("id", "")
+	domain := request.GetString("domain", "")
+
+	return toResult(c.PutApiV4ProjectsIdPagesDomainsDomainVerify(ctx, id, domain, authorizationHeader))
 }
 
 func registerGetProjectsIdAvatar(s *server.MCPServer) {
@@ -13631,6 +14053,183 @@ func parseGetProjectsIdIssues(request mcp.CallToolRequest) client.GetApiV4Projec
 	return params
 }
 
+func registerPutProjectsIdIssuesIssueIid(s *server.MCPServer) {
+	tool := mcp.NewTool("put_pjs_id_issues_issue_iid",
+		mcp.WithDescription("Edit an issue"),
+		mcp.WithString("id",
+			mcp.Description("The global ID or URL-encoded path of the project."),
+			mcp.Required(),
+		),
+		mcp.WithNumber("issue_iid",
+			mcp.Description("The internal ID of a project's issue."),
+			mcp.Required(),
+		),
+		mcp.WithString("add_labels",
+			mcp.Description("Comma-separated label names to add to an issue. If a label does not already exist, this creates a new project label and assigns it to the issue."),
+		),
+		mcp.WithString("assignee_ids",
+			mcp.Description("The ID of the users to assign the issue to. Set to 0 or provide an empty value to unassign all assignees."),
+		),
+		mcp.WithBoolean("confidential",
+			mcp.Description("Updates an issue to be confidential."),
+		),
+		mcp.WithString("description",
+			mcp.Description("The description of an issue. Limited to 1,048,576 characters."),
+		),
+		mcp.WithBoolean("discussion_locked",
+			mcp.Description("Flag indicating if the issue's discussion is locked. If the discussion is locked only project members can add or edit comments."),
+		),
+		mcp.WithString("due_date",
+			mcp.Description("The due date. Date time string in the format YYYY-MM-DD, for example 2016-03-11."),
+		),
+		mcp.WithNumber("epic_id",
+			mcp.Description("ID of the epic to add the issue to. Valid values are greater than or equal to 0. Premium and Ultimate only."),
+		),
+		mcp.WithNumber("epic_iid",
+			mcp.Description("IID of the epic to add the issue to. Valid values are greater than or equal to 0. (deprecated, scheduled for removal in API version 5). Premium and Ultimate only."),
+		),
+		mcp.WithString("issue_type",
+			mcp.Description("Updates the type of issue. One of issue, incident, test_case or task."),
+		),
+		mcp.WithString("labels",
+			mcp.Description("Comma-separated label names for an issue. Set to an empty string to unassign all labels. If a label does not already exist, this creates a new project label and assigns it to the issue."),
+		),
+		mcp.WithNumber("milestone_id",
+			mcp.Description("The global ID of a milestone to assign the issue to. Set to 0 or provide an empty value to unassign a milestone."),
+		),
+		mcp.WithString("remove_labels",
+			mcp.Description("Comma-separated label names to remove from an issue."),
+		),
+		mcp.WithString("state_event",
+			mcp.Description("The state event of an issue. To close the issue, use close, and to reopen it, use reopen."),
+		),
+		mcp.WithString("title",
+			mcp.Description("The title of an issue."),
+		),
+		mcp.WithString("updated_at",
+			mcp.Description("When the issue was updated. Date time string, ISO 8601 formatted, for example 2016-03-11T03:45:40Z (requires administrator or project owner rights). Empty string or null values are not accepted."),
+		),
+		mcp.WithNumber("weight",
+			mcp.Description("The weight of the issue. Valid values are greater than or equal to 0. Premium and Ultimate only."),
+		),
+	)
+
+	s.AddTool(tool, putProjectsIdIssuesIssueIidHandler)
+}
+
+func putProjectsIdIssuesIssueIidHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := request.GetString("id", "")
+	issue_iid := request.GetInt("issue_iid", math.MinInt)
+	params := parsePutProjectsIdIssuesIssueIid(request)
+	return toResult(c.PutApiV4ProjectsIdIssuesIssueIid(ctx, id, issue_iid, &params, authorizationHeader))
+}
+
+func parsePutProjectsIdIssuesIssueIid(request mcp.CallToolRequest) client.PutApiV4ProjectsIdIssuesIssueIidParams {
+	params := client.PutApiV4ProjectsIdIssuesIssueIidParams{}
+
+	add_labels := request.GetString("add_labels", "")
+	if add_labels != "" {
+
+		params.AddLabels = &add_labels
+	}
+
+	assignee_ids := request.GetString("assignee_ids", "")
+	if assignee_ids != "" {
+		assignee_ids := strings.Split(assignee_ids, ",")
+		var intSlice []int
+		for _, v := range assignee_ids {
+			intValue, _ := strconv.Atoi(v)
+			intSlice = append(intSlice, intValue)
+		}
+		params.AssigneeIds = &intSlice
+	}
+
+	confidential := request.GetBool("confidential", false)
+	params.Confidential = &confidential
+
+	description := request.GetString("description", "")
+	if description != "" {
+
+		params.Description = &description
+	}
+
+	discussion_locked := request.GetBool("discussion_locked", false)
+	params.DiscussionLocked = &discussion_locked
+
+	due_date := request.GetString("due_date", "")
+	if due_date != "" {
+
+		params.DueDate = &due_date
+	}
+
+	epic_id := request.GetInt("epic_id", math.MinInt)
+	if epic_id != math.MinInt {
+
+		params.EpicId = &epic_id
+	}
+
+	epic_iid := request.GetInt("epic_iid", math.MinInt)
+	if epic_iid != math.MinInt {
+
+		params.EpicIid = &epic_iid
+	}
+
+	issue_type := request.GetString("issue_type", "")
+	if issue_type != "" {
+
+		params.IssueType = &issue_type
+	}
+
+	labels := request.GetString("labels", "")
+	if labels != "" {
+
+		params.Labels = &labels
+	}
+
+	milestone_id := request.GetInt("milestone_id", math.MinInt)
+	if milestone_id != math.MinInt {
+
+		params.MilestoneId = &milestone_id
+	}
+
+	remove_labels := request.GetString("remove_labels", "")
+	if remove_labels != "" {
+
+		params.RemoveLabels = &remove_labels
+	}
+
+	state_event := request.GetString("state_event", "")
+	if state_event != "" {
+
+		params.StateEvent = &state_event
+	}
+
+	title := request.GetString("title", "")
+	if title != "" {
+
+		params.Title = &title
+	}
+
+	updated_at := request.GetString("updated_at", "")
+	if updated_at != "" {
+
+		params.UpdatedAt = &updated_at
+	}
+
+	weight := request.GetInt("weight", math.MinInt)
+	if weight != math.MinInt {
+
+		params.Weight = &weight
+	}
+
+	return params
+}
+
 func registerGetProjectsIdIssuesIssueIid(s *server.MCPServer) {
 	tool := mcp.NewTool("get_pjs_id_issues_issue_iid",
 		mcp.WithDescription("Single project issue"),
@@ -13657,6 +14256,58 @@ func getProjectsIdIssuesIssueIidHandler(ctx context.Context, request mcp.CallToo
 	issue_iid := request.GetInt("issue_iid", math.MinInt)
 
 	return toResult(c.GetApiV4ProjectsIdIssuesIssueIid(ctx, id, issue_iid, authorizationHeader))
+}
+
+func registerPutProjectsIdIssuesIssueIidReorder(s *server.MCPServer) {
+	tool := mcp.NewTool("put_pjs_id_issues_issue_iid_reorder",
+		mcp.WithDescription("Reorder an issue"),
+		mcp.WithString("id",
+			mcp.Description("The global ID or URL-encoded path of the project."),
+			mcp.Required(),
+		),
+		mcp.WithNumber("issue_iid",
+			mcp.Description("The internal ID of the project's issue."),
+			mcp.Required(),
+		),
+		mcp.WithNumber("move_after_id",
+			mcp.Description("The global ID of a project's issue that should be placed after this issue."),
+		),
+		mcp.WithNumber("move_before_id",
+			mcp.Description("The global ID of a project's issue that should be placed before this issue."),
+		),
+	)
+
+	s.AddTool(tool, putProjectsIdIssuesIssueIidReorderHandler)
+}
+
+func putProjectsIdIssuesIssueIidReorderHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := request.GetString("id", "")
+	issue_iid := request.GetInt("issue_iid", math.MinInt)
+	params := parsePutProjectsIdIssuesIssueIidReorder(request)
+	return toResult(c.PutApiV4ProjectsIdIssuesIssueIidReorder(ctx, id, issue_iid, &params, authorizationHeader))
+}
+
+func parsePutProjectsIdIssuesIssueIidReorder(request mcp.CallToolRequest) client.PutApiV4ProjectsIdIssuesIssueIidReorderParams {
+	params := client.PutApiV4ProjectsIdIssuesIssueIidReorderParams{}
+
+	move_after_id := request.GetInt("move_after_id", math.MinInt)
+	if move_after_id != math.MinInt {
+
+		params.MoveAfterId = &move_after_id
+	}
+
+	move_before_id := request.GetInt("move_before_id", math.MinInt)
+	if move_before_id != math.MinInt {
+
+		params.MoveBeforeId = &move_before_id
+	}
+
+	return params
 }
 
 func registerPostProjectsIdIssuesIssueIidClone(s *server.MCPServer) {

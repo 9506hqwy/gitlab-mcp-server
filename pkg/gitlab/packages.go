@@ -505,6 +505,55 @@ func getPackagesConanV1FilesPackageNamePackageVersionPackageUsernamePackageChann
 	return toResult(c.GetApiV4PackagesConanV1FilesPackageNamePackageVersionPackageUsernamePackageChannelRecipeRevisionExportFileName(ctx, package_name, package_version, package_username, package_channel, recipe_revision, file_name, authorizationHeader))
 }
 
+func registerPutPackagesConanV1FilesPackageNamePackageVersionPackageUsernamePackageChannelRecipeRevisionExportFileNameAuthorize(s *server.MCPServer) {
+	tool := mcp.NewTool("put_pkgs_conan_v1_files_package_name_package_version_package_username_package_channel_recipe_revision_export_file_name_authorize",
+		mcp.WithDescription("This feature was introduced in GitLab 12.6"),
+		mcp.WithString("package_name",
+			mcp.Description("Package name (example: my-package)"),
+			mcp.Required(),
+		),
+		mcp.WithString("package_version",
+			mcp.Description("Package version (example: 1.0)"),
+			mcp.Required(),
+		),
+		mcp.WithString("package_username",
+			mcp.Description("Package username (example: my-group+my-project)"),
+			mcp.Required(),
+		),
+		mcp.WithString("package_channel",
+			mcp.Description("Package channel (example: stable)"),
+			mcp.Required(),
+		),
+		mcp.WithString("recipe_revision",
+			mcp.Description("Conan Recipe Revision (example: 0)"),
+			mcp.Required(),
+		),
+		mcp.WithString("file_name",
+			mcp.Description("Package file name (example: conanfile.py)"),
+			mcp.Required(),
+			mcp.Enum("conanfile.py", "conanmanifest.txt", "conan_sources.tgz", "conan_export.tgz", "conaninfo.txt", "conan_package.tgz"),
+		),
+	)
+
+	s.AddTool(tool, putPackagesConanV1FilesPackageNamePackageVersionPackageUsernamePackageChannelRecipeRevisionExportFileNameAuthorizeHandler)
+}
+
+func putPackagesConanV1FilesPackageNamePackageVersionPackageUsernamePackageChannelRecipeRevisionExportFileNameAuthorizeHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	package_name := request.GetString("package_name", "")
+	package_version := request.GetString("package_version", "")
+	package_username := request.GetString("package_username", "")
+	package_channel := request.GetString("package_channel", "")
+	recipe_revision := request.GetString("recipe_revision", "")
+	file_name := request.GetString("file_name", "")
+
+	return toResult(c.PutApiV4PackagesConanV1FilesPackageNamePackageVersionPackageUsernamePackageChannelRecipeRevisionExportFileNameAuthorize(ctx, package_name, package_version, package_username, package_channel, recipe_revision, file_name, authorizationHeader))
+}
+
 func registerGetPackagesConanV1FilesPackageNamePackageVersionPackageUsernamePackageChannelRecipeRevisionPackageConanPackageReferencePackageRevisionFileName(s *server.MCPServer) {
 	tool := mcp.NewTool("get_pkgs_conan_v1_files_package_name_package_version_package_username_package_channel_recipe_revision_package_conan_package_reference_package_revision_file_name",
 		mcp.WithDescription("This feature was introduced in GitLab 12.5"),
@@ -562,6 +611,65 @@ func getPackagesConanV1FilesPackageNamePackageVersionPackageUsernamePackageChann
 	file_name := request.GetString("file_name", "")
 
 	return toResult(c.GetApiV4PackagesConanV1FilesPackageNamePackageVersionPackageUsernamePackageChannelRecipeRevisionPackageConanPackageReferencePackageRevisionFileName(ctx, package_name, package_version, package_username, package_channel, recipe_revision, conan_package_reference, package_revision, file_name, authorizationHeader))
+}
+
+func registerPutPackagesConanV1FilesPackageNamePackageVersionPackageUsernamePackageChannelRecipeRevisionPackageConanPackageReferencePackageRevisionFileNameAuthorize(s *server.MCPServer) {
+	tool := mcp.NewTool("put_pkgs_conan_v1_files_package_name_package_version_package_username_package_channel_recipe_revision_package_conan_package_reference_package_revision_file_name_authorize",
+		mcp.WithDescription("This feature was introduced in GitLab 12.6"),
+		mcp.WithString("package_name",
+			mcp.Description("Package name (example: my-package)"),
+			mcp.Required(),
+		),
+		mcp.WithString("package_version",
+			mcp.Description("Package version (example: 1.0)"),
+			mcp.Required(),
+		),
+		mcp.WithString("package_username",
+			mcp.Description("Package username (example: my-group+my-project)"),
+			mcp.Required(),
+		),
+		mcp.WithString("package_channel",
+			mcp.Description("Package channel (example: stable)"),
+			mcp.Required(),
+		),
+		mcp.WithString("recipe_revision",
+			mcp.Description("Conan Recipe Revision (example: 0)"),
+			mcp.Required(),
+		),
+		mcp.WithString("conan_package_reference",
+			mcp.Description("Conan Package ID (example: 103f6067a947f366ef91fc1b7da351c588d1827f)"),
+			mcp.Required(),
+		),
+		mcp.WithString("package_revision",
+			mcp.Description("Conan Package Revision (example: 0)"),
+			mcp.Required(),
+		),
+		mcp.WithString("file_name",
+			mcp.Description("Package file name (example: conaninfo.txt)"),
+			mcp.Required(),
+			mcp.Enum("conanfile.py", "conanmanifest.txt", "conan_sources.tgz", "conan_export.tgz", "conaninfo.txt", "conan_package.tgz"),
+		),
+	)
+
+	s.AddTool(tool, putPackagesConanV1FilesPackageNamePackageVersionPackageUsernamePackageChannelRecipeRevisionPackageConanPackageReferencePackageRevisionFileNameAuthorizeHandler)
+}
+
+func putPackagesConanV1FilesPackageNamePackageVersionPackageUsernamePackageChannelRecipeRevisionPackageConanPackageReferencePackageRevisionFileNameAuthorizeHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	package_name := request.GetString("package_name", "")
+	package_version := request.GetString("package_version", "")
+	package_username := request.GetString("package_username", "")
+	package_channel := request.GetString("package_channel", "")
+	recipe_revision := request.GetString("recipe_revision", "")
+	conan_package_reference := request.GetString("conan_package_reference", "")
+	package_revision := request.GetString("package_revision", "")
+	file_name := request.GetString("file_name", "")
+
+	return toResult(c.PutApiV4PackagesConanV1FilesPackageNamePackageVersionPackageUsernamePackageChannelRecipeRevisionPackageConanPackageReferencePackageRevisionFileNameAuthorize(ctx, package_name, package_version, package_username, package_channel, recipe_revision, conan_package_reference, package_revision, file_name, authorizationHeader))
 }
 
 func registerPostPackagesNpmNpmV1SecurityAdvisoriesBulk(s *server.MCPServer) {
