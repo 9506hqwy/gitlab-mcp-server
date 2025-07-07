@@ -84,6 +84,34 @@ func parseGetProjectsIdAccessRequests(request mcp.CallToolRequest) client.GetApi
 	return params
 }
 
+func registerDeleteProjectsIdAccessRequestsUserId(s *server.MCPServer) {
+	tool := mcp.NewTool("delete_pjs_id_access_requests_user_id",
+		mcp.WithDescription("This feature was introduced in GitLab 8.11."),
+		mcp.WithString("id",
+			mcp.Description("The ID or URL-encoded path of the project owned by the authenticated user"),
+			mcp.Required(),
+		),
+		mcp.WithNumber("user_id",
+			mcp.Description("The user ID of the access requester"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, deleteProjectsIdAccessRequestsUserIdHandler)
+}
+
+func deleteProjectsIdAccessRequestsUserIdHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := request.GetString("id", "")
+	user_id := int32(request.GetInt("user_id", math.MinInt))
+
+	return toResult(c.DeleteApiV4ProjectsIdAccessRequestsUserId(ctx, id, user_id, authorizationHeader))
+}
+
 func registerPostProjectsIdAlertManagementAlertsAlertIidMetricImagesAuthorize(s *server.MCPServer) {
 	tool := mcp.NewTool("post_pjs_id_alert_management_alerts_alert_iid_metric_images_authorize",
 		mcp.WithDescription("Workhorse authorize metric image file upload"),
@@ -140,6 +168,39 @@ func getProjectsIdAlertManagementAlertsAlertIidMetricImagesHandler(ctx context.C
 	return toResult(c.GetApiV4ProjectsIdAlertManagementAlertsAlertIidMetricImages(ctx, id, alert_iid, authorizationHeader))
 }
 
+func registerDeleteProjectsIdAlertManagementAlertsAlertIidMetricImagesMetricImageId(s *server.MCPServer) {
+	tool := mcp.NewTool("delete_pjs_id_alert_management_alerts_alert_iid_metric_images_metric_image_id",
+		mcp.WithDescription("Remove a metric image for an alert"),
+		mcp.WithString("id",
+			mcp.Description("The ID or URL-encoded path of the project (example: 17)"),
+			mcp.Required(),
+		),
+		mcp.WithNumber("alert_iid",
+			mcp.Description("The IID of the Alert (example: 23)"),
+			mcp.Required(),
+		),
+		mcp.WithNumber("metric_image_id",
+			mcp.Description("The ID of metric image (example: 42)"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, deleteProjectsIdAlertManagementAlertsAlertIidMetricImagesMetricImageIdHandler)
+}
+
+func deleteProjectsIdAlertManagementAlertsAlertIidMetricImagesMetricImageIdHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := request.GetString("id", "")
+	alert_iid := int32(request.GetInt("alert_iid", math.MinInt))
+	metric_image_id := int32(request.GetInt("metric_image_id", math.MinInt))
+
+	return toResult(c.DeleteApiV4ProjectsIdAlertManagementAlertsAlertIidMetricImagesMetricImageId(ctx, id, alert_iid, metric_image_id, authorizationHeader))
+}
+
 func registerGetProjectsIdIssuesIssueIidAwardEmoji(s *server.MCPServer) {
 	tool := mcp.NewTool("get_pjs_id_issues_issue_iid_award_emoji",
 		mcp.WithDescription("Get a list of all emoji reactions for a specified awardable. This feature was introduced in 8.9"),
@@ -190,6 +251,39 @@ func parseGetProjectsIdIssuesIssueIidAwardEmoji(request mcp.CallToolRequest) cli
 	}
 
 	return params
+}
+
+func registerDeleteProjectsIdIssuesIssueIidAwardEmojiAwardId(s *server.MCPServer) {
+	tool := mcp.NewTool("delete_pjs_id_issues_issue_iid_award_emoji_award_id",
+		mcp.WithDescription("Only an administrator or the author of the reaction can delete an emoji reaction. This feature was introduced in 8.9"),
+		mcp.WithNumber("award_id",
+			mcp.Description("ID of an emoji reaction."),
+			mcp.Required(),
+		),
+		mcp.WithNumber("id",
+			mcp.Description("null"),
+			mcp.Required(),
+		),
+		mcp.WithNumber("issue_iid",
+			mcp.Description("null"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, deleteProjectsIdIssuesIssueIidAwardEmojiAwardIdHandler)
+}
+
+func deleteProjectsIdIssuesIssueIidAwardEmojiAwardIdHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := int32(request.GetInt("id", math.MinInt))
+	issue_iid := int32(request.GetInt("issue_iid", math.MinInt))
+	award_id := int32(request.GetInt("award_id", math.MinInt))
+
+	return toResult(c.DeleteApiV4ProjectsIdIssuesIssueIidAwardEmojiAwardId(ctx, id, issue_iid, award_id, authorizationHeader))
 }
 
 func registerGetProjectsIdIssuesIssueIidAwardEmojiAwardId(s *server.MCPServer) {
@@ -282,6 +376,44 @@ func parseGetProjectsIdIssuesIssueIidNotesNoteIdAwardEmoji(request mcp.CallToolR
 	return params
 }
 
+func registerDeleteProjectsIdIssuesIssueIidNotesNoteIdAwardEmojiAwardId(s *server.MCPServer) {
+	tool := mcp.NewTool("delete_pjs_id_issues_issue_iid_notes_note_id_award_emoji_award_id",
+		mcp.WithDescription("Only an administrator or the author of the reaction can delete an emoji reaction. This feature was introduced in 8.9"),
+		mcp.WithNumber("award_id",
+			mcp.Description("ID of an emoji reaction."),
+			mcp.Required(),
+		),
+		mcp.WithNumber("id",
+			mcp.Description("null"),
+			mcp.Required(),
+		),
+		mcp.WithNumber("issue_iid",
+			mcp.Description("null"),
+			mcp.Required(),
+		),
+		mcp.WithNumber("note_id",
+			mcp.Description("null"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, deleteProjectsIdIssuesIssueIidNotesNoteIdAwardEmojiAwardIdHandler)
+}
+
+func deleteProjectsIdIssuesIssueIidNotesNoteIdAwardEmojiAwardIdHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := int32(request.GetInt("id", math.MinInt))
+	issue_iid := int32(request.GetInt("issue_iid", math.MinInt))
+	note_id := int32(request.GetInt("note_id", math.MinInt))
+	award_id := int32(request.GetInt("award_id", math.MinInt))
+
+	return toResult(c.DeleteApiV4ProjectsIdIssuesIssueIidNotesNoteIdAwardEmojiAwardId(ctx, id, issue_iid, note_id, award_id, authorizationHeader))
+}
+
 func registerGetProjectsIdIssuesIssueIidNotesNoteIdAwardEmojiAwardId(s *server.MCPServer) {
 	tool := mcp.NewTool("get_pjs_id_issues_issue_iid_notes_note_id_award_emoji_award_id",
 		mcp.WithDescription("Get a single emoji reaction from an issue, snippet, or merge request. This feature was introduced in 8.9"),
@@ -370,6 +502,39 @@ func parseGetProjectsIdMergeRequestsMergeRequestIidAwardEmoji(request mcp.CallTo
 	}
 
 	return params
+}
+
+func registerDeleteProjectsIdMergeRequestsMergeRequestIidAwardEmojiAwardId(s *server.MCPServer) {
+	tool := mcp.NewTool("delete_pjs_id_mrs_merge_request_iid_award_emoji_award_id",
+		mcp.WithDescription("Only an administrator or the author of the reaction can delete an emoji reaction. This feature was introduced in 8.9"),
+		mcp.WithNumber("award_id",
+			mcp.Description("ID of an emoji reaction."),
+			mcp.Required(),
+		),
+		mcp.WithNumber("id",
+			mcp.Description("null"),
+			mcp.Required(),
+		),
+		mcp.WithNumber("merge_request_iid",
+			mcp.Description("null"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, deleteProjectsIdMergeRequestsMergeRequestIidAwardEmojiAwardIdHandler)
+}
+
+func deleteProjectsIdMergeRequestsMergeRequestIidAwardEmojiAwardIdHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := int32(request.GetInt("id", math.MinInt))
+	merge_request_iid := int32(request.GetInt("merge_request_iid", math.MinInt))
+	award_id := int32(request.GetInt("award_id", math.MinInt))
+
+	return toResult(c.DeleteApiV4ProjectsIdMergeRequestsMergeRequestIidAwardEmojiAwardId(ctx, id, merge_request_iid, award_id, authorizationHeader))
 }
 
 func registerGetProjectsIdMergeRequestsMergeRequestIidAwardEmojiAwardId(s *server.MCPServer) {
@@ -462,6 +627,44 @@ func parseGetProjectsIdMergeRequestsMergeRequestIidNotesNoteIdAwardEmoji(request
 	return params
 }
 
+func registerDeleteProjectsIdMergeRequestsMergeRequestIidNotesNoteIdAwardEmojiAwardId(s *server.MCPServer) {
+	tool := mcp.NewTool("delete_pjs_id_mrs_merge_request_iid_notes_note_id_award_emoji_award_id",
+		mcp.WithDescription("Only an administrator or the author of the reaction can delete an emoji reaction. This feature was introduced in 8.9"),
+		mcp.WithNumber("award_id",
+			mcp.Description("ID of an emoji reaction."),
+			mcp.Required(),
+		),
+		mcp.WithNumber("id",
+			mcp.Description("null"),
+			mcp.Required(),
+		),
+		mcp.WithNumber("merge_request_iid",
+			mcp.Description("null"),
+			mcp.Required(),
+		),
+		mcp.WithNumber("note_id",
+			mcp.Description("null"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, deleteProjectsIdMergeRequestsMergeRequestIidNotesNoteIdAwardEmojiAwardIdHandler)
+}
+
+func deleteProjectsIdMergeRequestsMergeRequestIidNotesNoteIdAwardEmojiAwardIdHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := int32(request.GetInt("id", math.MinInt))
+	merge_request_iid := int32(request.GetInt("merge_request_iid", math.MinInt))
+	note_id := int32(request.GetInt("note_id", math.MinInt))
+	award_id := int32(request.GetInt("award_id", math.MinInt))
+
+	return toResult(c.DeleteApiV4ProjectsIdMergeRequestsMergeRequestIidNotesNoteIdAwardEmojiAwardId(ctx, id, merge_request_iid, note_id, award_id, authorizationHeader))
+}
+
 func registerGetProjectsIdMergeRequestsMergeRequestIidNotesNoteIdAwardEmojiAwardId(s *server.MCPServer) {
 	tool := mcp.NewTool("get_pjs_id_mrs_merge_request_iid_notes_note_id_award_emoji_award_id",
 		mcp.WithDescription("Get a single emoji reaction from an issue, snippet, or merge request. This feature was introduced in 8.9"),
@@ -552,6 +755,39 @@ func parseGetProjectsIdSnippetsSnippetIdAwardEmoji(request mcp.CallToolRequest) 
 	return params
 }
 
+func registerDeleteProjectsIdSnippetsSnippetIdAwardEmojiAwardId(s *server.MCPServer) {
+	tool := mcp.NewTool("delete_pjs_id_snippets_snippet_id_award_emoji_award_id",
+		mcp.WithDescription("Only an administrator or the author of the reaction can delete an emoji reaction. This feature was introduced in 8.9"),
+		mcp.WithNumber("award_id",
+			mcp.Description("ID of an emoji reaction."),
+			mcp.Required(),
+		),
+		mcp.WithNumber("id",
+			mcp.Description("null"),
+			mcp.Required(),
+		),
+		mcp.WithNumber("snippet_id",
+			mcp.Description("null"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, deleteProjectsIdSnippetsSnippetIdAwardEmojiAwardIdHandler)
+}
+
+func deleteProjectsIdSnippetsSnippetIdAwardEmojiAwardIdHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := int32(request.GetInt("id", math.MinInt))
+	snippet_id := int32(request.GetInt("snippet_id", math.MinInt))
+	award_id := int32(request.GetInt("award_id", math.MinInt))
+
+	return toResult(c.DeleteApiV4ProjectsIdSnippetsSnippetIdAwardEmojiAwardId(ctx, id, snippet_id, award_id, authorizationHeader))
+}
+
 func registerGetProjectsIdSnippetsSnippetIdAwardEmojiAwardId(s *server.MCPServer) {
 	tool := mcp.NewTool("get_pjs_id_snippets_snippet_id_award_emoji_award_id",
 		mcp.WithDescription("Get a single emoji reaction from an issue, snippet, or merge request. This feature was introduced in 8.9"),
@@ -640,6 +876,44 @@ func parseGetProjectsIdSnippetsSnippetIdNotesNoteIdAwardEmoji(request mcp.CallTo
 	}
 
 	return params
+}
+
+func registerDeleteProjectsIdSnippetsSnippetIdNotesNoteIdAwardEmojiAwardId(s *server.MCPServer) {
+	tool := mcp.NewTool("delete_pjs_id_snippets_snippet_id_notes_note_id_award_emoji_award_id",
+		mcp.WithDescription("Only an administrator or the author of the reaction can delete an emoji reaction. This feature was introduced in 8.9"),
+		mcp.WithNumber("award_id",
+			mcp.Description("ID of an emoji reaction."),
+			mcp.Required(),
+		),
+		mcp.WithNumber("id",
+			mcp.Description("null"),
+			mcp.Required(),
+		),
+		mcp.WithNumber("snippet_id",
+			mcp.Description("null"),
+			mcp.Required(),
+		),
+		mcp.WithNumber("note_id",
+			mcp.Description("null"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, deleteProjectsIdSnippetsSnippetIdNotesNoteIdAwardEmojiAwardIdHandler)
+}
+
+func deleteProjectsIdSnippetsSnippetIdNotesNoteIdAwardEmojiAwardIdHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := int32(request.GetInt("id", math.MinInt))
+	snippet_id := int32(request.GetInt("snippet_id", math.MinInt))
+	note_id := int32(request.GetInt("note_id", math.MinInt))
+	award_id := int32(request.GetInt("award_id", math.MinInt))
+
+	return toResult(c.DeleteApiV4ProjectsIdSnippetsSnippetIdNotesNoteIdAwardEmojiAwardId(ctx, id, snippet_id, note_id, award_id, authorizationHeader))
 }
 
 func registerGetProjectsIdSnippetsSnippetIdNotesNoteIdAwardEmojiAwardId(s *server.MCPServer) {
@@ -785,6 +1059,34 @@ func parseGetProjectsIdBadgesRender(request mcp.CallToolRequest) client.GetApiV4
 	return params
 }
 
+func registerDeleteProjectsIdBadgesBadgeId(s *server.MCPServer) {
+	tool := mcp.NewTool("delete_pjs_id_badges_badge_id",
+		mcp.WithDescription("This feature was introduced in GitLab 10.6."),
+		mcp.WithString("id",
+			mcp.Description("The ID or URL-encoded path of the project owned by the authenticated user."),
+			mcp.Required(),
+		),
+		mcp.WithNumber("badge_id",
+			mcp.Description("The badge ID"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, deleteProjectsIdBadgesBadgeIdHandler)
+}
+
+func deleteProjectsIdBadgesBadgeIdHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := request.GetString("id", "")
+	badge_id := int32(request.GetInt("badge_id", math.MinInt))
+
+	return toResult(c.DeleteApiV4ProjectsIdBadgesBadgeId(ctx, id, badge_id, authorizationHeader))
+}
+
 func registerGetProjectsIdBadgesBadgeId(s *server.MCPServer) {
 	tool := mcp.NewTool("get_pjs_id_badges_badge_id",
 		mcp.WithDescription("This feature was introduced in GitLab 10.6."),
@@ -898,6 +1200,34 @@ func parseGetProjectsIdRepositoryBranches(request mcp.CallToolRequest) client.Ge
 	return params
 }
 
+func registerDeleteProjectsIdRepositoryBranchesBranch(s *server.MCPServer) {
+	tool := mcp.NewTool("delete_pjs_id_repo_branches_branch",
+		mcp.WithDescription("Delete a branch"),
+		mcp.WithString("id",
+			mcp.Description("The ID or URL-encoded path of the project"),
+			mcp.Required(),
+		),
+		mcp.WithString("branch",
+			mcp.Description("The name of the branch"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, deleteProjectsIdRepositoryBranchesBranchHandler)
+}
+
+func deleteProjectsIdRepositoryBranchesBranchHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := request.GetString("id", "")
+	branch := request.GetString("branch", "")
+
+	return toResult(c.DeleteApiV4ProjectsIdRepositoryBranchesBranch(ctx, id, branch, authorizationHeader))
+}
+
 func registerGetProjectsIdRepositoryBranchesBranch(s *server.MCPServer) {
 	tool := mcp.NewTool("get_pjs_id_repo_branches_branch",
 		mcp.WithDescription("Get a single repository branch"),
@@ -954,6 +1284,29 @@ func putProjectsIdRepositoryBranchesBranchUnprotectHandler(ctx context.Context, 
 	return toResult(c.PutApiV4ProjectsIdRepositoryBranchesBranchUnprotect(ctx, id, branch, authorizationHeader))
 }
 
+func registerDeleteProjectsIdRepositoryMergedBranches(s *server.MCPServer) {
+	tool := mcp.NewTool("delete_pjs_id_repo_merged_branches",
+		mcp.WithDescription("Delete all merged branches"),
+		mcp.WithString("id",
+			mcp.Description("The ID or URL-encoded path of the project"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, deleteProjectsIdRepositoryMergedBranchesHandler)
+}
+
+func deleteProjectsIdRepositoryMergedBranchesHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := request.GetString("id", "")
+
+	return toResult(c.DeleteApiV4ProjectsIdRepositoryMergedBranches(ctx, id, authorizationHeader))
+}
+
 func registerGetProjectsIdJobsArtifactsRefNameDownload(s *server.MCPServer) {
 	tool := mcp.NewTool("get_pjs_id_jobs_artifacts_ref_name_download",
 		mcp.WithDescription("This feature was introduced in GitLab 8.10"),
@@ -1005,6 +1358,34 @@ func parseGetProjectsIdJobsArtifactsRefNameDownload(request mcp.CallToolRequest)
 	}
 
 	return params
+}
+
+func registerDeleteProjectsIdJobsJobIdArtifacts(s *server.MCPServer) {
+	tool := mcp.NewTool("delete_pjs_id_jobs_job_id_artifacts",
+		mcp.WithDescription("This feature was introduced in GitLab 11.9"),
+		mcp.WithString("id",
+			mcp.Description("The ID or URL-encoded path of the project"),
+			mcp.Required(),
+		),
+		mcp.WithNumber("job_id",
+			mcp.Description("The ID of a job"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, deleteProjectsIdJobsJobIdArtifactsHandler)
+}
+
+func deleteProjectsIdJobsJobIdArtifactsHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := request.GetString("id", "")
+	job_id := int32(request.GetInt("job_id", math.MinInt))
+
+	return toResult(c.DeleteApiV4ProjectsIdJobsJobIdArtifacts(ctx, id, job_id, authorizationHeader))
 }
 
 func registerGetProjectsIdJobsJobIdArtifacts(s *server.MCPServer) {
@@ -1076,6 +1457,29 @@ func postProjectsIdJobsJobIdArtifactsKeepHandler(ctx context.Context, request mc
 	job_id := int32(request.GetInt("job_id", math.MinInt))
 
 	return toResult(c.PostApiV4ProjectsIdJobsJobIdArtifactsKeep(ctx, id, job_id, authorizationHeader))
+}
+
+func registerDeleteProjectsIdArtifacts(s *server.MCPServer) {
+	tool := mcp.NewTool("delete_pjs_id_artifacts",
+		mcp.WithDescription("Expire the artifacts files from a project"),
+		mcp.WithString("id",
+			mcp.Description("The ID or URL-encoded path of the project"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, deleteProjectsIdArtifactsHandler)
+}
+
+func deleteProjectsIdArtifactsHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := request.GetString("id", "")
+
+	return toResult(c.DeleteApiV4ProjectsIdArtifacts(ctx, id, authorizationHeader))
 }
 
 func registerGetProjectsIdJobs(s *server.MCPServer) {
@@ -1477,6 +1881,34 @@ func parseGetProjectsIdRunners(request mcp.CallToolRequest) client.GetApiV4Proje
 	return params
 }
 
+func registerDeleteProjectsIdRunnersRunnerId(s *server.MCPServer) {
+	tool := mcp.NewTool("delete_pjs_id_runners_runner_id",
+		mcp.WithDescription("It is not possible to unassign a runner from the owner project. If so, an error is returned. Use the call to delete a runner instead."),
+		mcp.WithString("id",
+			mcp.Description("The ID or URL-encoded path of the project owned by the authenticated user"),
+			mcp.Required(),
+		),
+		mcp.WithNumber("runner_id",
+			mcp.Description("The ID of a runner"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, deleteProjectsIdRunnersRunnerIdHandler)
+}
+
+func deleteProjectsIdRunnersRunnerIdHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := request.GetString("id", "")
+	runner_id := int32(request.GetInt("runner_id", math.MinInt))
+
+	return toResult(c.DeleteApiV4ProjectsIdRunnersRunnerId(ctx, id, runner_id, authorizationHeader))
+}
+
 func registerPostProjectsIdRunnersResetRegistrationToken(s *server.MCPServer) {
 	tool := mcp.NewTool("post_pjs_id_runners_reset_registration_token",
 		mcp.WithDescription("Reset runner registration token"),
@@ -1545,6 +1977,34 @@ func parseGetProjectsIdSecureFiles(request mcp.CallToolRequest) client.GetApiV4P
 	}
 
 	return params
+}
+
+func registerDeleteProjectsIdSecureFilesSecureFileId(s *server.MCPServer) {
+	tool := mcp.NewTool("delete_pjs_id_secure_files_secure_file_id",
+		mcp.WithDescription("Remove a secure file"),
+		mcp.WithString("id",
+			mcp.Description("The ID or URL-encoded path of the project owned by the authenticated user"),
+			mcp.Required(),
+		),
+		mcp.WithNumber("secure_file_id",
+			mcp.Description("null"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, deleteProjectsIdSecureFilesSecureFileIdHandler)
+}
+
+func deleteProjectsIdSecureFilesSecureFileIdHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := request.GetString("id", "")
+	secure_file_id := int32(request.GetInt("secure_file_id", math.MinInt))
+
+	return toResult(c.DeleteApiV4ProjectsIdSecureFilesSecureFileId(ctx, id, secure_file_id, authorizationHeader))
 }
 
 func registerGetProjectsIdSecureFilesSecureFileId(s *server.MCPServer) {
@@ -1819,6 +2279,34 @@ func parseGetProjectsIdPipelinesLatest(request mcp.CallToolRequest) client.GetAp
 	}
 
 	return params
+}
+
+func registerDeleteProjectsIdPipelinesPipelineId(s *server.MCPServer) {
+	tool := mcp.NewTool("delete_pjs_id_pls_pipeline_id",
+		mcp.WithDescription("This feature was introduced in GitLab 11.6"),
+		mcp.WithString("id",
+			mcp.Description("The project ID or URL-encoded path (example: 11)"),
+			mcp.Required(),
+		),
+		mcp.WithNumber("pipeline_id",
+			mcp.Description("The pipeline ID (example: 18)"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, deleteProjectsIdPipelinesPipelineIdHandler)
+}
+
+func deleteProjectsIdPipelinesPipelineIdHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := request.GetString("id", "")
+	pipeline_id := int32(request.GetInt("pipeline_id", math.MinInt))
+
+	return toResult(c.DeleteApiV4ProjectsIdPipelinesPipelineId(ctx, id, pipeline_id, authorizationHeader))
 }
 
 func registerGetProjectsIdPipelinesPipelineId(s *server.MCPServer) {
@@ -2179,6 +2667,34 @@ func parseGetProjectsIdPipelineSchedules(request mcp.CallToolRequest) client.Get
 	return params
 }
 
+func registerDeleteProjectsIdPipelineSchedulesPipelineScheduleId(s *server.MCPServer) {
+	tool := mcp.NewTool("delete_pjs_id_pipeline_schedules_pipeline_schedule_id",
+		mcp.WithDescription("Delete a pipeline schedule"),
+		mcp.WithString("id",
+			mcp.Description("The ID or URL-encoded path of the project (example: 18)"),
+			mcp.Required(),
+		),
+		mcp.WithNumber("pipeline_schedule_id",
+			mcp.Description("The pipeline schedule id (example: 13)"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, deleteProjectsIdPipelineSchedulesPipelineScheduleIdHandler)
+}
+
+func deleteProjectsIdPipelineSchedulesPipelineScheduleIdHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := request.GetString("id", "")
+	pipeline_schedule_id := int32(request.GetInt("pipeline_schedule_id", math.MinInt))
+
+	return toResult(c.DeleteApiV4ProjectsIdPipelineSchedulesPipelineScheduleId(ctx, id, pipeline_schedule_id, authorizationHeader))
+}
+
 func registerGetProjectsIdPipelineSchedulesPipelineScheduleId(s *server.MCPServer) {
 	tool := mcp.NewTool("get_pjs_id_pipeline_schedules_pipeline_schedule_id",
 		mcp.WithDescription("Get a single pipeline schedule"),
@@ -2291,6 +2807,39 @@ func postProjectsIdPipelineSchedulesPipelineScheduleIdPlayHandler(ctx context.Co
 	return toResult(c.PostApiV4ProjectsIdPipelineSchedulesPipelineScheduleIdPlay(ctx, id, pipeline_schedule_id, authorizationHeader))
 }
 
+func registerDeleteProjectsIdPipelineSchedulesPipelineScheduleIdVariablesKey(s *server.MCPServer) {
+	tool := mcp.NewTool("delete_pjs_id_pipeline_schedules_pipeline_schedule_id_variables_key",
+		mcp.WithDescription("Delete a pipeline schedule variable"),
+		mcp.WithString("id",
+			mcp.Description("The ID or URL-encoded path of the project (example: 18)"),
+			mcp.Required(),
+		),
+		mcp.WithNumber("pipeline_schedule_id",
+			mcp.Description("The pipeline schedule id (example: 13)"),
+			mcp.Required(),
+		),
+		mcp.WithString("key",
+			mcp.Description("The key of the variable (example: NEW_VARIABLE)"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, deleteProjectsIdPipelineSchedulesPipelineScheduleIdVariablesKeyHandler)
+}
+
+func deleteProjectsIdPipelineSchedulesPipelineScheduleIdVariablesKeyHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := request.GetString("id", "")
+	pipeline_schedule_id := int32(request.GetInt("pipeline_schedule_id", math.MinInt))
+	key := request.GetString("key", "")
+
+	return toResult(c.DeleteApiV4ProjectsIdPipelineSchedulesPipelineScheduleIdVariablesKey(ctx, id, pipeline_schedule_id, key, authorizationHeader))
+}
+
 func registerGetProjectsIdTriggers(s *server.MCPServer) {
 	tool := mcp.NewTool("get_pjs_id_triggers",
 		mcp.WithDescription("Get trigger tokens list"),
@@ -2336,6 +2885,34 @@ func parseGetProjectsIdTriggers(request mcp.CallToolRequest) client.GetApiV4Proj
 	}
 
 	return params
+}
+
+func registerDeleteProjectsIdTriggersTriggerId(s *server.MCPServer) {
+	tool := mcp.NewTool("delete_pjs_id_triggers_trigger_id",
+		mcp.WithDescription("Delete a trigger token"),
+		mcp.WithString("id",
+			mcp.Description("The ID or URL-encoded path of the project (example: 18)"),
+			mcp.Required(),
+		),
+		mcp.WithNumber("trigger_id",
+			mcp.Description("The trigger token ID (example: 10)"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, deleteProjectsIdTriggersTriggerIdHandler)
+}
+
+func deleteProjectsIdTriggersTriggerIdHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := request.GetString("id", "")
+	trigger_id := int32(request.GetInt("trigger_id", math.MinInt))
+
+	return toResult(c.DeleteApiV4ProjectsIdTriggersTriggerId(ctx, id, trigger_id, authorizationHeader))
 }
 
 func registerGetProjectsIdTriggersTriggerId(s *server.MCPServer) {
@@ -2408,6 +2985,49 @@ func parseGetProjectsIdVariables(request mcp.CallToolRequest) client.GetApiV4Pro
 	if per_page != math.MinInt {
 		per_page := int32(per_page)
 		params.PerPage = &per_page
+	}
+
+	return params
+}
+
+func registerDeleteProjectsIdVariablesKey(s *server.MCPServer) {
+	tool := mcp.NewTool("delete_pjs_id_variables_key",
+		mcp.WithDescription("Delete an existing variable from a project"),
+		mcp.WithString("id",
+			mcp.Description("The ID of a project or URL-encoded NAMESPACE/PROJECT_NAME of the project owned by the authenticated user"),
+			mcp.Required(),
+		),
+		mcp.WithString("key",
+			mcp.Description("The key of a variable"),
+			mcp.Required(),
+		),
+		mcp.WithString("filter[environment_scope]",
+			mcp.Description("The environment scope of the variable"),
+		),
+	)
+
+	s.AddTool(tool, deleteProjectsIdVariablesKeyHandler)
+}
+
+func deleteProjectsIdVariablesKeyHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := request.GetString("id", "")
+	key := request.GetString("key", "")
+	params := parseDeleteProjectsIdVariablesKey(request)
+	return toResult(c.DeleteApiV4ProjectsIdVariablesKey(ctx, id, key, &params, authorizationHeader))
+}
+
+func parseDeleteProjectsIdVariablesKey(request mcp.CallToolRequest) client.DeleteApiV4ProjectsIdVariablesKeyParams {
+	params := client.DeleteApiV4ProjectsIdVariablesKeyParams{}
+
+	filter_environment_scope_ := request.GetString("filter[environment_scope]", "")
+	if filter_environment_scope_ != "" {
+
+		params.FilterEnvironmentScope = &filter_environment_scope_
 	}
 
 	return params
@@ -2508,6 +3128,39 @@ func parseGetProjectsIdClusterAgentsAgentIdTokens(request mcp.CallToolRequest) c
 	return params
 }
 
+func registerDeleteProjectsIdClusterAgentsAgentIdTokensTokenId(s *server.MCPServer) {
+	tool := mcp.NewTool("delete_pjs_id_cluster_agents_agent_id_tokens_token_id",
+		mcp.WithDescription("This feature was introduced in GitLab 15.0. Revokes an agent token."),
+		mcp.WithString("id",
+			mcp.Description("The ID or URL-encoded path of the project"),
+			mcp.Required(),
+		),
+		mcp.WithNumber("agent_id",
+			mcp.Description("The ID of an agent"),
+			mcp.Required(),
+		),
+		mcp.WithNumber("token_id",
+			mcp.Description("The ID of the agent token"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, deleteProjectsIdClusterAgentsAgentIdTokensTokenIdHandler)
+}
+
+func deleteProjectsIdClusterAgentsAgentIdTokensTokenIdHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := request.GetString("id", "")
+	agent_id := int32(request.GetInt("agent_id", math.MinInt))
+	token_id := int32(request.GetInt("token_id", math.MinInt))
+
+	return toResult(c.DeleteApiV4ProjectsIdClusterAgentsAgentIdTokensTokenId(ctx, id, agent_id, token_id, authorizationHeader))
+}
+
 func registerGetProjectsIdClusterAgentsAgentIdTokensTokenId(s *server.MCPServer) {
 	tool := mcp.NewTool("get_pjs_id_cluster_agents_agent_id_tokens_token_id",
 		mcp.WithDescription("This feature was introduced in GitLab 15.0. Gets a single agent token."),
@@ -2586,6 +3239,34 @@ func parseGetProjectsIdClusterAgents(request mcp.CallToolRequest) client.GetApiV
 	}
 
 	return params
+}
+
+func registerDeleteProjectsIdClusterAgentsAgentId(s *server.MCPServer) {
+	tool := mcp.NewTool("delete_pjs_id_cluster_agents_agent_id",
+		mcp.WithDescription("This feature was introduced in GitLab 14.10. Deletes an existing agent registration."),
+		mcp.WithString("id",
+			mcp.Description("The ID or URL-encoded path of the project"),
+			mcp.Required(),
+		),
+		mcp.WithNumber("agent_id",
+			mcp.Description("The ID of an agent"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, deleteProjectsIdClusterAgentsAgentIdHandler)
+}
+
+func deleteProjectsIdClusterAgentsAgentIdHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := request.GetString("id", "")
+	agent_id := int32(request.GetInt("agent_id", math.MinInt))
+
+	return toResult(c.DeleteApiV4ProjectsIdClusterAgentsAgentId(ctx, id, agent_id, authorizationHeader))
 }
 
 func registerGetProjectsIdClusterAgentsAgentId(s *server.MCPServer) {
@@ -3423,6 +4104,49 @@ func getProjectsIdPackagesConanV1ConansPackageNamePackageVersionPackageUsernameP
 	return toResult(c.GetApiV4ProjectsIdPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelPackagesConanPackageReference(ctx, id, package_name, package_version, package_username, package_channel, conan_package_reference, authorizationHeader))
 }
 
+func registerDeleteProjectsIdPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannel(s *server.MCPServer) {
+	tool := mcp.NewTool("delete_pjs_id_pkgs_conan_v1_conans_package_name_package_version_package_username_package_channel",
+		mcp.WithDescription("This feature was introduced in GitLab 12.5"),
+		mcp.WithString("id",
+			mcp.Description("The ID or URL-encoded path of the project"),
+			mcp.Required(),
+		),
+		mcp.WithString("package_name",
+			mcp.Description("Package name (example: my-package)"),
+			mcp.Required(),
+		),
+		mcp.WithString("package_version",
+			mcp.Description("Package version (example: 1.0)"),
+			mcp.Required(),
+		),
+		mcp.WithString("package_username",
+			mcp.Description("Package username (example: my-group+my-project)"),
+			mcp.Required(),
+		),
+		mcp.WithString("package_channel",
+			mcp.Description("Package channel (example: stable)"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, deleteProjectsIdPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelHandler)
+}
+
+func deleteProjectsIdPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := request.GetString("id", "")
+	package_name := request.GetString("package_name", "")
+	package_version := request.GetString("package_version", "")
+	package_username := request.GetString("package_username", "")
+	package_channel := request.GetString("package_channel", "")
+
+	return toResult(c.DeleteApiV4ProjectsIdPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannel(ctx, id, package_name, package_version, package_username, package_channel, authorizationHeader))
+}
+
 func registerGetProjectsIdPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannel(s *server.MCPServer) {
 	tool := mcp.NewTool("get_pjs_id_pkgs_conan_v1_conans_package_name_package_version_package_username_package_channel",
 		mcp.WithDescription("This feature was introduced in GitLab 12.5"),
@@ -4189,6 +4913,54 @@ func getProjectsIdPackagesConanV2ConansPackageNamePackageVersionPackageUsernameP
 	return toResult(c.GetApiV4ProjectsIdPackagesConanV2ConansPackageNamePackageVersionPackageUsernamePackageChannelRevisions(ctx, id, package_name, package_version, package_username, package_channel, authorizationHeader))
 }
 
+func registerDeleteProjectsIdPackagesConanV2ConansPackageNamePackageVersionPackageUsernamePackageChannelRevisionsRecipeRevision(s *server.MCPServer) {
+	tool := mcp.NewTool("delete_pjs_id_pkgs_conan_v2_conans_package_name_package_version_package_username_package_channel_revisions_recipe_revision",
+		mcp.WithDescription("This feature was introduced in GitLab 18.1"),
+		mcp.WithString("id",
+			mcp.Description("The ID or URL-encoded path of the project"),
+			mcp.Required(),
+		),
+		mcp.WithString("package_name",
+			mcp.Description("Package name (example: my-package)"),
+			mcp.Required(),
+		),
+		mcp.WithString("package_version",
+			mcp.Description("Package version (example: 1.0)"),
+			mcp.Required(),
+		),
+		mcp.WithString("package_username",
+			mcp.Description("Package username (example: my-group+my-project)"),
+			mcp.Required(),
+		),
+		mcp.WithString("package_channel",
+			mcp.Description("Package channel (example: stable)"),
+			mcp.Required(),
+		),
+		mcp.WithString("recipe_revision",
+			mcp.Description("Recipe revision (example: df28fd816be3a119de5ce4d374436b25)"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, deleteProjectsIdPackagesConanV2ConansPackageNamePackageVersionPackageUsernamePackageChannelRevisionsRecipeRevisionHandler)
+}
+
+func deleteProjectsIdPackagesConanV2ConansPackageNamePackageVersionPackageUsernamePackageChannelRevisionsRecipeRevisionHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := request.GetString("id", "")
+	package_name := request.GetString("package_name", "")
+	package_version := request.GetString("package_version", "")
+	package_username := request.GetString("package_username", "")
+	package_channel := request.GetString("package_channel", "")
+	recipe_revision := request.GetString("recipe_revision", "")
+
+	return toResult(c.DeleteApiV4ProjectsIdPackagesConanV2ConansPackageNamePackageVersionPackageUsernamePackageChannelRevisionsRecipeRevision(ctx, id, package_name, package_version, package_username, package_channel, recipe_revision, authorizationHeader))
+}
+
 func registerGetProjectsIdPackagesConanV2ConansPackageNamePackageVersionPackageUsernamePackageChannelRevisionsRecipeRevisionFiles(s *server.MCPServer) {
 	tool := mcp.NewTool("get_pjs_id_pkgs_conan_v2_conans_package_name_package_version_package_username_package_channel_revisions_recipe_revision_files",
 		mcp.WithDescription("This feature was introduced in GitLab 17.11"),
@@ -4499,6 +5271,64 @@ func getProjectsIdPackagesConanV2ConansPackageNamePackageVersionPackageUsernameP
 	return toResult(c.GetApiV4ProjectsIdPackagesConanV2ConansPackageNamePackageVersionPackageUsernamePackageChannelRevisionsRecipeRevisionPackagesConanPackageReferenceRevisions(ctx, id, package_name, package_version, package_username, package_channel, recipe_revision, conan_package_reference, authorizationHeader))
 }
 
+func registerDeleteProjectsIdPackagesConanV2ConansPackageNamePackageVersionPackageUsernamePackageChannelRevisionsRecipeRevisionPackagesConanPackageReferenceRevisionsPackageRevision(s *server.MCPServer) {
+	tool := mcp.NewTool("delete_pjs_id_pkgs_conan_v2_conans_package_name_package_version_package_username_package_channel_revisions_recipe_revision_packages_conan_package_reference_revisions_package_revision",
+		mcp.WithDescription("This feature was introduced in GitLab 18.1"),
+		mcp.WithString("id",
+			mcp.Description("The ID or URL-encoded path of the project"),
+			mcp.Required(),
+		),
+		mcp.WithString("package_name",
+			mcp.Description("Package name (example: my-package)"),
+			mcp.Required(),
+		),
+		mcp.WithString("package_version",
+			mcp.Description("Package version (example: 1.0)"),
+			mcp.Required(),
+		),
+		mcp.WithString("package_username",
+			mcp.Description("Package username (example: my-group+my-project)"),
+			mcp.Required(),
+		),
+		mcp.WithString("package_channel",
+			mcp.Description("Package channel (example: stable)"),
+			mcp.Required(),
+		),
+		mcp.WithString("recipe_revision",
+			mcp.Description("Recipe revision (example: df28fd816be3a119de5ce4d374436b25)"),
+			mcp.Required(),
+		),
+		mcp.WithString("conan_package_reference",
+			mcp.Description("Package reference (example: 5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9)"),
+			mcp.Required(),
+		),
+		mcp.WithString("package_revision",
+			mcp.Description("Package revision (example: 3bdd2d8c8e76c876ebd1ac0469a4e72c)"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, deleteProjectsIdPackagesConanV2ConansPackageNamePackageVersionPackageUsernamePackageChannelRevisionsRecipeRevisionPackagesConanPackageReferenceRevisionsPackageRevisionHandler)
+}
+
+func deleteProjectsIdPackagesConanV2ConansPackageNamePackageVersionPackageUsernamePackageChannelRevisionsRecipeRevisionPackagesConanPackageReferenceRevisionsPackageRevisionHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := request.GetString("id", "")
+	package_name := request.GetString("package_name", "")
+	package_version := request.GetString("package_version", "")
+	package_username := request.GetString("package_username", "")
+	package_channel := request.GetString("package_channel", "")
+	recipe_revision := request.GetString("recipe_revision", "")
+	conan_package_reference := request.GetString("conan_package_reference", "")
+	package_revision := request.GetString("package_revision", "")
+
+	return toResult(c.DeleteApiV4ProjectsIdPackagesConanV2ConansPackageNamePackageVersionPackageUsernamePackageChannelRevisionsRecipeRevisionPackagesConanPackageReferenceRevisionsPackageRevision(ctx, id, package_name, package_version, package_username, package_channel, recipe_revision, conan_package_reference, package_revision, authorizationHeader))
+}
+
 func registerGetProjectsIdPackagesConanV2ConansPackageNamePackageVersionPackageUsernamePackageChannelRevisionsRecipeRevisionPackagesConanPackageReferenceRevisionsPackageRevisionFiles(s *server.MCPServer) {
 	tool := mcp.NewTool("get_pjs_id_pkgs_conan_v2_conans_package_name_package_version_package_username_package_channel_revisions_recipe_revision_packages_conan_package_reference_revisions_package_revision_files",
 		mcp.WithDescription("This feature was introduced in GitLab 18.0"),
@@ -4780,6 +5610,34 @@ func parseGetProjectsIdDeployKeys(request mcp.CallToolRequest) client.GetApiV4Pr
 	return params
 }
 
+func registerDeleteProjectsIdDeployKeysKeyId(s *server.MCPServer) {
+	tool := mcp.NewTool("delete_pjs_id_deploy_keys_key_id",
+		mcp.WithDescription("Removes a deploy key from the project. If the deploy key is used only for this project, it's deleted from the system."),
+		mcp.WithString("id",
+			mcp.Description("The ID or URL-encoded path of the project owned by the authenticated user"),
+			mcp.Required(),
+		),
+		mcp.WithNumber("key_id",
+			mcp.Description("The ID of the deploy key"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, deleteProjectsIdDeployKeysKeyIdHandler)
+}
+
+func deleteProjectsIdDeployKeysKeyIdHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := request.GetString("id", "")
+	key_id := int32(request.GetInt("key_id", math.MinInt))
+
+	return toResult(c.DeleteApiV4ProjectsIdDeployKeysKeyId(ctx, id, key_id, authorizationHeader))
+}
+
 func registerGetProjectsIdDeployKeysKeyId(s *server.MCPServer) {
 	tool := mcp.NewTool("get_pjs_id_deploy_keys_key_id",
 		mcp.WithDescription("Get a single key."),
@@ -4887,6 +5745,34 @@ func parseGetProjectsIdDeployTokens(request mcp.CallToolRequest) client.GetApiV4
 	params.Active = &active
 
 	return params
+}
+
+func registerDeleteProjectsIdDeployTokensTokenId(s *server.MCPServer) {
+	tool := mcp.NewTool("delete_pjs_id_deploy_tokens_token_id",
+		mcp.WithDescription("This feature was introduced in GitLab 12.9."),
+		mcp.WithString("id",
+			mcp.Description("The ID or URL-encoded path of the project owned by the authenticated user"),
+			mcp.Required(),
+		),
+		mcp.WithNumber("token_id",
+			mcp.Description("The ID of the deploy token"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, deleteProjectsIdDeployTokensTokenIdHandler)
+}
+
+func deleteProjectsIdDeployTokensTokenIdHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := request.GetString("id", "")
+	token_id := int32(request.GetInt("token_id", math.MinInt))
+
+	return toResult(c.DeleteApiV4ProjectsIdDeployTokensTokenId(ctx, id, token_id, authorizationHeader))
 }
 
 func registerGetProjectsIdDeployTokensTokenId(s *server.MCPServer) {
@@ -5040,6 +5926,34 @@ func parseGetProjectsIdDeployments(request mcp.CallToolRequest) client.GetApiV4P
 	}
 
 	return params
+}
+
+func registerDeleteProjectsIdDeploymentsDeploymentId(s *server.MCPServer) {
+	tool := mcp.NewTool("delete_pjs_id_deployments_deployment_id",
+		mcp.WithDescription("Delete a specific deployment that is not currently the last deployment for an environment or in a running state. This feature was introduced in GitLab 15.3."),
+		mcp.WithString("id",
+			mcp.Description("The ID or URL-encoded path of the project owned by the authenticated user"),
+			mcp.Required(),
+		),
+		mcp.WithNumber("deployment_id",
+			mcp.Description("The ID of the deployment"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, deleteProjectsIdDeploymentsDeploymentIdHandler)
+}
+
+func deleteProjectsIdDeploymentsDeploymentIdHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := request.GetString("id", "")
+	deployment_id := int32(request.GetInt("deployment_id", math.MinInt))
+
+	return toResult(c.DeleteApiV4ProjectsIdDeploymentsDeploymentId(ctx, id, deployment_id, authorizationHeader))
 }
 
 func registerGetProjectsIdDeploymentsDeploymentId(s *server.MCPServer) {
@@ -5527,6 +6441,39 @@ func getProjectsIdMergeRequestsMergeRequestIidDraftNotesHandler(ctx context.Cont
 	return toResult(c.GetApiV4ProjectsIdMergeRequestsMergeRequestIidDraftNotes(ctx, id, merge_request_iid, authorizationHeader))
 }
 
+func registerDeleteProjectsIdMergeRequestsMergeRequestIidDraftNotesDraftNoteId(s *server.MCPServer) {
+	tool := mcp.NewTool("delete_pjs_id_mrs_merge_request_iid_draft_notes_draft_note_id",
+		mcp.WithDescription("Delete a draft note"),
+		mcp.WithString("id",
+			mcp.Description("The ID of a project"),
+			mcp.Required(),
+		),
+		mcp.WithNumber("merge_request_iid",
+			mcp.Description("The ID of a merge request"),
+			mcp.Required(),
+		),
+		mcp.WithNumber("draft_note_id",
+			mcp.Description("The ID of a draft note"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, deleteProjectsIdMergeRequestsMergeRequestIidDraftNotesDraftNoteIdHandler)
+}
+
+func deleteProjectsIdMergeRequestsMergeRequestIidDraftNotesDraftNoteIdHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := request.GetString("id", "")
+	merge_request_iid := int32(request.GetInt("merge_request_iid", math.MinInt))
+	draft_note_id := int32(request.GetInt("draft_note_id", math.MinInt))
+
+	return toResult(c.DeleteApiV4ProjectsIdMergeRequestsMergeRequestIidDraftNotesDraftNoteId(ctx, id, merge_request_iid, draft_note_id, authorizationHeader))
+}
+
 func registerGetProjectsIdMergeRequestsMergeRequestIidDraftNotesDraftNoteId(s *server.MCPServer) {
 	tool := mcp.NewTool("get_pjs_id_mrs_merge_request_iid_draft_notes_draft_note_id",
 		mcp.WithDescription("Get a single draft note"),
@@ -5697,6 +6644,34 @@ func parseGetProjectsIdEnvironments(request mcp.CallToolRequest) client.GetApiV4
 	return params
 }
 
+func registerDeleteProjectsIdEnvironmentsEnvironmentId(s *server.MCPServer) {
+	tool := mcp.NewTool("delete_pjs_id_environments_environment_id",
+		mcp.WithDescription("It returns 204 if the environment was successfully deleted, and 404 if the environment does not exist. This feature was introduced in GitLab 8.11."),
+		mcp.WithString("id",
+			mcp.Description("The ID or URL-encoded path of the project owned by the authenticated user"),
+			mcp.Required(),
+		),
+		mcp.WithNumber("environment_id",
+			mcp.Description("The ID of the environment"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, deleteProjectsIdEnvironmentsEnvironmentIdHandler)
+}
+
+func deleteProjectsIdEnvironmentsEnvironmentIdHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := request.GetString("id", "")
+	environment_id := int32(request.GetInt("environment_id", math.MinInt))
+
+	return toResult(c.DeleteApiV4ProjectsIdEnvironmentsEnvironmentId(ctx, id, environment_id, authorizationHeader))
+}
+
 func registerGetProjectsIdEnvironmentsEnvironmentId(s *server.MCPServer) {
 	tool := mcp.NewTool("get_pjs_id_environments_environment_id",
 		mcp.WithDescription("Get a specific environment"),
@@ -5723,6 +6698,59 @@ func getProjectsIdEnvironmentsEnvironmentIdHandler(ctx context.Context, request 
 	environment_id := int32(request.GetInt("environment_id", math.MinInt))
 
 	return toResult(c.GetApiV4ProjectsIdEnvironmentsEnvironmentId(ctx, id, environment_id, authorizationHeader))
+}
+
+func registerDeleteProjectsIdEnvironmentsReviewApps(s *server.MCPServer) {
+	tool := mcp.NewTool("delete_pjs_id_environments_review_apps",
+		mcp.WithDescription("It schedules for deletion multiple environments that have already been stopped and are in the review app folder. The actual deletion is performed after 1 week from the time of execution. By default, it only deletes environments 30 days or older. You can change this default using the `before` parameter."),
+		mcp.WithString("id",
+			mcp.Description("The ID or URL-encoded path of the project owned by the authenticated user"),
+			mcp.Required(),
+		),
+		mcp.WithString("before",
+			mcp.Description("The date before which environments can be deleted. Defaults to 30 days ago. Expected in ISO 8601 format (`YYYY-MM-DDTHH:MM:SSZ`)"),
+		),
+		mcp.WithNumber("limit",
+			mcp.Description("Maximum number of environments to delete. Defaults to 100 (default: 100)"),
+		),
+		mcp.WithBoolean("dry_run",
+			mcp.Description("Defaults to true for safety reasons. It performs a dry run where no actual deletion will be performed. Set to false to actually delete the environment (default: true)"),
+		),
+	)
+
+	s.AddTool(tool, deleteProjectsIdEnvironmentsReviewAppsHandler)
+}
+
+func deleteProjectsIdEnvironmentsReviewAppsHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := request.GetString("id", "")
+	params := parseDeleteProjectsIdEnvironmentsReviewApps(request)
+	return toResult(c.DeleteApiV4ProjectsIdEnvironmentsReviewApps(ctx, id, &params, authorizationHeader))
+}
+
+func parseDeleteProjectsIdEnvironmentsReviewApps(request mcp.CallToolRequest) client.DeleteApiV4ProjectsIdEnvironmentsReviewAppsParams {
+	params := client.DeleteApiV4ProjectsIdEnvironmentsReviewAppsParams{}
+
+	before := request.GetString("before", "")
+	if before != "" {
+		before, _ := time.Parse(time.RFC3339, before)
+		params.Before = &before
+	}
+
+	limit := request.GetInt("limit", 100)
+	if limit != math.MinInt {
+		limit := int32(limit)
+		params.Limit = &limit
+	}
+
+	dry_run := request.GetBool("dry_run", true)
+	params.DryRun = &dry_run
+
+	return params
 }
 
 func registerPostProjectsIdErrorTrackingClientKeys(s *server.MCPServer) {
@@ -5769,6 +6797,34 @@ func getProjectsIdErrorTrackingClientKeysHandler(ctx context.Context, request mc
 	id := request.GetString("id", "")
 
 	return toResult(c.GetApiV4ProjectsIdErrorTrackingClientKeys(ctx, id, authorizationHeader))
+}
+
+func registerDeleteProjectsIdErrorTrackingClientKeysKeyId(s *server.MCPServer) {
+	tool := mcp.NewTool("delete_pjs_id_error_tracking_client_keys_key_id",
+		mcp.WithDescription("Removes a client key from the project. This feature was introduced in GitLab 14.3."),
+		mcp.WithString("id",
+			mcp.Description("The ID or URL-encoded path of the project owned by the authenticated user"),
+			mcp.Required(),
+		),
+		mcp.WithNumber("key_id",
+			mcp.Description("null"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, deleteProjectsIdErrorTrackingClientKeysKeyIdHandler)
+}
+
+func deleteProjectsIdErrorTrackingClientKeysKeyIdHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := request.GetString("id", "")
+	key_id := int32(request.GetInt("key_id", math.MinInt))
+
+	return toResult(c.DeleteApiV4ProjectsIdErrorTrackingClientKeysKeyId(ctx, id, key_id, authorizationHeader))
 }
 
 func registerGetProjectsIdErrorTrackingSettings(s *server.MCPServer) {
@@ -5850,6 +6906,34 @@ func parseGetProjectsIdFeatureFlags(request mcp.CallToolRequest) client.GetApiV4
 	}
 
 	return params
+}
+
+func registerDeleteProjectsIdFeatureFlagsFeatureFlagName(s *server.MCPServer) {
+	tool := mcp.NewTool("delete_pjs_id_feature_flags_feature_flag_name",
+		mcp.WithDescription("Deletes a feature flag. This feature was introduced in GitLab 12.5."),
+		mcp.WithString("id",
+			mcp.Description("The ID or URL-encoded path of the project"),
+			mcp.Required(),
+		),
+		mcp.WithString("feature_flag_name",
+			mcp.Description("The name of the feature flag"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, deleteProjectsIdFeatureFlagsFeatureFlagNameHandler)
+}
+
+func deleteProjectsIdFeatureFlagsFeatureFlagNameHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := request.GetString("id", "")
+	feature_flag_name := request.GetString("feature_flag_name", "")
+
+	return toResult(c.DeleteApiV4ProjectsIdFeatureFlagsFeatureFlagName(ctx, id, feature_flag_name, authorizationHeader))
 }
 
 func registerGetProjectsIdFeatureFlagsFeatureFlagName(s *server.MCPServer) {
@@ -5934,6 +7018,34 @@ func parseGetProjectsIdFeatureFlagsUserLists(request mcp.CallToolRequest) client
 	}
 
 	return params
+}
+
+func registerDeleteProjectsIdFeatureFlagsUserListsIid(s *server.MCPServer) {
+	tool := mcp.NewTool("delete_pjs_id_feature_flags_user_lists_iid",
+		mcp.WithDescription("Deletes a feature flag user list. This feature was introduced in GitLab 12.10."),
+		mcp.WithString("id",
+			mcp.Description("The ID or URL-encoded path of the project"),
+			mcp.Required(),
+		),
+		mcp.WithString("iid",
+			mcp.Description("The internal ID of the project's feature flag user list"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, deleteProjectsIdFeatureFlagsUserListsIidHandler)
+}
+
+func deleteProjectsIdFeatureFlagsUserListsIidHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := request.GetString("id", "")
+	iid := request.GetString("iid", "")
+
+	return toResult(c.DeleteApiV4ProjectsIdFeatureFlagsUserListsIid(ctx, id, iid, authorizationHeader))
 }
 
 func registerGetProjectsIdFeatureFlagsUserListsIid(s *server.MCPServer) {
@@ -6077,6 +7189,87 @@ func parseGetProjectsIdRepositoryFilesFilePathRaw(request mcp.CallToolRequest) c
 	return params
 }
 
+func registerDeleteProjectsIdRepositoryFilesFilePath(s *server.MCPServer) {
+	tool := mcp.NewTool("delete_pjs_id_repo_files_file_path",
+		mcp.WithDescription("Delete an existing file in repository"),
+		mcp.WithString("id",
+			mcp.Description("The project ID (example: gitlab-org/gitlab)"),
+			mcp.Required(),
+		),
+		mcp.WithString("file_path",
+			mcp.Description("The url encoded path to the file. (example: lib%2Fclass%2Erb)"),
+			mcp.Required(),
+		),
+		mcp.WithString("branch",
+			mcp.Description("Name of the branch to commit into. To create a new branch, also provide `start_branch`. (example: main)"),
+			mcp.Required(),
+		),
+		mcp.WithString("commit_message",
+			mcp.Description("Commit message (example: Initial commit)"),
+			mcp.Required(),
+		),
+		mcp.WithString("start_branch",
+			mcp.Description("Name of the branch to start the new commit from (example: main)"),
+		),
+		mcp.WithString("author_email",
+			mcp.Description("The email of the author (example: johndoe@example.com)"),
+		),
+		mcp.WithString("author_name",
+			mcp.Description("The name of the author (example: John Doe)"),
+		),
+	)
+
+	s.AddTool(tool, deleteProjectsIdRepositoryFilesFilePathHandler)
+}
+
+func deleteProjectsIdRepositoryFilesFilePathHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := request.GetString("id", "")
+	file_path := request.GetString("file_path", "")
+	params := parseDeleteProjectsIdRepositoryFilesFilePath(request)
+	return toResult(c.DeleteApiV4ProjectsIdRepositoryFilesFilePath(ctx, id, file_path, &params, authorizationHeader))
+}
+
+func parseDeleteProjectsIdRepositoryFilesFilePath(request mcp.CallToolRequest) client.DeleteApiV4ProjectsIdRepositoryFilesFilePathParams {
+	params := client.DeleteApiV4ProjectsIdRepositoryFilesFilePathParams{}
+
+	branch := request.GetString("branch", "")
+	if branch != "" {
+
+		params.Branch = branch
+	}
+
+	commit_message := request.GetString("commit_message", "")
+	if commit_message != "" {
+
+		params.CommitMessage = commit_message
+	}
+
+	start_branch := request.GetString("start_branch", "")
+	if start_branch != "" {
+
+		params.StartBranch = &start_branch
+	}
+
+	author_email := request.GetString("author_email", "")
+	if author_email != "" {
+
+		params.AuthorEmail = &author_email
+	}
+
+	author_name := request.GetString("author_name", "")
+	if author_name != "" {
+
+		params.AuthorName = &author_name
+	}
+
+	return params
+}
+
 func registerGetProjectsIdRepositoryFilesFilePath(s *server.MCPServer) {
 	tool := mcp.NewTool("get_pjs_id_repo_files_file_path",
 		mcp.WithDescription("Get a file from the repository"),
@@ -6166,6 +7359,34 @@ func parseGetProjectsIdFreezePeriods(request mcp.CallToolRequest) client.GetApiV
 	}
 
 	return params
+}
+
+func registerDeleteProjectsIdFreezePeriodsFreezePeriodId(s *server.MCPServer) {
+	tool := mcp.NewTool("delete_pjs_id_freeze_periods_freeze_period_id",
+		mcp.WithDescription("Deletes a freeze period for the given `freeze_period_id`. This feature was introduced in GitLab 13.0."),
+		mcp.WithString("id",
+			mcp.Description("The ID or URL-encoded path of the project"),
+			mcp.Required(),
+		),
+		mcp.WithNumber("freeze_period_id",
+			mcp.Description("The ID of the freeze period"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, deleteProjectsIdFreezePeriodsFreezePeriodIdHandler)
+}
+
+func deleteProjectsIdFreezePeriodsFreezePeriodIdHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := request.GetString("id", "")
+	freeze_period_id := int32(request.GetInt("freeze_period_id", math.MinInt))
+
+	return toResult(c.DeleteApiV4ProjectsIdFreezePeriodsFreezePeriodId(ctx, id, freeze_period_id, authorizationHeader))
 }
 
 func registerGetProjectsIdFreezePeriodsFreezePeriodId(s *server.MCPServer) {
@@ -6308,6 +7529,35 @@ func getProjectsIdServicesHandler(ctx context.Context, request mcp.CallToolReque
 	return toResult(c.GetApiV4ProjectsIdServices(ctx, id, authorizationHeader))
 }
 
+func registerDeleteProjectsIdServicesSlug(s *server.MCPServer) {
+	tool := mcp.NewTool("delete_pjs_id_services_slug",
+		mcp.WithDescription("Disable the integration. Integration settings are preserved."),
+		mcp.WithString("slug",
+			mcp.Description("The name of the integration"),
+			mcp.Required(),
+			mcp.Enum("apple-app-store", "asana", "assembla", "bamboo", "bugzilla", "buildkite", "campfire", "confluence", "custom-issue-tracker", "datadog", "diffblue-cover", "discord", "drone-ci", "emails-on-push", "external-wiki", "gitlab-slack-application", "google-play", "hangouts-chat", "harbor", "irker", "jenkins", "jira", "jira-cloud-app", "matrix", "mattermost-slash-commands", "slack-slash-commands", "packagist", "phorge", "pipelines-email", "pivotaltracker", "pumble", "pushover", "redmine", "ewm", "youtrack", "clickup", "slack", "microsoft-teams", "mattermost", "teamcity", "telegram", "unify-circuit", "webex-teams", "zentao", "squash-tm", "github", "git-guardian", "google-cloud-platform-artifact-registry", "google-cloud-platform-workload-identity-federation", "mock-ci", "mock-monitoring"),
+		),
+		mcp.WithNumber("id",
+			mcp.Description("null"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, deleteProjectsIdServicesSlugHandler)
+}
+
+func deleteProjectsIdServicesSlugHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := int32(request.GetInt("id", math.MinInt))
+	slug := request.GetString("slug", "")
+
+	return toResult(c.DeleteApiV4ProjectsIdServicesSlug(ctx, id, slug, authorizationHeader))
+}
+
 func registerGetProjectsIdServicesSlug(s *server.MCPServer) {
 	tool := mcp.NewTool("get_pjs_id_services_slug",
 		mcp.WithDescription("Get the integration settings."),
@@ -6358,6 +7608,35 @@ func getProjectsIdIntegrationsHandler(ctx context.Context, request mcp.CallToolR
 	id := int32(request.GetInt("id", math.MinInt))
 
 	return toResult(c.GetApiV4ProjectsIdIntegrations(ctx, id, authorizationHeader))
+}
+
+func registerDeleteProjectsIdIntegrationsSlug(s *server.MCPServer) {
+	tool := mcp.NewTool("delete_pjs_id_integrations_slug",
+		mcp.WithDescription("Disable the integration. Integration settings are preserved."),
+		mcp.WithString("slug",
+			mcp.Description("The name of the integration"),
+			mcp.Required(),
+			mcp.Enum("apple-app-store", "asana", "assembla", "bamboo", "bugzilla", "buildkite", "campfire", "confluence", "custom-issue-tracker", "datadog", "diffblue-cover", "discord", "drone-ci", "emails-on-push", "external-wiki", "gitlab-slack-application", "google-play", "hangouts-chat", "harbor", "irker", "jenkins", "jira", "jira-cloud-app", "matrix", "mattermost-slash-commands", "slack-slash-commands", "packagist", "phorge", "pipelines-email", "pivotaltracker", "pumble", "pushover", "redmine", "ewm", "youtrack", "clickup", "slack", "microsoft-teams", "mattermost", "teamcity", "telegram", "unify-circuit", "webex-teams", "zentao", "squash-tm", "github", "git-guardian", "google-cloud-platform-artifact-registry", "google-cloud-platform-workload-identity-federation", "mock-ci", "mock-monitoring"),
+		),
+		mcp.WithNumber("id",
+			mcp.Description("null"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, deleteProjectsIdIntegrationsSlugHandler)
+}
+
+func deleteProjectsIdIntegrationsSlugHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := int32(request.GetInt("id", math.MinInt))
+	slug := request.GetString("slug", "")
+
+	return toResult(c.DeleteApiV4ProjectsIdIntegrationsSlug(ctx, id, slug, authorizationHeader))
 }
 
 func registerGetProjectsIdIntegrationsSlug(s *server.MCPServer) {
@@ -6445,6 +7724,34 @@ func parseGetProjectsIdInvitations(request mcp.CallToolRequest) client.GetApiV4P
 	return params
 }
 
+func registerDeleteProjectsIdInvitationsEmail(s *server.MCPServer) {
+	tool := mcp.NewTool("delete_pjs_id_invitations_email",
+		mcp.WithDescription("Removes an invitation from a group or project."),
+		mcp.WithString("id",
+			mcp.Description("The project ID"),
+			mcp.Required(),
+		),
+		mcp.WithString("email",
+			mcp.Description("The email address of the invitation"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, deleteProjectsIdInvitationsEmailHandler)
+}
+
+func deleteProjectsIdInvitationsEmailHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := request.GetString("id", "")
+	email := request.GetString("email", "")
+
+	return toResult(c.DeleteApiV4ProjectsIdInvitationsEmail(ctx, id, email, authorizationHeader))
+}
+
 func registerGetProjectsIdIssuesIssueIidLinks(s *server.MCPServer) {
 	tool := mcp.NewTool("get_pjs_id_issues_issue_iid_links",
 		mcp.WithDescription("Get a list of a given issue’s linked issues, sorted by the relationship creation datetime (ascending).Issues are filtered according to the user authorizations."),
@@ -6471,6 +7778,39 @@ func getProjectsIdIssuesIssueIidLinksHandler(ctx context.Context, request mcp.Ca
 	issue_iid := int32(request.GetInt("issue_iid", math.MinInt))
 
 	return toResult(c.GetApiV4ProjectsIdIssuesIssueIidLinks(ctx, id, issue_iid, authorizationHeader))
+}
+
+func registerDeleteProjectsIdIssuesIssueIidLinksIssueLinkId(s *server.MCPServer) {
+	tool := mcp.NewTool("delete_pjs_id_issues_issue_iid_links_issue_link_id",
+		mcp.WithDescription("Deletes an issue link, thus removes the two-way relationship."),
+		mcp.WithString("id",
+			mcp.Description("The ID or URL-encoded path of the project owned by the authenticated user"),
+			mcp.Required(),
+		),
+		mcp.WithNumber("issue_iid",
+			mcp.Description("The internal ID of a project’s issue"),
+			mcp.Required(),
+		),
+		mcp.WithString("issue_link_id",
+			mcp.Description("The ID of an issue relationship"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, deleteProjectsIdIssuesIssueIidLinksIssueLinkIdHandler)
+}
+
+func deleteProjectsIdIssuesIssueIidLinksIssueLinkIdHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := request.GetString("id", "")
+	issue_iid := int32(request.GetInt("issue_iid", math.MinInt))
+	issue_link_id := request.GetString("issue_link_id", "")
+
+	return toResult(c.DeleteApiV4ProjectsIdIssuesIssueIidLinksIssueLinkId(ctx, id, issue_iid, issue_link_id, authorizationHeader))
 }
 
 func registerGetProjectsIdIssuesIssueIidLinksIssueLinkId(s *server.MCPServer) {
@@ -6653,6 +7993,34 @@ func parseGetProjectsIdUploads(request mcp.CallToolRequest) client.GetApiV4Proje
 	return params
 }
 
+func registerDeleteProjectsIdUploadsUploadId(s *server.MCPServer) {
+	tool := mcp.NewTool("delete_pjs_id_uploads_upload_id",
+		mcp.WithDescription("Delete a single project upload by ID"),
+		mcp.WithNumber("upload_id",
+			mcp.Description("The ID of a project upload"),
+			mcp.Required(),
+		),
+		mcp.WithNumber("id",
+			mcp.Description("null"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, deleteProjectsIdUploadsUploadIdHandler)
+}
+
+func deleteProjectsIdUploadsUploadIdHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := int32(request.GetInt("id", math.MinInt))
+	upload_id := int32(request.GetInt("upload_id", math.MinInt))
+
+	return toResult(c.DeleteApiV4ProjectsIdUploadsUploadId(ctx, id, upload_id, authorizationHeader))
+}
+
 func registerGetProjectsIdUploadsUploadId(s *server.MCPServer) {
 	tool := mcp.NewTool("get_pjs_id_uploads_upload_id",
 		mcp.WithDescription("Download a single project upload by ID"),
@@ -6679,6 +8047,39 @@ func getProjectsIdUploadsUploadIdHandler(ctx context.Context, request mcp.CallTo
 	upload_id := int32(request.GetInt("upload_id", math.MinInt))
 
 	return toResult(c.GetApiV4ProjectsIdUploadsUploadId(ctx, id, upload_id, authorizationHeader))
+}
+
+func registerDeleteProjectsIdUploadsSecretFilename(s *server.MCPServer) {
+	tool := mcp.NewTool("delete_pjs_id_uploads_secret_filename",
+		mcp.WithDescription("Delete a single project upload by secret and filename"),
+		mcp.WithString("secret",
+			mcp.Description("The 32-character secret of a project upload"),
+			mcp.Required(),
+		),
+		mcp.WithString("filename",
+			mcp.Description("The filename of a project upload"),
+			mcp.Required(),
+		),
+		mcp.WithNumber("id",
+			mcp.Description("null"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, deleteProjectsIdUploadsSecretFilenameHandler)
+}
+
+func deleteProjectsIdUploadsSecretFilenameHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := int32(request.GetInt("id", math.MinInt))
+	secret := request.GetString("secret", "")
+	filename := request.GetString("filename", "")
+
+	return toResult(c.DeleteApiV4ProjectsIdUploadsSecretFilename(ctx, id, secret, filename, authorizationHeader))
 }
 
 func registerGetProjectsIdUploadsSecretFilename(s *server.MCPServer) {
@@ -6893,6 +8294,52 @@ func parseGetProjectsIdMembersAll(request mcp.CallToolRequest) client.GetApiV4Pr
 		per_page := int32(per_page)
 		params.PerPage = &per_page
 	}
+
+	return params
+}
+
+func registerDeleteProjectsIdMembersUserId(s *server.MCPServer) {
+	tool := mcp.NewTool("delete_pjs_id_members_user_id",
+		mcp.WithDescription("Removes a user from a group or project."),
+		mcp.WithString("id",
+			mcp.Description("The project ID"),
+			mcp.Required(),
+		),
+		mcp.WithNumber("user_id",
+			mcp.Description("The user ID of the member"),
+			mcp.Required(),
+		),
+		mcp.WithBoolean("skip_subresources",
+			mcp.Description("Flag indicating if the deletion of direct memberships of the removed member in subgroups and projects should be skipped (default: false)"),
+		),
+		mcp.WithBoolean("unassign_issuables",
+			mcp.Description("Flag indicating if the removed member should be unassigned from any issues or merge requests within given group or project (default: false)"),
+		),
+	)
+
+	s.AddTool(tool, deleteProjectsIdMembersUserIdHandler)
+}
+
+func deleteProjectsIdMembersUserIdHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := request.GetString("id", "")
+	user_id := int32(request.GetInt("user_id", math.MinInt))
+	params := parseDeleteProjectsIdMembersUserId(request)
+	return toResult(c.DeleteApiV4ProjectsIdMembersUserId(ctx, id, user_id, &params, authorizationHeader))
+}
+
+func parseDeleteProjectsIdMembersUserId(request mcp.CallToolRequest) client.DeleteApiV4ProjectsIdMembersUserIdParams {
+	params := client.DeleteApiV4ProjectsIdMembersUserIdParams{}
+
+	skip_subresources := request.GetBool("skip_subresources", false)
+	params.SkipSubresources = &skip_subresources
+
+	unassign_issuables := request.GetBool("unassign_issuables", false)
+	params.UnassignIssuables = &unassign_issuables
 
 	return params
 }
@@ -7637,6 +9084,34 @@ func parseGetProjectsIdMergeRequests(request mcp.CallToolRequest) client.GetApiV
 	return params
 }
 
+func registerDeleteProjectsIdMergeRequestsMergeRequestIid(s *server.MCPServer) {
+	tool := mcp.NewTool("delete_pjs_id_mrs_merge_request_iid",
+		mcp.WithDescription("Only for administrators and project owners. Deletes the merge request in question."),
+		mcp.WithString("id",
+			mcp.Description("The ID or URL-encoded path of the project."),
+			mcp.Required(),
+		),
+		mcp.WithNumber("merge_request_iid",
+			mcp.Description("The internal ID of the merge request."),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, deleteProjectsIdMergeRequestsMergeRequestIidHandler)
+}
+
+func deleteProjectsIdMergeRequestsMergeRequestIidHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := request.GetString("id", "")
+	merge_request_iid := int32(request.GetInt("merge_request_iid", math.MinInt))
+
+	return toResult(c.DeleteApiV4ProjectsIdMergeRequestsMergeRequestIid(ctx, id, merge_request_iid, authorizationHeader))
+}
+
 func registerGetProjectsIdMergeRequestsMergeRequestIid(s *server.MCPServer) {
 	tool := mcp.NewTool("get_pjs_id_mrs_merge_request_iid",
 		mcp.WithDescription("Shows information about a single merge request. Note: the `changes_count` value in the response is a string, not an integer. This is because when an merge request has too many changes to display and store, it is capped at 1,000. In that case, the API returns the string `\"1000+\"` for the changes count."),
@@ -7792,6 +9267,50 @@ func parseGetProjectsIdMergeRequestsMergeRequestIidCommits(request mcp.CallToolR
 	if per_page != math.MinInt {
 		per_page := int32(per_page)
 		params.PerPage = &per_page
+	}
+
+	return params
+}
+
+func registerDeleteProjectsIdMergeRequestsMergeRequestIidContextCommits(s *server.MCPServer) {
+	tool := mcp.NewTool("delete_pjs_id_mrs_merge_request_iid_context_commits",
+		mcp.WithDescription("Delete a list of merge request context commits."),
+		mcp.WithString("id",
+			mcp.Description("The ID or URL-encoded path of the project."),
+			mcp.Required(),
+		),
+		mcp.WithString("commits",
+			mcp.Description("The context commits’ SHA."),
+			mcp.Required(),
+		),
+		mcp.WithNumber("merge_request_iid",
+			mcp.Description("null"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, deleteProjectsIdMergeRequestsMergeRequestIidContextCommitsHandler)
+}
+
+func deleteProjectsIdMergeRequestsMergeRequestIidContextCommitsHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := request.GetString("id", "")
+	merge_request_iid := int32(request.GetInt("merge_request_iid", math.MinInt))
+	params := parseDeleteProjectsIdMergeRequestsMergeRequestIidContextCommits(request)
+	return toResult(c.DeleteApiV4ProjectsIdMergeRequestsMergeRequestIidContextCommits(ctx, id, merge_request_iid, &params, authorizationHeader))
+}
+
+func parseDeleteProjectsIdMergeRequestsMergeRequestIidContextCommits(request mcp.CallToolRequest) client.DeleteApiV4ProjectsIdMergeRequestsMergeRequestIidContextCommitsParams {
+	params := client.DeleteApiV4ProjectsIdMergeRequestsMergeRequestIidContextCommitsParams{}
+
+	commits := request.GetString("commits", "")
+	if commits != "" {
+		commits := strings.Split(commits, ",")
+		params.Commits = commits
 	}
 
 	return params
@@ -8556,6 +10075,62 @@ func parseGetProjectsIdPackagesPackageIdPackageFiles(request mcp.CallToolRequest
 	return params
 }
 
+func registerDeleteProjectsIdPackagesPackageIdPackageFilesPackageFileId(s *server.MCPServer) {
+	tool := mcp.NewTool("delete_pjs_id_pkgs_package_id_package_files_package_file_id",
+		mcp.WithDescription("This feature was introduced in GitLab 13.12"),
+		mcp.WithString("id",
+			mcp.Description("ID or URL-encoded path of the project"),
+			mcp.Required(),
+		),
+		mcp.WithNumber("package_id",
+			mcp.Description("ID of a package"),
+			mcp.Required(),
+		),
+		mcp.WithNumber("package_file_id",
+			mcp.Description("ID of a package file"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, deleteProjectsIdPackagesPackageIdPackageFilesPackageFileIdHandler)
+}
+
+func deleteProjectsIdPackagesPackageIdPackageFilesPackageFileIdHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := request.GetString("id", "")
+	package_id := int32(request.GetInt("package_id", math.MinInt))
+	package_file_id := int32(request.GetInt("package_file_id", math.MinInt))
+
+	return toResult(c.DeleteApiV4ProjectsIdPackagesPackageIdPackageFilesPackageFileId(ctx, id, package_id, package_file_id, authorizationHeader))
+}
+
+func registerDeleteProjectsIdPages(s *server.MCPServer) {
+	tool := mcp.NewTool("delete_pjs_id_pages",
+		mcp.WithDescription("Remove pages. The user must have administrator access. This feature was introduced in GitLab 12.6"),
+		mcp.WithString("id",
+			mcp.Description("The ID or URL-encoded path of the project owned by the authenticated user"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, deleteProjectsIdPagesHandler)
+}
+
+func deleteProjectsIdPagesHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := request.GetString("id", "")
+
+	return toResult(c.DeleteApiV4ProjectsIdPages(ctx, id, authorizationHeader))
+}
+
 func registerGetProjectsIdPages(s *server.MCPServer) {
 	tool := mcp.NewTool("get_pjs_id_pages",
 		mcp.WithDescription("Get pages URL and other settings. This feature was introduced in Gitlab 16.8"),
@@ -8624,6 +10199,34 @@ func parseGetProjectsIdPagesDomains(request mcp.CallToolRequest) client.GetApiV4
 	}
 
 	return params
+}
+
+func registerDeleteProjectsIdPagesDomainsDomain(s *server.MCPServer) {
+	tool := mcp.NewTool("delete_pjs_id_pages_domains_domain",
+		mcp.WithDescription("Delete a pages domain"),
+		mcp.WithString("id",
+			mcp.Description("The ID or URL-encoded path of the project owned by the authenticated user"),
+			mcp.Required(),
+		),
+		mcp.WithString("domain",
+			mcp.Description("The domain"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, deleteProjectsIdPagesDomainsDomainHandler)
+}
+
+func deleteProjectsIdPagesDomainsDomainHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := request.GetString("id", "")
+	domain := request.GetString("domain", "")
+
+	return toResult(c.DeleteApiV4ProjectsIdPagesDomainsDomain(ctx, id, domain, authorizationHeader))
 }
 
 func registerGetProjectsIdPagesDomainsDomain(s *server.MCPServer) {
@@ -8752,6 +10355,34 @@ func parseGetProjectsIdClusters(request mcp.CallToolRequest) client.GetApiV4Proj
 	return params
 }
 
+func registerDeleteProjectsIdClustersClusterId(s *server.MCPServer) {
+	tool := mcp.NewTool("delete_pjs_id_clusters_cluster_id",
+		mcp.WithDescription("This feature was introduced in GitLab 11.7. Deletes an existing project cluster. Does not remove existing resources within the connected Kubernetes cluster."),
+		mcp.WithString("id",
+			mcp.Description("The ID or URL-encoded path of the project"),
+			mcp.Required(),
+		),
+		mcp.WithNumber("cluster_id",
+			mcp.Description("The Cluster ID"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, deleteProjectsIdClustersClusterIdHandler)
+}
+
+func deleteProjectsIdClustersClusterIdHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := request.GetString("id", "")
+	cluster_id := int32(request.GetInt("cluster_id", math.MinInt))
+
+	return toResult(c.DeleteApiV4ProjectsIdClustersClusterId(ctx, id, cluster_id, authorizationHeader))
+}
+
 func registerGetProjectsIdClustersClusterId(s *server.MCPServer) {
 	tool := mcp.NewTool("get_pjs_id_clusters_cluster_id",
 		mcp.WithDescription("This feature was introduced in GitLab 11.7. Gets a single project cluster."),
@@ -8839,6 +10470,113 @@ func parseGetProjectsIdRegistryRepositories(request mcp.CallToolRequest) client.
 	return params
 }
 
+func registerDeleteProjectsIdRegistryRepositoriesRepositoryId(s *server.MCPServer) {
+	tool := mcp.NewTool("delete_pjs_id_registry_repositories_repo_id",
+		mcp.WithDescription("This feature was introduced in GitLab 11.8."),
+		mcp.WithString("id",
+			mcp.Description("The ID or URL-encoded path of the project"),
+			mcp.Required(),
+		),
+		mcp.WithNumber("repository_id",
+			mcp.Description("The ID of the repository"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, deleteProjectsIdRegistryRepositoriesRepositoryIdHandler)
+}
+
+func deleteProjectsIdRegistryRepositoriesRepositoryIdHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := request.GetString("id", "")
+	repository_id := int32(request.GetInt("repository_id", math.MinInt))
+
+	return toResult(c.DeleteApiV4ProjectsIdRegistryRepositoriesRepositoryId(ctx, id, repository_id, authorizationHeader))
+}
+
+func registerDeleteProjectsIdRegistryRepositoriesRepositoryIdTags(s *server.MCPServer) {
+	tool := mcp.NewTool("delete_pjs_id_registry_repositories_repo_id_tags",
+		mcp.WithDescription("This feature was introduced in GitLab 11.8."),
+		mcp.WithString("id",
+			mcp.Description("The ID or URL-encoded path of the project"),
+			mcp.Required(),
+		),
+		mcp.WithNumber("repository_id",
+			mcp.Description("The ID of the repository"),
+			mcp.Required(),
+		),
+		mcp.WithString("name_regex_delete",
+			mcp.Description("The tag name regexp to delete, specify .devcontainer .editorconfig .git .github .gitignore .lefthook.yml .vscode to delete all"),
+		),
+		mcp.WithString("name_regex",
+			mcp.Description("The tag name regexp to delete, specify .devcontainer .editorconfig .git .github .gitignore .lefthook.yml .vscode to delete all"),
+		),
+		mcp.WithString("name_regex_keep",
+			mcp.Description("The tag name regexp to retain"),
+		),
+		mcp.WithNumber("keep_n",
+			mcp.Description("Keep n of latest tags with matching name"),
+		),
+		mcp.WithString("older_than",
+			mcp.Description("Delete older than: 1h, 1d, 1month"),
+		),
+	)
+
+	s.AddTool(tool, deleteProjectsIdRegistryRepositoriesRepositoryIdTagsHandler)
+}
+
+func deleteProjectsIdRegistryRepositoriesRepositoryIdTagsHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := request.GetString("id", "")
+	repository_id := int32(request.GetInt("repository_id", math.MinInt))
+	params := parseDeleteProjectsIdRegistryRepositoriesRepositoryIdTags(request)
+	return toResult(c.DeleteApiV4ProjectsIdRegistryRepositoriesRepositoryIdTags(ctx, id, repository_id, &params, authorizationHeader))
+}
+
+func parseDeleteProjectsIdRegistryRepositoriesRepositoryIdTags(request mcp.CallToolRequest) client.DeleteApiV4ProjectsIdRegistryRepositoriesRepositoryIdTagsParams {
+	params := client.DeleteApiV4ProjectsIdRegistryRepositoriesRepositoryIdTagsParams{}
+
+	name_regex_delete := request.GetString("name_regex_delete", "")
+	if name_regex_delete != "" {
+
+		params.NameRegexDelete = &name_regex_delete
+	}
+
+	name_regex := request.GetString("name_regex", "")
+	if name_regex != "" {
+
+		params.NameRegex = &name_regex
+	}
+
+	name_regex_keep := request.GetString("name_regex_keep", "")
+	if name_regex_keep != "" {
+
+		params.NameRegexKeep = &name_regex_keep
+	}
+
+	keep_n := request.GetInt("keep_n", math.MinInt)
+	if keep_n != math.MinInt {
+		keep_n := int32(keep_n)
+		params.KeepN = &keep_n
+	}
+
+	older_than := request.GetString("older_than", "")
+	if older_than != "" {
+
+		params.OlderThan = &older_than
+	}
+
+	return params
+}
+
 func registerGetProjectsIdRegistryRepositoriesRepositoryIdTags(s *server.MCPServer) {
 	tool := mcp.NewTool("get_pjs_id_registry_repositories_repo_id_tags",
 		mcp.WithDescription("This feature was introduced in GitLab 11.8."),
@@ -8889,6 +10627,39 @@ func parseGetProjectsIdRegistryRepositoriesRepositoryIdTags(request mcp.CallTool
 	}
 
 	return params
+}
+
+func registerDeleteProjectsIdRegistryRepositoriesRepositoryIdTagsTagName(s *server.MCPServer) {
+	tool := mcp.NewTool("delete_pjs_id_registry_repositories_repo_id_tags_tag_name",
+		mcp.WithDescription("This feature was introduced in GitLab 11.8."),
+		mcp.WithString("id",
+			mcp.Description("The ID or URL-encoded path of the project"),
+			mcp.Required(),
+		),
+		mcp.WithNumber("repository_id",
+			mcp.Description("The ID of the repository"),
+			mcp.Required(),
+		),
+		mcp.WithString("tag_name",
+			mcp.Description("The name of the tag"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, deleteProjectsIdRegistryRepositoriesRepositoryIdTagsTagNameHandler)
+}
+
+func deleteProjectsIdRegistryRepositoriesRepositoryIdTagsTagNameHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := request.GetString("id", "")
+	repository_id := int32(request.GetInt("repository_id", math.MinInt))
+	tag_name := request.GetString("tag_name", "")
+
+	return toResult(c.DeleteApiV4ProjectsIdRegistryRepositoriesRepositoryIdTagsTagName(ctx, id, repository_id, tag_name, authorizationHeader))
 }
 
 func registerGetProjectsIdRegistryRepositoriesRepositoryIdTagsTagName(s *server.MCPServer) {
@@ -8945,6 +10716,34 @@ func getProjectsIdRegistryProtectionRepositoryRulesHandler(ctx context.Context, 
 	id := request.GetString("id", "")
 
 	return toResult(c.GetApiV4ProjectsIdRegistryProtectionRepositoryRules(ctx, id, authorizationHeader))
+}
+
+func registerDeleteProjectsIdRegistryProtectionRepositoryRulesProtectionRuleId(s *server.MCPServer) {
+	tool := mcp.NewTool("delete_pjs_id_registry_protection_repo_rules_protection_rule_id",
+		mcp.WithDescription("Delete container protection rule"),
+		mcp.WithString("id",
+			mcp.Description("The ID or URL-encoded path of the project"),
+			mcp.Required(),
+		),
+		mcp.WithNumber("protection_rule_id",
+			mcp.Description("The ID of the container protection rule"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, deleteProjectsIdRegistryProtectionRepositoryRulesProtectionRuleIdHandler)
+}
+
+func deleteProjectsIdRegistryProtectionRepositoryRulesProtectionRuleIdHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := request.GetString("id", "")
+	protection_rule_id := int32(request.GetInt("protection_rule_id", math.MinInt))
+
+	return toResult(c.DeleteApiV4ProjectsIdRegistryProtectionRepositoryRulesProtectionRuleId(ctx, id, protection_rule_id, authorizationHeader))
 }
 
 func registerGetProjectsIdDebianDistributions(s *server.MCPServer) {
@@ -9023,6 +10822,112 @@ func parseGetProjectsIdDebianDistributions(request mcp.CallToolRequest) client.G
 
 		params.Codename = &codename
 	}
+
+	suite := request.GetString("suite", "")
+	if suite != "" {
+
+		params.Suite = &suite
+	}
+
+	origin := request.GetString("origin", "")
+	if origin != "" {
+
+		params.Origin = &origin
+	}
+
+	label := request.GetString("label", "")
+	if label != "" {
+
+		params.Label = &label
+	}
+
+	version := request.GetString("version", "")
+	if version != "" {
+
+		params.Version = &version
+	}
+
+	description := request.GetString("description", "")
+	if description != "" {
+
+		params.Description = &description
+	}
+
+	valid_time_duration_seconds := request.GetInt("valid_time_duration_seconds", math.MinInt)
+	if valid_time_duration_seconds != math.MinInt {
+		valid_time_duration_seconds := int32(valid_time_duration_seconds)
+		params.ValidTimeDurationSeconds = &valid_time_duration_seconds
+	}
+
+	components := request.GetString("components", "")
+	if components != "" {
+		components := strings.Split(components, ",")
+		params.Components = &components
+	}
+
+	architectures := request.GetString("architectures", "")
+	if architectures != "" {
+		architectures := strings.Split(architectures, ",")
+		params.Architectures = &architectures
+	}
+
+	return params
+}
+
+func registerDeleteProjectsIdDebianDistributionsCodename(s *server.MCPServer) {
+	tool := mcp.NewTool("delete_pjs_id_debian_distributions_codename",
+		mcp.WithDescription("This feature was introduced in 14.0"),
+		mcp.WithString("id",
+			mcp.Description("The ID or URL-encoded path of the project"),
+			mcp.Required(),
+		),
+		mcp.WithString("codename",
+			mcp.Description("The Debian Codename (example: sid)"),
+			mcp.Required(),
+		),
+		mcp.WithString("suite",
+			mcp.Description("The Debian Suite (example: unstable)"),
+		),
+		mcp.WithString("origin",
+			mcp.Description("The Debian Origin (example: Grep)"),
+		),
+		mcp.WithString("label",
+			mcp.Description("The Debian Label (example: grep.be)"),
+		),
+		mcp.WithString("version",
+			mcp.Description("The Debian Version (example: 12)"),
+		),
+		mcp.WithString("description",
+			mcp.Description("The Debian Description (example: My description)"),
+		),
+		mcp.WithNumber("valid_time_duration_seconds",
+			mcp.Description("The duration before the Release file should be considered expired by the client (example: 604800)"),
+		),
+		mcp.WithString("components",
+			mcp.Description("The list of Components (example: main)"),
+		),
+		mcp.WithString("architectures",
+			mcp.Description("The list of Architectures (example: amd64)"),
+		),
+	)
+
+	s.AddTool(tool, deleteProjectsIdDebianDistributionsCodenameHandler)
+}
+
+func deleteProjectsIdDebianDistributionsCodenameHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := request.GetString("id", "")
+	codename := request.GetString("codename", "")
+	params := parseDeleteProjectsIdDebianDistributionsCodename(request)
+	return toResult(c.DeleteApiV4ProjectsIdDebianDistributionsCodename(ctx, id, codename, &params, authorizationHeader))
+}
+
+func parseDeleteProjectsIdDebianDistributionsCodename(request mcp.CallToolRequest) client.DeleteApiV4ProjectsIdDebianDistributionsCodenameParams {
+	params := client.DeleteApiV4ProjectsIdDebianDistributionsCodenameParams{}
 
 	suite := request.GetString("suite", "")
 	if suite != "" {
@@ -9365,6 +11270,72 @@ func parseGetProjectsIdExportRelationsStatus(request mcp.CallToolRequest) client
 	return params
 }
 
+func registerDeleteProjectsIdHooksHookIdUrlVariablesKey(s *server.MCPServer) {
+	tool := mcp.NewTool("delete_pjs_id_hooks_hook_id_url_variables_key",
+		mcp.WithDescription("Un-Set a url variable"),
+		mcp.WithNumber("hook_id",
+			mcp.Description("The ID of the hook"),
+			mcp.Required(),
+		),
+		mcp.WithString("key",
+			mcp.Description("The key of the variable"),
+			mcp.Required(),
+		),
+		mcp.WithNumber("id",
+			mcp.Description("null"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, deleteProjectsIdHooksHookIdUrlVariablesKeyHandler)
+}
+
+func deleteProjectsIdHooksHookIdUrlVariablesKeyHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := int32(request.GetInt("id", math.MinInt))
+	hook_id := int32(request.GetInt("hook_id", math.MinInt))
+	key := request.GetString("key", "")
+
+	return toResult(c.DeleteApiV4ProjectsIdHooksHookIdUrlVariablesKey(ctx, id, hook_id, key, authorizationHeader))
+}
+
+func registerDeleteProjectsIdHooksHookIdCustomHeadersKey(s *server.MCPServer) {
+	tool := mcp.NewTool("delete_pjs_id_hooks_hook_id_custom_headers_key",
+		mcp.WithDescription("Un-Set a custom header"),
+		mcp.WithNumber("hook_id",
+			mcp.Description("The ID of the hook"),
+			mcp.Required(),
+		),
+		mcp.WithString("key",
+			mcp.Description("The key of the custom header"),
+			mcp.Required(),
+		),
+		mcp.WithNumber("id",
+			mcp.Description("null"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, deleteProjectsIdHooksHookIdCustomHeadersKeyHandler)
+}
+
+func deleteProjectsIdHooksHookIdCustomHeadersKeyHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := int32(request.GetInt("id", math.MinInt))
+	hook_id := int32(request.GetInt("hook_id", math.MinInt))
+	key := request.GetString("key", "")
+
+	return toResult(c.DeleteApiV4ProjectsIdHooksHookIdCustomHeadersKey(ctx, id, hook_id, key, authorizationHeader))
+}
+
 func registerGetProjectsIdHooks(s *server.MCPServer) {
 	tool := mcp.NewTool("get_pjs_id_hooks",
 		mcp.WithDescription("Get a list of project hooks"),
@@ -9410,6 +11381,34 @@ func parseGetProjectsIdHooks(request mcp.CallToolRequest) client.GetApiV4Project
 	}
 
 	return params
+}
+
+func registerDeleteProjectsIdHooksHookId(s *server.MCPServer) {
+	tool := mcp.NewTool("delete_pjs_id_hooks_hook_id",
+		mcp.WithDescription("Removes a hook from a project. This is an idempotent method and can be called multiple times. Either the hook is available or not."),
+		mcp.WithString("id",
+			mcp.Description("The ID or URL-encoded path of the project"),
+			mcp.Required(),
+		),
+		mcp.WithNumber("hook_id",
+			mcp.Description("The ID of the project hook"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, deleteProjectsIdHooksHookIdHandler)
+}
+
+func deleteProjectsIdHooksHookIdHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := request.GetString("id", "")
+	hook_id := int32(request.GetInt("hook_id", math.MinInt))
+
+	return toResult(c.DeleteApiV4ProjectsIdHooksHookId(ctx, id, hook_id, authorizationHeader))
 }
 
 func registerGetProjectsIdHooksHookId(s *server.MCPServer) {
@@ -9765,6 +11764,62 @@ func parseGetProjectsIdJobTokenScopeGroupsAllowlist(request mcp.CallToolRequest)
 	return params
 }
 
+func registerDeleteProjectsIdJobTokenScopeGroupsAllowlistTargetGroupId(s *server.MCPServer) {
+	tool := mcp.NewTool("delete_pjs_id_job_token_scope_grps_allowlist_target_group_id",
+		mcp.WithDescription("Delete target group from allowlist."),
+		mcp.WithNumber("id",
+			mcp.Description("ID of user project (example: 1)"),
+			mcp.Required(),
+		),
+		mcp.WithNumber("target_group_id",
+			mcp.Description("ID of the group to be removed from the allowlist (example: 2)"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, deleteProjectsIdJobTokenScopeGroupsAllowlistTargetGroupIdHandler)
+}
+
+func deleteProjectsIdJobTokenScopeGroupsAllowlistTargetGroupIdHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := int32(request.GetInt("id", math.MinInt))
+	target_group_id := int32(request.GetInt("target_group_id", math.MinInt))
+
+	return toResult(c.DeleteApiV4ProjectsIdJobTokenScopeGroupsAllowlistTargetGroupId(ctx, id, target_group_id, authorizationHeader))
+}
+
+func registerDeleteProjectsIdJobTokenScopeAllowlistTargetProjectId(s *server.MCPServer) {
+	tool := mcp.NewTool("delete_pjs_id_job_token_scope_allowlist_target_project_id",
+		mcp.WithDescription("Delete project from allowlist."),
+		mcp.WithNumber("id",
+			mcp.Description("ID of user project (example: 1)"),
+			mcp.Required(),
+		),
+		mcp.WithNumber("target_project_id",
+			mcp.Description("ID of the project to be removed from the allowlist (example: 2)"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, deleteProjectsIdJobTokenScopeAllowlistTargetProjectIdHandler)
+}
+
+func deleteProjectsIdJobTokenScopeAllowlistTargetProjectIdHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := int32(request.GetInt("id", math.MinInt))
+	target_project_id := int32(request.GetInt("target_project_id", math.MinInt))
+
+	return toResult(c.DeleteApiV4ProjectsIdJobTokenScopeAllowlistTargetProjectId(ctx, id, target_project_id, authorizationHeader))
+}
+
 func registerGetProjectsIdPackages(s *server.MCPServer) {
 	tool := mcp.NewTool("get_pjs_id_pkgs",
 		mcp.WithDescription("This feature was introduced in GitLab 11.8"),
@@ -9880,6 +11935,34 @@ func parseGetProjectsIdPackages(request mcp.CallToolRequest) client.GetApiV4Proj
 	return params
 }
 
+func registerDeleteProjectsIdPackagesPackageId(s *server.MCPServer) {
+	tool := mcp.NewTool("delete_pjs_id_pkgs_package_id",
+		mcp.WithDescription("This feature was introduced in GitLab 11.9"),
+		mcp.WithString("id",
+			mcp.Description("The ID or URL-encoded path of the project"),
+			mcp.Required(),
+		),
+		mcp.WithNumber("package_id",
+			mcp.Description("The ID of a package"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, deleteProjectsIdPackagesPackageIdHandler)
+}
+
+func deleteProjectsIdPackagesPackageIdHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := request.GetString("id", "")
+	package_id := int32(request.GetInt("package_id", math.MinInt))
+
+	return toResult(c.DeleteApiV4ProjectsIdPackagesPackageId(ctx, id, package_id, authorizationHeader))
+}
+
 func registerGetProjectsIdPackagesPackageId(s *server.MCPServer) {
 	tool := mcp.NewTool("get_pjs_id_pkgs_package_id",
 		mcp.WithDescription("This feature was introduced in GitLab 11.9"),
@@ -9992,6 +12075,34 @@ func getProjectsIdPackagesProtectionRulesHandler(ctx context.Context, request mc
 	return toResult(c.GetApiV4ProjectsIdPackagesProtectionRules(ctx, id, authorizationHeader))
 }
 
+func registerDeleteProjectsIdPackagesProtectionRulesPackageProtectionRuleId(s *server.MCPServer) {
+	tool := mcp.NewTool("delete_pjs_id_pkgs_protection_rules_package_protection_rule_id",
+		mcp.WithDescription("Delete package protection rule"),
+		mcp.WithString("id",
+			mcp.Description("The ID or URL-encoded path of the project"),
+			mcp.Required(),
+		),
+		mcp.WithNumber("package_protection_rule_id",
+			mcp.Description("The ID of the package protection rule"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, deleteProjectsIdPackagesProtectionRulesPackageProtectionRuleIdHandler)
+}
+
+func deleteProjectsIdPackagesProtectionRulesPackageProtectionRuleIdHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := request.GetString("id", "")
+	package_protection_rule_id := int32(request.GetInt("package_protection_rule_id", math.MinInt))
+
+	return toResult(c.DeleteApiV4ProjectsIdPackagesProtectionRulesPackageProtectionRuleId(ctx, id, package_protection_rule_id, authorizationHeader))
+}
+
 func registerGetProjectsIdSnapshot(s *server.MCPServer) {
 	tool := mcp.NewTool("get_pjs_id_snapshot",
 		mcp.WithDescription("This feature was introduced in GitLab 10.7"),
@@ -10072,6 +12183,34 @@ func parseGetProjectsIdSnippets(request mcp.CallToolRequest) client.GetApiV4Proj
 	}
 
 	return params
+}
+
+func registerDeleteProjectsIdSnippetsSnippetId(s *server.MCPServer) {
+	tool := mcp.NewTool("delete_pjs_id_snippets_snippet_id",
+		mcp.WithDescription("Delete a project snippet"),
+		mcp.WithString("id",
+			mcp.Description("The ID or URL-encoded path of the project"),
+			mcp.Required(),
+		),
+		mcp.WithNumber("snippet_id",
+			mcp.Description("The ID of a project snippet"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, deleteProjectsIdSnippetsSnippetIdHandler)
+}
+
+func deleteProjectsIdSnippetsSnippetIdHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := request.GetString("id", "")
+	snippet_id := int32(request.GetInt("snippet_id", math.MinInt))
+
+	return toResult(c.DeleteApiV4ProjectsIdSnippetsSnippetId(ctx, id, snippet_id, authorizationHeader))
 }
 
 func registerGetProjectsIdSnippetsSnippetId(s *server.MCPServer) {
@@ -10360,6 +12499,34 @@ func getProjectsIdCustomAttributesHandler(ctx context.Context, request mcp.CallT
 	id := int32(request.GetInt("id", math.MinInt))
 
 	return toResult(c.GetApiV4ProjectsIdCustomAttributes(ctx, id, authorizationHeader))
+}
+
+func registerDeleteProjectsIdCustomAttributesKey(s *server.MCPServer) {
+	tool := mcp.NewTool("delete_pjs_id_custom_attributes_key",
+		mcp.WithDescription("Delete a custom attribute on a project"),
+		mcp.WithString("key",
+			mcp.Description("The key of the custom attribute"),
+			mcp.Required(),
+		),
+		mcp.WithNumber("id",
+			mcp.Description("null"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, deleteProjectsIdCustomAttributesKeyHandler)
+}
+
+func deleteProjectsIdCustomAttributesKeyHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := int32(request.GetInt("id", math.MinInt))
+	key := request.GetString("key", "")
+
+	return toResult(c.DeleteApiV4ProjectsIdCustomAttributesKey(ctx, id, key, authorizationHeader))
 }
 
 func registerGetProjectsIdCustomAttributesKey(s *server.MCPServer) {
@@ -10741,6 +12908,29 @@ func parseGetProjectsIdShareLocations(request mcp.CallToolRequest) client.GetApi
 	return params
 }
 
+func registerDeleteProjectsId(s *server.MCPServer) {
+	tool := mcp.NewTool("delete_pjs_id",
+		mcp.WithDescription("Delete a project"),
+		mcp.WithString("id",
+			mcp.Description("The ID or URL-encoded path of the project"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, deleteProjectsIdHandler)
+}
+
+func deleteProjectsIdHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := request.GetString("id", "")
+
+	return toResult(c.DeleteApiV4ProjectsId(ctx, id, authorizationHeader))
+}
+
 func registerGetProjectsId(s *server.MCPServer) {
 	tool := mcp.NewTool("get_pjs_id",
 		mcp.WithDescription("Get a single project"),
@@ -10786,6 +12976,29 @@ func parseGetProjectsId(request mcp.CallToolRequest) client.GetApiV4ProjectsIdPa
 	params.License = &license
 
 	return params
+}
+
+func registerDeleteProjectsIdFork(s *server.MCPServer) {
+	tool := mcp.NewTool("delete_pjs_id_fork",
+		mcp.WithDescription("Remove a forked_from relationship"),
+		mcp.WithString("id",
+			mcp.Description("The ID or URL-encoded path of the project"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, deleteProjectsIdForkHandler)
+}
+
+func deleteProjectsIdForkHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := request.GetString("id", "")
+
+	return toResult(c.DeleteApiV4ProjectsIdFork(ctx, id, authorizationHeader))
 }
 
 func registerGetProjectsIdForks(s *server.MCPServer) {
@@ -11297,6 +13510,34 @@ func postProjectsIdForkForkedFromIdHandler(ctx context.Context, request mcp.Call
 	forked_from_id := request.GetString("forked_from_id", "")
 
 	return toResult(c.PostApiV4ProjectsIdForkForkedFromId(ctx, id, forked_from_id, authorizationHeader))
+}
+
+func registerDeleteProjectsIdShareGroupId(s *server.MCPServer) {
+	tool := mcp.NewTool("delete_pjs_id_share_group_id",
+		mcp.WithDescription("Remove a group share"),
+		mcp.WithString("id",
+			mcp.Description("The ID or URL-encoded path of the project"),
+			mcp.Required(),
+		),
+		mcp.WithNumber("group_id",
+			mcp.Description("The ID of the group"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, deleteProjectsIdShareGroupIdHandler)
+}
+
+func deleteProjectsIdShareGroupIdHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := request.GetString("id", "")
+	group_id := int32(request.GetInt("group_id", math.MinInt))
+
+	return toResult(c.DeleteApiV4ProjectsIdShareGroupId(ctx, id, group_id, authorizationHeader))
 }
 
 func registerPostProjectsIdImportProjectMembersProjectId(s *server.MCPServer) {
@@ -11823,6 +14064,34 @@ func parseGetProjectsIdProtectedBranches(request mcp.CallToolRequest) client.Get
 	return params
 }
 
+func registerDeleteProjectsIdProtectedBranchesName(s *server.MCPServer) {
+	tool := mcp.NewTool("delete_pjs_id_protected_branches_name",
+		mcp.WithDescription("Unprotect a single branch"),
+		mcp.WithString("id",
+			mcp.Description("The ID or URL-encoded path of the project (example: gitlab-org/gitlab)"),
+			mcp.Required(),
+		),
+		mcp.WithString("name",
+			mcp.Description("The name of the protected branch (example: main)"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, deleteProjectsIdProtectedBranchesNameHandler)
+}
+
+func deleteProjectsIdProtectedBranchesNameHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := request.GetString("id", "")
+	name := request.GetString("name", "")
+
+	return toResult(c.DeleteApiV4ProjectsIdProtectedBranchesName(ctx, id, name, authorizationHeader))
+}
+
 func registerGetProjectsIdProtectedBranchesName(s *server.MCPServer) {
 	tool := mcp.NewTool("get_pjs_id_protected_branches_name",
 		mcp.WithDescription("Get a single protected branch"),
@@ -11896,6 +14165,34 @@ func parseGetProjectsIdProtectedTags(request mcp.CallToolRequest) client.GetApiV
 	}
 
 	return params
+}
+
+func registerDeleteProjectsIdProtectedTagsName(s *server.MCPServer) {
+	tool := mcp.NewTool("delete_pjs_id_protected_tags_name",
+		mcp.WithDescription("This feature was introduced in GitLab 11.3."),
+		mcp.WithString("id",
+			mcp.Description("The ID or URL-encoded path of the project"),
+			mcp.Required(),
+		),
+		mcp.WithString("name",
+			mcp.Description("The name of the protected tag (example: release-1-0)"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, deleteProjectsIdProtectedTagsNameHandler)
+}
+
+func deleteProjectsIdProtectedTagsNameHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := request.GetString("id", "")
+	name := request.GetString("name", "")
+
+	return toResult(c.DeleteApiV4ProjectsIdProtectedTagsName(ctx, id, name, authorizationHeader))
 }
 
 func registerGetProjectsIdProtectedTagsName(s *server.MCPServer) {
@@ -12065,6 +14362,34 @@ func parseGetProjectsIdReleases(request mcp.CallToolRequest) client.GetApiV4Proj
 	return params
 }
 
+func registerDeleteProjectsIdReleasesTagName(s *server.MCPServer) {
+	tool := mcp.NewTool("delete_pjs_id_releases_tag_name",
+		mcp.WithDescription("Delete a release. Deleting a release doesn't delete the associated tag. Maintainer level access to the project is required to delete a release. This feature was introduced in GitLab 11.7."),
+		mcp.WithString("id",
+			mcp.Description("The ID or URL-encoded path of the project"),
+			mcp.Required(),
+		),
+		mcp.WithString("tag_name",
+			mcp.Description("The Git tag the release is associated with"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, deleteProjectsIdReleasesTagNameHandler)
+}
+
+func deleteProjectsIdReleasesTagNameHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := request.GetString("id", "")
+	tag_name := request.GetString("tag_name", "")
+
+	return toResult(c.DeleteApiV4ProjectsIdReleasesTagName(ctx, id, tag_name, authorizationHeader))
+}
+
 func registerGetProjectsIdReleasesTagName(s *server.MCPServer) {
 	tool := mcp.NewTool("get_pjs_id_releases_tag_name",
 		mcp.WithDescription("Gets a release for the given tag. This feature was introduced in GitLab 11.7."),
@@ -12185,6 +14510,39 @@ func parseGetProjectsIdReleasesTagNameAssetsLinks(request mcp.CallToolRequest) c
 	return params
 }
 
+func registerDeleteProjectsIdReleasesTagNameAssetsLinksLinkId(s *server.MCPServer) {
+	tool := mcp.NewTool("delete_pjs_id_releases_tag_name_assets_links_link_id",
+		mcp.WithDescription("Deletes an asset as a link from a release. This feature was introduced in GitLab 11.7."),
+		mcp.WithString("id",
+			mcp.Description("The ID or URL-encoded path of the project"),
+			mcp.Required(),
+		),
+		mcp.WithString("tag_name",
+			mcp.Description("The tag associated with the release"),
+			mcp.Required(),
+		),
+		mcp.WithNumber("link_id",
+			mcp.Description("The ID of the link"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, deleteProjectsIdReleasesTagNameAssetsLinksLinkIdHandler)
+}
+
+func deleteProjectsIdReleasesTagNameAssetsLinksLinkIdHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := request.GetString("id", "")
+	tag_name := request.GetString("tag_name", "")
+	link_id := int32(request.GetInt("link_id", math.MinInt))
+
+	return toResult(c.DeleteApiV4ProjectsIdReleasesTagNameAssetsLinksLinkId(ctx, id, tag_name, link_id, authorizationHeader))
+}
+
 func registerGetProjectsIdReleasesTagNameAssetsLinksLinkId(s *server.MCPServer) {
 	tool := mcp.NewTool("get_pjs_id_releases_tag_name_assets_links_link_id",
 		mcp.WithDescription("Get an asset as a link from a release. This feature was introduced in GitLab 11.7."),
@@ -12263,6 +14621,34 @@ func parseGetProjectsIdRemoteMirrors(request mcp.CallToolRequest) client.GetApiV
 	}
 
 	return params
+}
+
+func registerDeleteProjectsIdRemoteMirrorsMirrorId(s *server.MCPServer) {
+	tool := mcp.NewTool("delete_pjs_id_remote_mirrors_mirror_id",
+		mcp.WithDescription("This feature was introduced in GitLab 14.10"),
+		mcp.WithString("id",
+			mcp.Description("The ID or URL-encoded path of the project"),
+			mcp.Required(),
+		),
+		mcp.WithString("mirror_id",
+			mcp.Description("The ID of a remote mirror"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, deleteProjectsIdRemoteMirrorsMirrorIdHandler)
+}
+
+func deleteProjectsIdRemoteMirrorsMirrorIdHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := request.GetString("id", "")
+	mirror_id := request.GetString("mirror_id", "")
+
+	return toResult(c.DeleteApiV4ProjectsIdRemoteMirrorsMirrorId(ctx, id, mirror_id, authorizationHeader))
 }
 
 func registerGetProjectsIdRemoteMirrorsMirrorId(s *server.MCPServer) {
@@ -13321,6 +15707,34 @@ func parseGetProjectsIdRepositoryTags(request mcp.CallToolRequest) client.GetApi
 	return params
 }
 
+func registerDeleteProjectsIdRepositoryTagsTagName(s *server.MCPServer) {
+	tool := mcp.NewTool("delete_pjs_id_repo_tags_tag_name",
+		mcp.WithDescription("Delete a repository tag"),
+		mcp.WithString("id",
+			mcp.Description("The ID or URL-encoded path of the project"),
+			mcp.Required(),
+		),
+		mcp.WithString("tag_name",
+			mcp.Description("The name of the tag"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, deleteProjectsIdRepositoryTagsTagNameHandler)
+}
+
+func deleteProjectsIdRepositoryTagsTagNameHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := request.GetString("id", "")
+	tag_name := request.GetString("tag_name", "")
+
+	return toResult(c.DeleteApiV4ProjectsIdRepositoryTagsTagName(ctx, id, tag_name, authorizationHeader))
+}
+
 func registerGetProjectsIdRepositoryTagsTagName(s *server.MCPServer) {
 	tool := mcp.NewTool("get_pjs_id_repo_tags_tag_name",
 		mcp.WithDescription("Get a single repository tag"),
@@ -13427,6 +15841,34 @@ func parseGetProjectsIdPackagesTerraformModulesModuleNameModuleSystem(request mc
 	return params
 }
 
+func registerDeleteProjectsIdTerraformStateName(s *server.MCPServer) {
+	tool := mcp.NewTool("delete_pjs_id_terraform_state_name",
+		mcp.WithDescription("Delete a Terraform state of a certain name"),
+		mcp.WithString("id",
+			mcp.Description("The ID or URL-encoded path of the project"),
+			mcp.Required(),
+		),
+		mcp.WithNumber("name",
+			mcp.Description("null"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, deleteProjectsIdTerraformStateNameHandler)
+}
+
+func deleteProjectsIdTerraformStateNameHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := request.GetString("id", "")
+	name := int32(request.GetInt("name", math.MinInt))
+
+	return toResult(c.DeleteApiV4ProjectsIdTerraformStateName(ctx, id, name, authorizationHeader))
+}
+
 func registerPostProjectsIdTerraformStateName(s *server.MCPServer) {
 	tool := mcp.NewTool("post_pjs_id_terraform_state_name",
 		mcp.WithDescription("Add a new Terraform state or update an existing one"),
@@ -13498,6 +15940,82 @@ func parseGetProjectsIdTerraformStateName(request mcp.CallToolRequest) client.Ge
 	return params
 }
 
+func registerDeleteProjectsIdTerraformStateNameLock(s *server.MCPServer) {
+	tool := mcp.NewTool("delete_pjs_id_terraform_state_name_lock",
+		mcp.WithDescription("Unlock a Terraform state of a certain name"),
+		mcp.WithString("id",
+			mcp.Description("The ID or URL-encoded path of the project"),
+			mcp.Required(),
+		),
+		mcp.WithString("ID",
+			mcp.Description("Terraform state lock ID"),
+		),
+		mcp.WithNumber("name",
+			mcp.Description("null"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, deleteProjectsIdTerraformStateNameLockHandler)
+}
+
+func deleteProjectsIdTerraformStateNameLockHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := request.GetString("id", "")
+	name := int32(request.GetInt("name", math.MinInt))
+	params := parseDeleteProjectsIdTerraformStateNameLock(request)
+	return toResult(c.DeleteApiV4ProjectsIdTerraformStateNameLock(ctx, id, name, &params, authorizationHeader))
+}
+
+func parseDeleteProjectsIdTerraformStateNameLock(request mcp.CallToolRequest) client.DeleteApiV4ProjectsIdTerraformStateNameLockParams {
+	params := client.DeleteApiV4ProjectsIdTerraformStateNameLockParams{}
+
+	ID := request.GetString("ID", "")
+	if ID != "" {
+
+		params.ID = &ID
+	}
+
+	return params
+}
+
+func registerDeleteProjectsIdTerraformStateNameVersionsSerial(s *server.MCPServer) {
+	tool := mcp.NewTool("delete_pjs_id_terraform_state_name_versions_serial",
+		mcp.WithDescription("Delete a Terraform state version"),
+		mcp.WithString("id",
+			mcp.Description("The ID or URL-encoded path of the project"),
+			mcp.Required(),
+		),
+		mcp.WithNumber("name",
+			mcp.Description("null"),
+			mcp.Required(),
+		),
+		mcp.WithNumber("serial",
+			mcp.Description("null"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, deleteProjectsIdTerraformStateNameVersionsSerialHandler)
+}
+
+func deleteProjectsIdTerraformStateNameVersionsSerialHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := request.GetString("id", "")
+	name := int32(request.GetInt("name", math.MinInt))
+	serial := int32(request.GetInt("serial", math.MinInt))
+
+	return toResult(c.DeleteApiV4ProjectsIdTerraformStateNameVersionsSerial(ctx, id, name, serial, authorizationHeader))
+}
+
 func registerGetProjectsIdTerraformStateNameVersionsSerial(s *server.MCPServer) {
 	tool := mcp.NewTool("get_pjs_id_terraform_state_name_versions_serial",
 		mcp.WithDescription("Get a Terraform state version"),
@@ -13564,6 +16082,34 @@ func parseGetProjectsIdWikis(request mcp.CallToolRequest) client.GetApiV4Project
 	params.WithContent = &with_content
 
 	return params
+}
+
+func registerDeleteProjectsIdWikisSlug(s *server.MCPServer) {
+	tool := mcp.NewTool("delete_pjs_id_wikis_slug",
+		mcp.WithDescription("Delete a wiki page"),
+		mcp.WithString("slug",
+			mcp.Description("The slug of a wiki page"),
+			mcp.Required(),
+		),
+		mcp.WithNumber("id",
+			mcp.Description("null"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, deleteProjectsIdWikisSlugHandler)
+}
+
+func deleteProjectsIdWikisSlugHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := int32(request.GetInt("id", math.MinInt))
+	slug := request.GetString("slug", "")
+
+	return toResult(c.DeleteApiV4ProjectsIdWikisSlug(ctx, id, slug, authorizationHeader))
 }
 
 func registerGetProjectsIdWikisSlug(s *server.MCPServer) {
@@ -14051,6 +16597,34 @@ func parseGetProjectsIdIssues(request mcp.CallToolRequest) client.GetApiV4Projec
 	params.WithLabelsDetails = &with_labels_details
 
 	return params
+}
+
+func registerDeleteProjectsIdIssuesIssueIid(s *server.MCPServer) {
+	tool := mcp.NewTool("delete_pjs_id_issues_issue_iid",
+		mcp.WithDescription("Delete an issue"),
+		mcp.WithString("id",
+			mcp.Description("The global ID or URL-encoded path of the project."),
+			mcp.Required(),
+		),
+		mcp.WithNumber("issue_iid",
+			mcp.Description("The internal ID of a project's issue."),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, deleteProjectsIdIssuesIssueIidHandler)
+}
+
+func deleteProjectsIdIssuesIssueIidHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := request.GetString("id", "")
+	issue_iid := request.GetInt("issue_iid", math.MinInt)
+
+	return toResult(c.DeleteApiV4ProjectsIdIssuesIssueIid(ctx, id, issue_iid, authorizationHeader))
 }
 
 func registerPutProjectsIdIssuesIssueIid(s *server.MCPServer) {
@@ -14807,4 +17381,37 @@ func getProjectsIdIssuesIssueIidMetricImagesHandler(ctx context.Context, request
 	issue_iid := request.GetInt("issue_iid", math.MinInt)
 
 	return toResult(c.GetApiV4ProjectsIdIssuesIssueIidMetricImages(ctx, id, issue_iid, authorizationHeader))
+}
+
+func registerDeleteProjectsIdIssuesIssueIidMetricImagesImageId(s *server.MCPServer) {
+	tool := mcp.NewTool("delete_pjs_id_issues_issue_iid_metric_images_image_id",
+		mcp.WithDescription("Delete metric image"),
+		mcp.WithString("id",
+			mcp.Description("The global ID or URL-encoded path of the project."),
+			mcp.Required(),
+		),
+		mcp.WithNumber("issue_iid",
+			mcp.Description("The internal ID of a project's issue."),
+			mcp.Required(),
+		),
+		mcp.WithNumber("image_id",
+			mcp.Description("The ID of the image."),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, deleteProjectsIdIssuesIssueIidMetricImagesImageIdHandler)
+}
+
+func deleteProjectsIdIssuesIssueIidMetricImagesImageIdHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := request.GetString("id", "")
+	issue_iid := request.GetInt("issue_iid", math.MinInt)
+	image_id := request.GetInt("image_id", math.MinInt)
+
+	return toResult(c.DeleteApiV4ProjectsIdIssuesIssueIidMetricImagesImageId(ctx, id, issue_iid, image_id, authorizationHeader))
 }

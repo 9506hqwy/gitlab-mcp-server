@@ -136,6 +136,29 @@ func parseGetAdminCiVariables(request mcp.CallToolRequest) client.GetApiV4AdminC
 	return params
 }
 
+func registerDeleteAdminCiVariablesKey(s *server.MCPServer) {
+	tool := mcp.NewTool("delete_admin_ci_variables_key",
+		mcp.WithDescription("Delete an existing instance-level variable"),
+		mcp.WithString("key",
+			mcp.Description("The key of a variable"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, deleteAdminCiVariablesKeyHandler)
+}
+
+func deleteAdminCiVariablesKeyHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	key := request.GetString("key", "")
+
+	return toResult(c.DeleteApiV4AdminCiVariablesKey(ctx, key, authorizationHeader))
+}
+
 func registerGetAdminCiVariablesKey(s *server.MCPServer) {
 	tool := mcp.NewTool("get_admin_ci_variables_key",
 		mcp.WithDescription("Get the details of a specific instance-level variable"),
@@ -203,6 +226,29 @@ func getAdminClustersHandler(ctx context.Context, request mcp.CallToolRequest) (
 	}
 
 	return toResult(c.GetApiV4AdminClusters(ctx, authorizationHeader))
+}
+
+func registerDeleteAdminClustersClusterId(s *server.MCPServer) {
+	tool := mcp.NewTool("delete_admin_clusters_cluster_id",
+		mcp.WithDescription("This feature was introduced in GitLab 13.2. Deletes an existing instance cluster. Does not remove existing resources within the connected Kubernetes cluster."),
+		mcp.WithNumber("cluster_id",
+			mcp.Description("The cluster ID"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, deleteAdminClustersClusterIdHandler)
+}
+
+func deleteAdminClustersClusterIdHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	cluster_id := int32(request.GetInt("cluster_id", math.MinInt))
+
+	return toResult(c.DeleteApiV4AdminClustersClusterId(ctx, cluster_id, authorizationHeader))
 }
 
 func registerGetAdminClustersClusterId(s *server.MCPServer) {

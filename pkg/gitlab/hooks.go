@@ -10,6 +10,62 @@ import (
 	client "github.com/9506hqwy/gitlab-client-go/pkg/gitlab"
 )
 
+func registerDeleteHooksHookIdUrlVariablesKey(s *server.MCPServer) {
+	tool := mcp.NewTool("delete_hooks_hook_id_url_variables_key",
+		mcp.WithDescription("Un-Set a url variable"),
+		mcp.WithNumber("hook_id",
+			mcp.Description("The ID of the hook"),
+			mcp.Required(),
+		),
+		mcp.WithString("key",
+			mcp.Description("The key of the variable"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, deleteHooksHookIdUrlVariablesKeyHandler)
+}
+
+func deleteHooksHookIdUrlVariablesKeyHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	hook_id := int32(request.GetInt("hook_id", math.MinInt))
+	key := request.GetString("key", "")
+
+	return toResult(c.DeleteApiV4HooksHookIdUrlVariablesKey(ctx, hook_id, key, authorizationHeader))
+}
+
+func registerDeleteHooksHookIdCustomHeadersKey(s *server.MCPServer) {
+	tool := mcp.NewTool("delete_hooks_hook_id_custom_headers_key",
+		mcp.WithDescription("Un-Set a custom header"),
+		mcp.WithNumber("hook_id",
+			mcp.Description("The ID of the hook"),
+			mcp.Required(),
+		),
+		mcp.WithString("key",
+			mcp.Description("The key of the custom header"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, deleteHooksHookIdCustomHeadersKeyHandler)
+}
+
+func deleteHooksHookIdCustomHeadersKeyHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	hook_id := int32(request.GetInt("hook_id", math.MinInt))
+	key := request.GetString("key", "")
+
+	return toResult(c.DeleteApiV4HooksHookIdCustomHeadersKey(ctx, hook_id, key, authorizationHeader))
+}
+
 func registerGetHooks(s *server.MCPServer) {
 	tool := mcp.NewTool("get_hooks",
 		mcp.WithDescription("Get a list of all system hooks"),
@@ -50,6 +106,29 @@ func parseGetHooks(request mcp.CallToolRequest) client.GetApiV4HooksParams {
 	}
 
 	return params
+}
+
+func registerDeleteHooksHookId(s *server.MCPServer) {
+	tool := mcp.NewTool("delete_hooks_hook_id",
+		mcp.WithDescription("Deletes a system hook"),
+		mcp.WithNumber("hook_id",
+			mcp.Description("The ID of the system hook"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, deleteHooksHookIdHandler)
+}
+
+func deleteHooksHookIdHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	hook_id := int32(request.GetInt("hook_id", math.MinInt))
+
+	return toResult(c.DeleteApiV4HooksHookId(ctx, hook_id, authorizationHeader))
 }
 
 func registerPostHooksHookId(s *server.MCPServer) {

@@ -52,6 +52,29 @@ func parseGetBroadcastMessages(request mcp.CallToolRequest) client.GetApiV4Broad
 	return params
 }
 
+func registerDeleteBroadcastMessagesId(s *server.MCPServer) {
+	tool := mcp.NewTool("delete_broadcast_messages_id",
+		mcp.WithDescription("This feature was introduced in GitLab 8.12."),
+		mcp.WithNumber("id",
+			mcp.Description("Broadcast message ID"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, deleteBroadcastMessagesIdHandler)
+}
+
+func deleteBroadcastMessagesIdHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := int32(request.GetInt("id", math.MinInt))
+
+	return toResult(c.DeleteApiV4BroadcastMessagesId(ctx, id, authorizationHeader))
+}
+
 func registerGetBroadcastMessagesId(s *server.MCPServer) {
 	tool := mcp.NewTool("get_broadcast_messages_id",
 		mcp.WithDescription("This feature was introduced in GitLab 8.12."),

@@ -175,6 +175,44 @@ func getPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChan
 	return toResult(c.GetApiV4PackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelPackagesConanPackageReference(ctx, package_name, package_version, package_username, package_channel, conan_package_reference, authorizationHeader))
 }
 
+func registerDeletePackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannel(s *server.MCPServer) {
+	tool := mcp.NewTool("delete_pkgs_conan_v1_conans_package_name_package_version_package_username_package_channel",
+		mcp.WithDescription("This feature was introduced in GitLab 12.5"),
+		mcp.WithString("package_name",
+			mcp.Description("Package name (example: my-package)"),
+			mcp.Required(),
+		),
+		mcp.WithString("package_version",
+			mcp.Description("Package version (example: 1.0)"),
+			mcp.Required(),
+		),
+		mcp.WithString("package_username",
+			mcp.Description("Package username (example: my-group+my-project)"),
+			mcp.Required(),
+		),
+		mcp.WithString("package_channel",
+			mcp.Description("Package channel (example: stable)"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, deletePackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelHandler)
+}
+
+func deletePackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	package_name := request.GetString("package_name", "")
+	package_version := request.GetString("package_version", "")
+	package_username := request.GetString("package_username", "")
+	package_channel := request.GetString("package_channel", "")
+
+	return toResult(c.DeleteApiV4PackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannel(ctx, package_name, package_version, package_username, package_channel, authorizationHeader))
+}
+
 func registerGetPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannel(s *server.MCPServer) {
 	tool := mcp.NewTool("get_pkgs_conan_v1_conans_package_name_package_version_package_username_package_channel",
 		mcp.WithDescription("This feature was introduced in GitLab 12.5"),

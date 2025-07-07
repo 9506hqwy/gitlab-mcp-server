@@ -76,6 +76,29 @@ func parseGetTopics(request mcp.CallToolRequest) client.GetApiV4TopicsParams {
 	return params
 }
 
+func registerDeleteTopicsId(s *server.MCPServer) {
+	tool := mcp.NewTool("delete_topics_id",
+		mcp.WithDescription("This feature was introduced in GitLab 14.9."),
+		mcp.WithNumber("id",
+			mcp.Description("ID of project topic"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, deleteTopicsIdHandler)
+}
+
+func deleteTopicsIdHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := int32(request.GetInt("id", math.MinInt))
+
+	return toResult(c.DeleteApiV4TopicsId(ctx, id, authorizationHeader))
+}
+
 func registerGetTopicsId(s *server.MCPServer) {
 	tool := mcp.NewTool("get_topics_id",
 		mcp.WithDescription("This feature was introduced in GitLab 14.5."),

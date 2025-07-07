@@ -12,6 +12,23 @@ import (
 	openapi_types "github.com/oapi-codegen/runtime/types"
 )
 
+func registerDeletePersonalAccessTokensSelf(s *server.MCPServer) {
+	tool := mcp.NewTool("delete_personal_access_tokens_self",
+		mcp.WithDescription("Revoke a personal access token by passing it to the API in a header"),
+	)
+
+	s.AddTool(tool, deletePersonalAccessTokensSelfHandler)
+}
+
+func deletePersonalAccessTokensSelfHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	return toResult(c.DeleteApiV4PersonalAccessTokensSelf(ctx, authorizationHeader))
+}
+
 func registerGetPersonalAccessTokensSelf(s *server.MCPServer) {
 	tool := mcp.NewTool("get_personal_access_tokens_self",
 		mcp.WithDescription("Get the details of a personal access token by passing it to the API in a header"),
@@ -220,6 +237,29 @@ func parseGetPersonalAccessTokens(request mcp.CallToolRequest) client.GetApiV4Pe
 	}
 
 	return params
+}
+
+func registerDeletePersonalAccessTokensId(s *server.MCPServer) {
+	tool := mcp.NewTool("delete_personal_access_tokens_id",
+		mcp.WithDescription("Revoke a personal access token by using the ID of the personal access token."),
+		mcp.WithNumber("id",
+			mcp.Description("null"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, deletePersonalAccessTokensIdHandler)
+}
+
+func deletePersonalAccessTokensIdHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := int32(request.GetInt("id", math.MinInt))
+
+	return toResult(c.DeleteApiV4PersonalAccessTokensId(ctx, id, authorizationHeader))
 }
 
 func registerGetPersonalAccessTokensId(s *server.MCPServer) {

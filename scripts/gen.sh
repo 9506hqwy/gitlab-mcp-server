@@ -431,6 +431,14 @@ done
 
 yq -r '.paths | keys | .[]' "${TMP_DIR}/openapi.yml" | while read -r OP_PATH
 do
+    OP_QUERY=".paths.\"${OP_PATH}\".delete"
+    OP_DELETE=$(yq "${OP_QUERY}" "${TMP_DIR}/openapi.yml")
+    if [[ "$OP_DELETE" != 'null' ]]; then
+        write-register-func "Delete" "${OP_PATH}" "${OP_QUERY}"
+        write-handler-func "Delete" "${OP_PATH}" "${OP_QUERY}"
+        write-parser-func "Delete" "${OP_PATH}" "${OP_QUERY}"
+    fi
+
     OP_QUERY=".paths.\"${OP_PATH}\".post"
     OP_POST=$(yq "${OP_QUERY}" "${TMP_DIR}/openapi.yml")
     OP_REQ_BODY=$(yq "${OP_QUERY}.requestBody" "${TMP_DIR}/openapi.yml")
@@ -479,6 +487,16 @@ do
     # If the tool name is too long, we need to use a shorter name
     # to avoid exceeding the maximum length of 46 characters.
     # See https://github.com/microsoft/vscode/blob/1.101.2/src/vs/workbench/contrib/mcp/common/mcpTypes.ts#L710-L714
+
+    OP_DELETE=$(yq ".paths.\"${OP_PATH}\".delete" "${TMP_DIR}/openapi.yml")
+    if [[ "$OP_DELETE" != 'null' ]]; then
+        METHOD="Delete"
+        if [[ ${#TOOL_SNAME} -gt 39 ]]; then # delete_XXX
+            echo "//if !readonly { register${METHOD}${API_NAME}(s) }" >> "${TOOLS_PATH}"
+        else
+            echo "if !readonly { register${METHOD}${API_NAME}(s) }" >> "${TOOLS_PATH}"
+        fi
+    fi
 
     OP_POST=$(yq ".paths.\"${OP_PATH}\".post" "${TMP_DIR}/openapi.yml")
     OP_REQ_BODY=$(yq ".paths.\"${OP_PATH}\".post.requestBody" "${TMP_DIR}/openapi.yml")

@@ -56,6 +56,29 @@ func getNamespacesIdGitlabSubscriptionHandler(ctx context.Context, request mcp.C
 	return toResult(c.GetApiV4NamespacesIdGitlabSubscription(ctx, id, authorizationHeader))
 }
 
+func registerDeleteNamespacesIdStorageLimitExclusion(s *server.MCPServer) {
+	tool := mcp.NewTool("delete_namespaces_id_storage_limit_exclusion",
+		mcp.WithDescription("Removes a Namespaces::Storage::LimitExclusion"),
+		mcp.WithNumber("id",
+			mcp.Description("null"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, deleteNamespacesIdStorageLimitExclusionHandler)
+}
+
+func deleteNamespacesIdStorageLimitExclusionHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := int32(request.GetInt("id", math.MinInt))
+
+	return toResult(c.DeleteApiV4NamespacesIdStorageLimitExclusion(ctx, id, authorizationHeader))
+}
+
 func registerGetNamespacesStorageLimitExclusions(s *server.MCPServer) {
 	tool := mcp.NewTool("get_namespaces_storage_limit_exclusions",
 		mcp.WithDescription("Gets all records for namespaces that have been excluded"),

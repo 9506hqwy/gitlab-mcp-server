@@ -84,6 +84,34 @@ func parseGetGroupsIdAccessRequests(request mcp.CallToolRequest) client.GetApiV4
 	return params
 }
 
+func registerDeleteGroupsIdAccessRequestsUserId(s *server.MCPServer) {
+	tool := mcp.NewTool("delete_grps_id_access_requests_user_id",
+		mcp.WithDescription("This feature was introduced in GitLab 8.11."),
+		mcp.WithString("id",
+			mcp.Description("The ID or URL-encoded path of the group owned by the authenticated user"),
+			mcp.Required(),
+		),
+		mcp.WithNumber("user_id",
+			mcp.Description("The user ID of the access requester"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, deleteGroupsIdAccessRequestsUserIdHandler)
+}
+
+func deleteGroupsIdAccessRequestsUserIdHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := request.GetString("id", "")
+	user_id := int32(request.GetInt("user_id", math.MinInt))
+
+	return toResult(c.DeleteApiV4GroupsIdAccessRequestsUserId(ctx, id, user_id, authorizationHeader))
+}
+
 func registerGetGroupsIdEpicsEpicIidAwardEmoji(s *server.MCPServer) {
 	tool := mcp.NewTool("get_grps_id_epics_epic_iid_award_emoji",
 		mcp.WithDescription("Get a list of all emoji reactions for a specified awardable. This feature was introduced in 8.9"),
@@ -134,6 +162,39 @@ func parseGetGroupsIdEpicsEpicIidAwardEmoji(request mcp.CallToolRequest) client.
 	}
 
 	return params
+}
+
+func registerDeleteGroupsIdEpicsEpicIidAwardEmojiAwardId(s *server.MCPServer) {
+	tool := mcp.NewTool("delete_grps_id_epics_epic_iid_award_emoji_award_id",
+		mcp.WithDescription("Only an administrator or the author of the reaction can delete an emoji reaction. This feature was introduced in 8.9"),
+		mcp.WithNumber("award_id",
+			mcp.Description("ID of an emoji reaction."),
+			mcp.Required(),
+		),
+		mcp.WithNumber("id",
+			mcp.Description("null"),
+			mcp.Required(),
+		),
+		mcp.WithNumber("epic_iid",
+			mcp.Description("null"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, deleteGroupsIdEpicsEpicIidAwardEmojiAwardIdHandler)
+}
+
+func deleteGroupsIdEpicsEpicIidAwardEmojiAwardIdHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := int32(request.GetInt("id", math.MinInt))
+	epic_iid := int32(request.GetInt("epic_iid", math.MinInt))
+	award_id := int32(request.GetInt("award_id", math.MinInt))
+
+	return toResult(c.DeleteApiV4GroupsIdEpicsEpicIidAwardEmojiAwardId(ctx, id, epic_iid, award_id, authorizationHeader))
 }
 
 func registerGetGroupsIdEpicsEpicIidAwardEmojiAwardId(s *server.MCPServer) {
@@ -224,6 +285,44 @@ func parseGetGroupsIdEpicsEpicIidNotesNoteIdAwardEmoji(request mcp.CallToolReque
 	}
 
 	return params
+}
+
+func registerDeleteGroupsIdEpicsEpicIidNotesNoteIdAwardEmojiAwardId(s *server.MCPServer) {
+	tool := mcp.NewTool("delete_grps_id_epics_epic_iid_notes_note_id_award_emoji_award_id",
+		mcp.WithDescription("Only an administrator or the author of the reaction can delete an emoji reaction. This feature was introduced in 8.9"),
+		mcp.WithNumber("award_id",
+			mcp.Description("ID of an emoji reaction."),
+			mcp.Required(),
+		),
+		mcp.WithNumber("id",
+			mcp.Description("null"),
+			mcp.Required(),
+		),
+		mcp.WithNumber("epic_iid",
+			mcp.Description("null"),
+			mcp.Required(),
+		),
+		mcp.WithNumber("note_id",
+			mcp.Description("null"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, deleteGroupsIdEpicsEpicIidNotesNoteIdAwardEmojiAwardIdHandler)
+}
+
+func deleteGroupsIdEpicsEpicIidNotesNoteIdAwardEmojiAwardIdHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := int32(request.GetInt("id", math.MinInt))
+	epic_iid := int32(request.GetInt("epic_iid", math.MinInt))
+	note_id := int32(request.GetInt("note_id", math.MinInt))
+	award_id := int32(request.GetInt("award_id", math.MinInt))
+
+	return toResult(c.DeleteApiV4GroupsIdEpicsEpicIidNotesNoteIdAwardEmojiAwardId(ctx, id, epic_iid, note_id, award_id, authorizationHeader))
 }
 
 func registerGetGroupsIdEpicsEpicIidNotesNoteIdAwardEmojiAwardId(s *server.MCPServer) {
@@ -369,6 +468,34 @@ func parseGetGroupsIdBadgesRender(request mcp.CallToolRequest) client.GetApiV4Gr
 	return params
 }
 
+func registerDeleteGroupsIdBadgesBadgeId(s *server.MCPServer) {
+	tool := mcp.NewTool("delete_grps_id_badges_badge_id",
+		mcp.WithDescription("This feature was introduced in GitLab 10.6."),
+		mcp.WithString("id",
+			mcp.Description("The ID or URL-encoded path of the group owned by the authenticated user."),
+			mcp.Required(),
+		),
+		mcp.WithNumber("badge_id",
+			mcp.Description("The badge ID"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, deleteGroupsIdBadgesBadgeIdHandler)
+}
+
+func deleteGroupsIdBadgesBadgeIdHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := request.GetString("id", "")
+	badge_id := int32(request.GetInt("badge_id", math.MinInt))
+
+	return toResult(c.DeleteApiV4GroupsIdBadgesBadgeId(ctx, id, badge_id, authorizationHeader))
+}
+
 func registerGetGroupsIdBadgesBadgeId(s *server.MCPServer) {
 	tool := mcp.NewTool("get_grps_id_badges_badge_id",
 		mcp.WithDescription("This feature was introduced in GitLab 10.6."),
@@ -418,6 +545,34 @@ func getGroupsIdCustomAttributesHandler(ctx context.Context, request mcp.CallToo
 	id := int32(request.GetInt("id", math.MinInt))
 
 	return toResult(c.GetApiV4GroupsIdCustomAttributes(ctx, id, authorizationHeader))
+}
+
+func registerDeleteGroupsIdCustomAttributesKey(s *server.MCPServer) {
+	tool := mcp.NewTool("delete_grps_id_custom_attributes_key",
+		mcp.WithDescription("Delete a custom attribute on a group"),
+		mcp.WithString("key",
+			mcp.Description("The key of the custom attribute"),
+			mcp.Required(),
+		),
+		mcp.WithNumber("id",
+			mcp.Description("null"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, deleteGroupsIdCustomAttributesKeyHandler)
+}
+
+func deleteGroupsIdCustomAttributesKeyHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := int32(request.GetInt("id", math.MinInt))
+	key := request.GetString("key", "")
+
+	return toResult(c.DeleteApiV4GroupsIdCustomAttributesKey(ctx, id, key, authorizationHeader))
 }
 
 func registerGetGroupsIdCustomAttributesKey(s *server.MCPServer) {
@@ -615,6 +770,29 @@ func parseGetGroups(request mcp.CallToolRequest) client.GetApiV4GroupsParams {
 	params.WithCustomAttributes = &with_custom_attributes
 
 	return params
+}
+
+func registerDeleteGroupsId(s *server.MCPServer) {
+	tool := mcp.NewTool("delete_grps_id",
+		mcp.WithDescription("Remove a group."),
+		mcp.WithString("id",
+			mcp.Description("The ID of a group"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, deleteGroupsIdHandler)
+}
+
+func deleteGroupsIdHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := request.GetString("id", "")
+
+	return toResult(c.DeleteApiV4GroupsId(ctx, id, authorizationHeader))
 }
 
 func registerGetGroupsId(s *server.MCPServer) {
@@ -1663,6 +1841,34 @@ func parseGetGroupsIdTransferLocations(request mcp.CallToolRequest) client.GetAp
 	return params
 }
 
+func registerDeleteGroupsIdShareGroupId(s *server.MCPServer) {
+	tool := mcp.NewTool("delete_grps_id_share_group_id",
+		mcp.WithDescription("null"),
+		mcp.WithString("id",
+			mcp.Description("The ID of a group"),
+			mcp.Required(),
+		),
+		mcp.WithNumber("group_id",
+			mcp.Description("The ID of the shared group"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, deleteGroupsIdShareGroupIdHandler)
+}
+
+func deleteGroupsIdShareGroupIdHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := request.GetString("id", "")
+	group_id := int32(request.GetInt("group_id", math.MinInt))
+
+	return toResult(c.DeleteApiV4GroupsIdShareGroupId(ctx, id, group_id, authorizationHeader))
+}
+
 func registerPostGroupsIdLdapSync(s *server.MCPServer) {
 	tool := mcp.NewTool("post_grps_id_ldap_sync",
 		mcp.WithDescription("Sync a group with LDAP."),
@@ -2090,6 +2296,34 @@ func parseGetGroupsIdSshCertificates(request mcp.CallToolRequest) client.GetApiV
 	return params
 }
 
+func registerDeleteGroupsIdSshCertificatesSshCertificatesId(s *server.MCPServer) {
+	tool := mcp.NewTool("delete_grps_id_ssh_certificates_ssh_certificates_id",
+		mcp.WithDescription("Removes a Groups::SshCertificate"),
+		mcp.WithNumber("id",
+			mcp.Description("null"),
+			mcp.Required(),
+		),
+		mcp.WithNumber("ssh_certificates_id",
+			mcp.Description("null"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, deleteGroupsIdSshCertificatesSshCertificatesIdHandler)
+}
+
+func deleteGroupsIdSshCertificatesSshCertificatesIdHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := int32(request.GetInt("id", math.MinInt))
+	ssh_certificates_id := int32(request.GetInt("ssh_certificates_id", math.MinInt))
+
+	return toResult(c.DeleteApiV4GroupsIdSshCertificatesSshCertificatesId(ctx, id, ssh_certificates_id, authorizationHeader))
+}
+
 func registerGetGroupsIdRunners(s *server.MCPServer) {
 	tool := mcp.NewTool("get_grps_id_runners",
 		mcp.WithDescription("List all runners available in the group as well as its ancestor groups, including any allowed shared runners."),
@@ -2259,6 +2493,29 @@ func getGroupsIdPackagesDebianPoolDistributionProjectIdLetterPackageNamePackageV
 	return toResult(c.GetApiV4GroupsIdPackagesDebianPoolDistributionProjectIdLetterPackageNamePackageVersionFileName(ctx, id, distribution, project_id, letter, package_name, package_version, file_name, authorizationHeader))
 }
 
+func registerDeleteGroupsIdDependencyProxyCache(s *server.MCPServer) {
+	tool := mcp.NewTool("delete_grps_id_dependency_proxy_cache",
+		mcp.WithDescription("Schedules for deletion the cached manifests and blobs for a group.This endpoint requires the Owner role for the group."),
+		mcp.WithString("id",
+			mcp.Description("The ID or URL-encoded path of the group owned by the authenticated user"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, deleteGroupsIdDependencyProxyCacheHandler)
+}
+
+func deleteGroupsIdDependencyProxyCacheHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := request.GetString("id", "")
+
+	return toResult(c.DeleteApiV4GroupsIdDependencyProxyCache(ctx, id, authorizationHeader))
+}
+
 func registerGetGroupsIdDeployTokens(s *server.MCPServer) {
 	tool := mcp.NewTool("get_grps_id_deploy_tokens",
 		mcp.WithDescription("Get a list of a group's deploy tokens. This feature was introduced in GitLab 12.9."),
@@ -2310,6 +2567,34 @@ func parseGetGroupsIdDeployTokens(request mcp.CallToolRequest) client.GetApiV4Gr
 	params.Active = &active
 
 	return params
+}
+
+func registerDeleteGroupsIdDeployTokensTokenId(s *server.MCPServer) {
+	tool := mcp.NewTool("delete_grps_id_deploy_tokens_token_id",
+		mcp.WithDescription("Removes a deploy token from the group. This feature was introduced in GitLab 12.9."),
+		mcp.WithNumber("id",
+			mcp.Description("The ID or URL-encoded path of the group owned by the authenticated user"),
+			mcp.Required(),
+		),
+		mcp.WithNumber("token_id",
+			mcp.Description("The ID of the deploy token"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, deleteGroupsIdDeployTokensTokenIdHandler)
+}
+
+func deleteGroupsIdDeployTokensTokenIdHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := int32(request.GetInt("id", math.MinInt))
+	token_id := int32(request.GetInt("token_id", math.MinInt))
+
+	return toResult(c.DeleteApiV4GroupsIdDeployTokensTokenId(ctx, id, token_id, authorizationHeader))
 }
 
 func registerGetGroupsIdDeployTokensTokenId(s *server.MCPServer) {
@@ -2408,6 +2693,34 @@ func parseGetGroupsIdClusters(request mcp.CallToolRequest) client.GetApiV4Groups
 	}
 
 	return params
+}
+
+func registerDeleteGroupsIdClustersClusterId(s *server.MCPServer) {
+	tool := mcp.NewTool("delete_grps_id_clusters_cluster_id",
+		mcp.WithDescription("This feature was introduced in GitLab 12.1. Deletes an existing group cluster. Does not remove existing resources within the connected Kubernetes cluster."),
+		mcp.WithString("id",
+			mcp.Description("The ID of the group"),
+			mcp.Required(),
+		),
+		mcp.WithNumber("cluster_id",
+			mcp.Description("The Cluster ID"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, deleteGroupsIdClustersClusterIdHandler)
+}
+
+func deleteGroupsIdClustersClusterIdHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := request.GetString("id", "")
+	cluster_id := int32(request.GetInt("cluster_id", math.MinInt))
+
+	return toResult(c.DeleteApiV4GroupsIdClustersClusterId(ctx, id, cluster_id, authorizationHeader))
 }
 
 func registerGetGroupsIdClustersClusterId(s *server.MCPServer) {
@@ -2561,6 +2874,112 @@ func parseGetGroupsIdDebianDistributions(request mcp.CallToolRequest) client.Get
 
 		params.Codename = &codename
 	}
+
+	suite := request.GetString("suite", "")
+	if suite != "" {
+
+		params.Suite = &suite
+	}
+
+	origin := request.GetString("origin", "")
+	if origin != "" {
+
+		params.Origin = &origin
+	}
+
+	label := request.GetString("label", "")
+	if label != "" {
+
+		params.Label = &label
+	}
+
+	version := request.GetString("version", "")
+	if version != "" {
+
+		params.Version = &version
+	}
+
+	description := request.GetString("description", "")
+	if description != "" {
+
+		params.Description = &description
+	}
+
+	valid_time_duration_seconds := request.GetInt("valid_time_duration_seconds", math.MinInt)
+	if valid_time_duration_seconds != math.MinInt {
+		valid_time_duration_seconds := int32(valid_time_duration_seconds)
+		params.ValidTimeDurationSeconds = &valid_time_duration_seconds
+	}
+
+	components := request.GetString("components", "")
+	if components != "" {
+		components := strings.Split(components, ",")
+		params.Components = &components
+	}
+
+	architectures := request.GetString("architectures", "")
+	if architectures != "" {
+		architectures := strings.Split(architectures, ",")
+		params.Architectures = &architectures
+	}
+
+	return params
+}
+
+func registerDeleteGroupsIdDebianDistributionsCodename(s *server.MCPServer) {
+	tool := mcp.NewTool("delete_grps_id_debian_distributions_codename",
+		mcp.WithDescription("This feature was introduced in 14.0"),
+		mcp.WithString("id",
+			mcp.Description("The ID or URL-encoded path of the group"),
+			mcp.Required(),
+		),
+		mcp.WithString("codename",
+			mcp.Description("The Debian Codename (example: sid)"),
+			mcp.Required(),
+		),
+		mcp.WithString("suite",
+			mcp.Description("The Debian Suite (example: unstable)"),
+		),
+		mcp.WithString("origin",
+			mcp.Description("The Debian Origin (example: Grep)"),
+		),
+		mcp.WithString("label",
+			mcp.Description("The Debian Label (example: grep.be)"),
+		),
+		mcp.WithString("version",
+			mcp.Description("The Debian Version (example: 12)"),
+		),
+		mcp.WithString("description",
+			mcp.Description("The Debian Description (example: My description)"),
+		),
+		mcp.WithNumber("valid_time_duration_seconds",
+			mcp.Description("The duration before the Release file should be considered expired by the client (example: 604800)"),
+		),
+		mcp.WithString("components",
+			mcp.Description("The list of Components (example: main)"),
+		),
+		mcp.WithString("architectures",
+			mcp.Description("The list of Architectures (example: amd64)"),
+		),
+	)
+
+	s.AddTool(tool, deleteGroupsIdDebianDistributionsCodenameHandler)
+}
+
+func deleteGroupsIdDebianDistributionsCodenameHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := request.GetString("id", "")
+	codename := request.GetString("codename", "")
+	params := parseDeleteGroupsIdDebianDistributionsCodename(request)
+	return toResult(c.DeleteApiV4GroupsIdDebianDistributionsCodename(ctx, id, codename, &params, authorizationHeader))
+}
+
+func parseDeleteGroupsIdDebianDistributionsCodename(request mcp.CallToolRequest) client.DeleteApiV4GroupsIdDebianDistributionsCodenameParams {
+	params := client.DeleteApiV4GroupsIdDebianDistributionsCodenameParams{}
 
 	suite := request.GetString("suite", "")
 	if suite != "" {
@@ -3038,6 +3457,34 @@ func parseGetGroupsIdVariables(request mcp.CallToolRequest) client.GetApiV4Group
 	return params
 }
 
+func registerDeleteGroupsIdVariablesKey(s *server.MCPServer) {
+	tool := mcp.NewTool("delete_grps_id_variables_key",
+		mcp.WithDescription("Delete an existing variable from a group"),
+		mcp.WithString("id",
+			mcp.Description("The ID of a group or URL-encoded path of the group owned by the authenticated user"),
+			mcp.Required(),
+		),
+		mcp.WithString("key",
+			mcp.Description("The key of a variable"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, deleteGroupsIdVariablesKeyHandler)
+}
+
+func deleteGroupsIdVariablesKeyHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := request.GetString("id", "")
+	key := request.GetString("key", "")
+
+	return toResult(c.DeleteApiV4GroupsIdVariablesKey(ctx, id, key, authorizationHeader))
+}
+
 func registerGetGroupsIdVariablesKey(s *server.MCPServer) {
 	tool := mcp.NewTool("get_grps_id_variables_key",
 		mcp.WithDescription("Get the details of a group’s specific variable"),
@@ -3087,6 +3534,35 @@ func getGroupsIdIntegrationsHandler(ctx context.Context, request mcp.CallToolReq
 	id := int32(request.GetInt("id", math.MinInt))
 
 	return toResult(c.GetApiV4GroupsIdIntegrations(ctx, id, authorizationHeader))
+}
+
+func registerDeleteGroupsIdIntegrationsSlug(s *server.MCPServer) {
+	tool := mcp.NewTool("delete_grps_id_integrations_slug",
+		mcp.WithDescription("Disable the integration. Integration settings are preserved."),
+		mcp.WithString("slug",
+			mcp.Description("The name of the integration"),
+			mcp.Required(),
+			mcp.Enum("apple-app-store", "asana", "assembla", "bamboo", "bugzilla", "buildkite", "campfire", "confluence", "custom-issue-tracker", "datadog", "diffblue-cover", "discord", "drone-ci", "emails-on-push", "external-wiki", "gitlab-slack-application", "google-play", "hangouts-chat", "harbor", "irker", "jenkins", "jira", "jira-cloud-app", "matrix", "mattermost-slash-commands", "slack-slash-commands", "packagist", "phorge", "pipelines-email", "pivotaltracker", "pumble", "pushover", "redmine", "ewm", "youtrack", "clickup", "slack", "microsoft-teams", "mattermost", "teamcity", "telegram", "unify-circuit", "webex-teams", "zentao", "squash-tm", "github", "git-guardian", "google-cloud-platform-artifact-registry", "google-cloud-platform-workload-identity-federation", "mock-ci", "mock-monitoring"),
+		),
+		mcp.WithNumber("id",
+			mcp.Description("null"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, deleteGroupsIdIntegrationsSlugHandler)
+}
+
+func deleteGroupsIdIntegrationsSlugHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := int32(request.GetInt("id", math.MinInt))
+	slug := request.GetString("slug", "")
+
+	return toResult(c.DeleteApiV4GroupsIdIntegrationsSlug(ctx, id, slug, authorizationHeader))
 }
 
 func registerGetGroupsIdIntegrationsSlug(s *server.MCPServer) {
@@ -3174,6 +3650,34 @@ func parseGetGroupsIdInvitations(request mcp.CallToolRequest) client.GetApiV4Gro
 	return params
 }
 
+func registerDeleteGroupsIdInvitationsEmail(s *server.MCPServer) {
+	tool := mcp.NewTool("delete_grps_id_invitations_email",
+		mcp.WithDescription("Removes an invitation from a group or project."),
+		mcp.WithString("id",
+			mcp.Description("The group ID"),
+			mcp.Required(),
+		),
+		mcp.WithString("email",
+			mcp.Description("The email address of the invitation"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, deleteGroupsIdInvitationsEmailHandler)
+}
+
+func deleteGroupsIdInvitationsEmailHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := request.GetString("id", "")
+	email := request.GetString("email", "")
+
+	return toResult(c.DeleteApiV4GroupsIdInvitationsEmail(ctx, id, email, authorizationHeader))
+}
+
 func registerGetGroupsIdUploads(s *server.MCPServer) {
 	tool := mcp.NewTool("get_grps_id_uploads",
 		mcp.WithDescription("Get the list of uploads of a group"),
@@ -3221,6 +3725,34 @@ func parseGetGroupsIdUploads(request mcp.CallToolRequest) client.GetApiV4GroupsI
 	return params
 }
 
+func registerDeleteGroupsIdUploadsUploadId(s *server.MCPServer) {
+	tool := mcp.NewTool("delete_grps_id_uploads_upload_id",
+		mcp.WithDescription("Delete a single group upload"),
+		mcp.WithNumber("upload_id",
+			mcp.Description("The ID of a group upload"),
+			mcp.Required(),
+		),
+		mcp.WithNumber("id",
+			mcp.Description("null"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, deleteGroupsIdUploadsUploadIdHandler)
+}
+
+func deleteGroupsIdUploadsUploadIdHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := int32(request.GetInt("id", math.MinInt))
+	upload_id := int32(request.GetInt("upload_id", math.MinInt))
+
+	return toResult(c.DeleteApiV4GroupsIdUploadsUploadId(ctx, id, upload_id, authorizationHeader))
+}
+
 func registerGetGroupsIdUploadsUploadId(s *server.MCPServer) {
 	tool := mcp.NewTool("get_grps_id_uploads_upload_id",
 		mcp.WithDescription("Download a single group upload by ID"),
@@ -3247,6 +3779,39 @@ func getGroupsIdUploadsUploadIdHandler(ctx context.Context, request mcp.CallTool
 	upload_id := int32(request.GetInt("upload_id", math.MinInt))
 
 	return toResult(c.GetApiV4GroupsIdUploadsUploadId(ctx, id, upload_id, authorizationHeader))
+}
+
+func registerDeleteGroupsIdUploadsSecretFilename(s *server.MCPServer) {
+	tool := mcp.NewTool("delete_grps_id_uploads_secret_filename",
+		mcp.WithDescription("Delete a single group upload by secret and filename"),
+		mcp.WithString("secret",
+			mcp.Description("The 32-character secret of a group upload"),
+			mcp.Required(),
+		),
+		mcp.WithString("filename",
+			mcp.Description("The filename of a group upload"),
+			mcp.Required(),
+		),
+		mcp.WithNumber("id",
+			mcp.Description("null"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, deleteGroupsIdUploadsSecretFilenameHandler)
+}
+
+func deleteGroupsIdUploadsSecretFilenameHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := int32(request.GetInt("id", math.MinInt))
+	secret := request.GetString("secret", "")
+	filename := request.GetString("filename", "")
+
+	return toResult(c.DeleteApiV4GroupsIdUploadsSecretFilename(ctx, id, secret, filename, authorizationHeader))
 }
 
 func registerGetGroupsIdUploadsSecretFilename(s *server.MCPServer) {
@@ -3465,6 +4030,52 @@ func parseGetGroupsIdMembersAll(request mcp.CallToolRequest) client.GetApiV4Grou
 	return params
 }
 
+func registerDeleteGroupsIdMembersUserId(s *server.MCPServer) {
+	tool := mcp.NewTool("delete_grps_id_members_user_id",
+		mcp.WithDescription("Removes a user from a group or project."),
+		mcp.WithString("id",
+			mcp.Description("The group ID"),
+			mcp.Required(),
+		),
+		mcp.WithNumber("user_id",
+			mcp.Description("The user ID of the member"),
+			mcp.Required(),
+		),
+		mcp.WithBoolean("skip_subresources",
+			mcp.Description("Flag indicating if the deletion of direct memberships of the removed member in subgroups and projects should be skipped (default: false)"),
+		),
+		mcp.WithBoolean("unassign_issuables",
+			mcp.Description("Flag indicating if the removed member should be unassigned from any issues or merge requests within given group or project (default: false)"),
+		),
+	)
+
+	s.AddTool(tool, deleteGroupsIdMembersUserIdHandler)
+}
+
+func deleteGroupsIdMembersUserIdHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := request.GetString("id", "")
+	user_id := int32(request.GetInt("user_id", math.MinInt))
+	params := parseDeleteGroupsIdMembersUserId(request)
+	return toResult(c.DeleteApiV4GroupsIdMembersUserId(ctx, id, user_id, &params, authorizationHeader))
+}
+
+func parseDeleteGroupsIdMembersUserId(request mcp.CallToolRequest) client.DeleteApiV4GroupsIdMembersUserIdParams {
+	params := client.DeleteApiV4GroupsIdMembersUserIdParams{}
+
+	skip_subresources := request.GetBool("skip_subresources", false)
+	params.SkipSubresources = &skip_subresources
+
+	unassign_issuables := request.GetBool("unassign_issuables", false)
+	params.UnassignIssuables = &unassign_issuables
+
+	return params
+}
+
 func registerGetGroupsIdMembersUserId(s *server.MCPServer) {
 	tool := mcp.NewTool("get_grps_id_members_user_id",
 		mcp.WithDescription("Gets a member of a group or project."),
@@ -3519,6 +4130,34 @@ func getGroupsIdMembersAllUserIdHandler(ctx context.Context, request mcp.CallToo
 	user_id := int32(request.GetInt("user_id", math.MinInt))
 
 	return toResult(c.GetApiV4GroupsIdMembersAllUserId(ctx, id, user_id, authorizationHeader))
+}
+
+func registerDeleteGroupsIdMembersUserIdOverride(s *server.MCPServer) {
+	tool := mcp.NewTool("delete_grps_id_members_user_id_override",
+		mcp.WithDescription("Remove an LDAP group member access level override."),
+		mcp.WithString("id",
+			mcp.Description("The ID of a group"),
+			mcp.Required(),
+		),
+		mcp.WithNumber("user_id",
+			mcp.Description("The user ID of the member"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, deleteGroupsIdMembersUserIdOverrideHandler)
+}
+
+func deleteGroupsIdMembersUserIdOverrideHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := request.GetString("id", "")
+	user_id := int32(request.GetInt("user_id", math.MinInt))
+
+	return toResult(c.DeleteApiV4GroupsIdMembersUserIdOverride(ctx, id, user_id, authorizationHeader))
 }
 
 func registerPostGroupsIdMembersUserIdOverride(s *server.MCPServer) {
@@ -3816,6 +4455,34 @@ func parseGetGroupsIdBillableMembersUserIdIndirect(request mcp.CallToolRequest) 
 	}
 
 	return params
+}
+
+func registerDeleteGroupsIdBillableMembersUserId(s *server.MCPServer) {
+	tool := mcp.NewTool("delete_grps_id_billable_members_user_id",
+		mcp.WithDescription("Removes a billable member from a group or project."),
+		mcp.WithString("id",
+			mcp.Description("The ID of a group"),
+			mcp.Required(),
+		),
+		mcp.WithNumber("user_id",
+			mcp.Description("The user ID of the member"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, deleteGroupsIdBillableMembersUserIdHandler)
+}
+
+func deleteGroupsIdBillableMembersUserIdHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := request.GetString("id", "")
+	user_id := int32(request.GetInt("user_id", math.MinInt))
+
+	return toResult(c.DeleteApiV4GroupsIdBillableMembersUserId(ctx, id, user_id, authorizationHeader))
 }
 
 func registerGetGroupsIdMergeRequests(s *server.MCPServer) {
@@ -4572,6 +5239,34 @@ func parseGetGroupsIdWikis(request mcp.CallToolRequest) client.GetApiV4GroupsIdW
 	params.WithContent = &with_content
 
 	return params
+}
+
+func registerDeleteGroupsIdWikisSlug(s *server.MCPServer) {
+	tool := mcp.NewTool("delete_grps_id_wikis_slug",
+		mcp.WithDescription("Delete a wiki page"),
+		mcp.WithString("slug",
+			mcp.Description("The slug of a wiki page"),
+			mcp.Required(),
+		),
+		mcp.WithNumber("id",
+			mcp.Description("null"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, deleteGroupsIdWikisSlugHandler)
+}
+
+func deleteGroupsIdWikisSlugHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := int32(request.GetInt("id", math.MinInt))
+	slug := request.GetString("slug", "")
+
+	return toResult(c.DeleteApiV4GroupsIdWikisSlug(ctx, id, slug, authorizationHeader))
 }
 
 func registerGetGroupsIdWikisSlug(s *server.MCPServer) {

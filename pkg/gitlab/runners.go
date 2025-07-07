@@ -11,6 +11,40 @@ import (
 	client "github.com/9506hqwy/gitlab-client-go/pkg/gitlab"
 )
 
+func registerDeleteRunners(s *server.MCPServer) {
+	tool := mcp.NewTool("delete_runners",
+		mcp.WithDescription("Delete a registered runner"),
+		mcp.WithString("token",
+			mcp.Description("The runner's authentication token"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, deleteRunnersHandler)
+}
+
+func deleteRunnersHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	params := parseDeleteRunners(request)
+	return toResult(c.DeleteApiV4Runners(ctx, &params, authorizationHeader))
+}
+
+func parseDeleteRunners(request mcp.CallToolRequest) client.DeleteApiV4RunnersParams {
+	params := client.DeleteApiV4RunnersParams{}
+
+	token := request.GetString("token", "")
+	if token != "" {
+
+		params.Token = token
+	}
+
+	return params
+}
+
 func registerGetRunners(s *server.MCPServer) {
 	tool := mcp.NewTool("get_runners",
 		mcp.WithDescription("Get runners available for user"),
@@ -105,6 +139,50 @@ func parseGetRunners(request mcp.CallToolRequest) client.GetApiV4RunnersParams {
 	if per_page != math.MinInt {
 		per_page := int32(per_page)
 		params.PerPage = &per_page
+	}
+
+	return params
+}
+
+func registerDeleteRunnersManagers(s *server.MCPServer) {
+	tool := mcp.NewTool("delete_runners_managers",
+		mcp.WithDescription("Delete a registered runner manager"),
+		mcp.WithString("token",
+			mcp.Description("The runner's authentication token"),
+			mcp.Required(),
+		),
+		mcp.WithString("system_id",
+			mcp.Description("The runner's system identifier."),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, deleteRunnersManagersHandler)
+}
+
+func deleteRunnersManagersHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	params := parseDeleteRunnersManagers(request)
+	return toResult(c.DeleteApiV4RunnersManagers(ctx, &params, authorizationHeader))
+}
+
+func parseDeleteRunnersManagers(request mcp.CallToolRequest) client.DeleteApiV4RunnersManagersParams {
+	params := client.DeleteApiV4RunnersManagersParams{}
+
+	token := request.GetString("token", "")
+	if token != "" {
+
+		params.Token = token
+	}
+
+	system_id := request.GetString("system_id", "")
+	if system_id != "" {
+
+		params.SystemId = system_id
 	}
 
 	return params
@@ -207,6 +285,29 @@ func parseGetRunnersAll(request mcp.CallToolRequest) client.GetApiV4RunnersAllPa
 	}
 
 	return params
+}
+
+func registerDeleteRunnersId(s *server.MCPServer) {
+	tool := mcp.NewTool("delete_runners_id",
+		mcp.WithDescription("Remove a runner"),
+		mcp.WithNumber("id",
+			mcp.Description("The ID of a runner"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, deleteRunnersIdHandler)
+}
+
+func deleteRunnersIdHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := int32(request.GetInt("id", math.MinInt))
+
+	return toResult(c.DeleteApiV4RunnersId(ctx, id, authorizationHeader))
 }
 
 func registerGetRunnersId(s *server.MCPServer) {

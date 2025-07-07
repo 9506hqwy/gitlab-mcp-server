@@ -200,6 +200,29 @@ func parseGetSnippetsAll(request mcp.CallToolRequest) client.GetApiV4SnippetsAll
 	return params
 }
 
+func registerDeleteSnippetsId(s *server.MCPServer) {
+	tool := mcp.NewTool("delete_snippets_id",
+		mcp.WithDescription("This feature was introduced in GitLab 8.15."),
+		mcp.WithNumber("id",
+			mcp.Description("The ID of a snippet"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, deleteSnippetsIdHandler)
+}
+
+func deleteSnippetsIdHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := int32(request.GetInt("id", math.MinInt))
+
+	return toResult(c.DeleteApiV4SnippetsId(ctx, id, authorizationHeader))
+}
+
 func registerGetSnippetsId(s *server.MCPServer) {
 	tool := mcp.NewTool("get_snippets_id",
 		mcp.WithDescription("This feature was introduced in GitLab 8.15."),
