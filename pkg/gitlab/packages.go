@@ -375,6 +375,87 @@ func getPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChan
 	return toResult(c.GetApiV4PackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelDownloadUrls(ctx, package_name, package_version, package_username, package_channel, authorizationHeader))
 }
 
+func registerPostPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelPackagesConanPackageReferenceUploadUrls(s *server.MCPServer) {
+	tool := mcp.NewTool("post_pkgs_conan_v1_conans_package_name_package_version_package_username_package_channel_packages_conan_package_reference_upload_urls",
+		mcp.WithDescription("This feature was introduced in GitLab 12.4"),
+		mcp.WithString("package_name",
+			mcp.Description("Package name (example: my-package)"),
+			mcp.Required(),
+		),
+		mcp.WithString("package_version",
+			mcp.Description("Package version (example: 1.0)"),
+			mcp.Required(),
+		),
+		mcp.WithString("package_username",
+			mcp.Description("Package username (example: my-group+my-project)"),
+			mcp.Required(),
+		),
+		mcp.WithString("package_channel",
+			mcp.Description("Package channel (example: stable)"),
+			mcp.Required(),
+		),
+		mcp.WithString("conan_package_reference",
+			mcp.Description("Conan package ID (example: 103f6067a947f366ef91fc1b7da351c588d1827f)"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, postPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelPackagesConanPackageReferenceUploadUrlsHandler)
+}
+
+func postPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelPackagesConanPackageReferenceUploadUrlsHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	package_name := request.GetString("package_name", "")
+	package_version := request.GetString("package_version", "")
+	package_username := request.GetString("package_username", "")
+	package_channel := request.GetString("package_channel", "")
+	conan_package_reference := request.GetString("conan_package_reference", "")
+
+	return toResult(c.PostApiV4PackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelPackagesConanPackageReferenceUploadUrls(ctx, package_name, package_version, package_username, package_channel, conan_package_reference, authorizationHeader))
+}
+
+func registerPostPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelUploadUrls(s *server.MCPServer) {
+	tool := mcp.NewTool("post_pkgs_conan_v1_conans_package_name_package_version_package_username_package_channel_upload_urls",
+		mcp.WithDescription("This feature was introduced in GitLab 12.4"),
+		mcp.WithString("package_name",
+			mcp.Description("Package name (example: my-package)"),
+			mcp.Required(),
+		),
+		mcp.WithString("package_version",
+			mcp.Description("Package version (example: 1.0)"),
+			mcp.Required(),
+		),
+		mcp.WithString("package_username",
+			mcp.Description("Package username (example: my-group+my-project)"),
+			mcp.Required(),
+		),
+		mcp.WithString("package_channel",
+			mcp.Description("Package channel (example: stable)"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, postPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelUploadUrlsHandler)
+}
+
+func postPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelUploadUrlsHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	package_name := request.GetString("package_name", "")
+	package_version := request.GetString("package_version", "")
+	package_username := request.GetString("package_username", "")
+	package_channel := request.GetString("package_channel", "")
+
+	return toResult(c.PostApiV4PackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelUploadUrls(ctx, package_name, package_version, package_username, package_channel, authorizationHeader))
+}
+
 func registerGetPackagesConanV1FilesPackageNamePackageVersionPackageUsernamePackageChannelRecipeRevisionExportFileName(s *server.MCPServer) {
 	tool := mcp.NewTool("get_pkgs_conan_v1_files_package_name_package_version_package_username_package_channel_recipe_revision_export_file_name",
 		mcp.WithDescription("This feature was introduced in GitLab 12.6"),
@@ -481,6 +562,40 @@ func getPackagesConanV1FilesPackageNamePackageVersionPackageUsernamePackageChann
 	file_name := request.GetString("file_name", "")
 
 	return toResult(c.GetApiV4PackagesConanV1FilesPackageNamePackageVersionPackageUsernamePackageChannelRecipeRevisionPackageConanPackageReferencePackageRevisionFileName(ctx, package_name, package_version, package_username, package_channel, recipe_revision, conan_package_reference, package_revision, file_name, authorizationHeader))
+}
+
+func registerPostPackagesNpmNpmV1SecurityAdvisoriesBulk(s *server.MCPServer) {
+	tool := mcp.NewTool("post_pkgs_npm_npm_v1_security_advisories_bulk",
+		mcp.WithDescription("This feature was introduced in GitLab 15.6"),
+	)
+
+	s.AddTool(tool, postPackagesNpmNpmV1SecurityAdvisoriesBulkHandler)
+}
+
+func postPackagesNpmNpmV1SecurityAdvisoriesBulkHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	return toResult(c.PostApiV4PackagesNpmNpmV1SecurityAdvisoriesBulk(ctx, authorizationHeader))
+}
+
+func registerPostPackagesNpmNpmV1SecurityAuditsQuick(s *server.MCPServer) {
+	tool := mcp.NewTool("post_pkgs_npm_npm_v1_security_audits_quick",
+		mcp.WithDescription("This feature was introduced in GitLab 15.6"),
+	)
+
+	s.AddTool(tool, postPackagesNpmNpmV1SecurityAuditsQuickHandler)
+}
+
+func postPackagesNpmNpmV1SecurityAuditsQuickHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	return toResult(c.PostApiV4PackagesNpmNpmV1SecurityAuditsQuick(ctx, authorizationHeader))
 }
 
 func registerGetPackagesTerraformModulesV1ModuleNamespaceModuleNameModuleSystemVersions(s *server.MCPServer) {

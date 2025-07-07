@@ -352,3 +352,43 @@ func parseGetRunnersIdJobs(request mcp.CallToolRequest) client.GetApiV4RunnersId
 
 	return params
 }
+
+func registerPostRunnersIdResetAuthenticationToken(s *server.MCPServer) {
+	tool := mcp.NewTool("post_runners_id_reset_authentication_token",
+		mcp.WithDescription("Reset runner authentication token"),
+		mcp.WithNumber("id",
+			mcp.Description("The ID of the runner"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, postRunnersIdResetAuthenticationTokenHandler)
+}
+
+func postRunnersIdResetAuthenticationTokenHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := int32(request.GetInt("id", math.MinInt))
+
+	return toResult(c.PostApiV4RunnersIdResetAuthenticationToken(ctx, id, authorizationHeader))
+}
+
+func registerPostRunnersResetRegistrationToken(s *server.MCPServer) {
+	tool := mcp.NewTool("post_runners_reset_registration_token",
+		mcp.WithDescription("Reset runner registration token"),
+	)
+
+	s.AddTool(tool, postRunnersResetRegistrationTokenHandler)
+}
+
+func postRunnersResetRegistrationTokenHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	return toResult(c.PostApiV4RunnersResetRegistrationToken(ctx, authorizationHeader))
+}

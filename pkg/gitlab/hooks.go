@@ -52,6 +52,29 @@ func parseGetHooks(request mcp.CallToolRequest) client.GetApiV4HooksParams {
 	return params
 }
 
+func registerPostHooksHookId(s *server.MCPServer) {
+	tool := mcp.NewTool("post_hooks_hook_id",
+		mcp.WithDescription("null"),
+		mcp.WithNumber("hook_id",
+			mcp.Description("The ID of the hook"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, postHooksHookIdHandler)
+}
+
+func postHooksHookIdHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	hook_id := int32(request.GetInt("hook_id", math.MinInt))
+
+	return toResult(c.PostApiV4HooksHookId(ctx, hook_id, authorizationHeader))
+}
+
 func registerGetHooksHookId(s *server.MCPServer) {
 	tool := mcp.NewTool("get_hooks_hook_id",
 		mcp.WithDescription("Get a system hook by its ID. Introduced in GitLab 14.9."),

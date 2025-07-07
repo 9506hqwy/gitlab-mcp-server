@@ -431,12 +431,21 @@ done
 
 yq -r '.paths | keys | .[]' "${TMP_DIR}/openapi.yml" | while read -r OP_PATH
 do
-    OD_QUERY=".paths.\"${OP_PATH}\".get"
-    OP_GET=$(yq "${OD_QUERY}" "${TMP_DIR}/openapi.yml")
+    OP_QUERY=".paths.\"${OP_PATH}\".post"
+    OP_POST=$(yq "${OP_QUERY}" "${TMP_DIR}/openapi.yml")
+    OP_REQ_BODY=$(yq "${OP_QUERY}.requestBody" "${TMP_DIR}/openapi.yml")
+    if [[ "$OP_POST" != 'null' && "$OP_REQ_BODY" == 'null' ]]; then
+        write-register-func "Post" "${OP_PATH}" "${OP_QUERY}"
+        write-handler-func "Post" "${OP_PATH}" "${OP_QUERY}"
+        write-parser-func "Post" "${OP_PATH}" "${OP_QUERY}"
+    fi
+
+    OP_QUERY=".paths.\"${OP_PATH}\".get"
+    OP_GET=$(yq "${OP_QUERY}" "${TMP_DIR}/openapi.yml")
     if [[ "$OP_GET" != 'null' ]]; then
-        write-register-func "Get" "${OP_PATH}" "${OD_QUERY}"
-        write-handler-func "Get" "${OP_PATH}" "${OD_QUERY}"
-        write-parser-func "Get" "${OP_PATH}" "${OD_QUERY}"
+        write-register-func "Get" "${OP_PATH}" "${OP_QUERY}"
+        write-handler-func "Get" "${OP_PATH}" "${OP_QUERY}"
+        write-parser-func "Get" "${OP_PATH}" "${OP_QUERY}"
     fi
 done
 
@@ -458,13 +467,25 @@ do
     TOOL_SNAME=$(shortname "${TOOL_NAME}")
     API_NAME=$(capitalize "${TOOL_NAME}")
 
+    # If the tool name is too long, we need to use a shorter name
+    # to avoid exceeding the maximum length of 46 characters.
+    # See https://github.com/microsoft/vscode/blob/1.101.2/src/vs/workbench/contrib/mcp/common/mcpTypes.ts#L710-L714
+
+    OP_POST=$(yq ".paths.\"${OP_PATH}\".post" "${TMP_DIR}/openapi.yml")
+    OP_REQ_BODY=$(yq ".paths.\"${OP_PATH}\".post.requestBody" "${TMP_DIR}/openapi.yml")
+    if [[ "$OP_POST" != 'null' && "$OP_REQ_BODY" == 'null' ]]; then
+        METHOD="Post"
+        if [[ ${#TOOL_SNAME} -gt 41 ]]; then # post_XXX
+            echo "//if !readonly { register${METHOD}${API_NAME}(s) }" >> "${TOOLS_PATH}"
+        else
+            echo "if !readonly { register${METHOD}${API_NAME}(s) }" >> "${TOOLS_PATH}"
+        fi
+    fi
+
     OP_GET=$(yq ".paths.\"${OP_PATH}\".get" "${TMP_DIR}/openapi.yml")
     if [[ "$OP_GET" != 'null' ]]; then
         METHOD="Get"
         if [[ ${#TOOL_SNAME} -gt 42 ]]; then # get_XXX
-            # If the tool name is too long, we need to use a shorter name
-            # to avoid exceeding the maximum length of 46 characters.
-            # See https://github.com/microsoft/vscode/blob/1.101.2/src/vs/workbench/contrib/mcp/common/mcpTypes.ts#L710-L714
             echo "//register${METHOD}${API_NAME}(s)" >> "${TOOLS_PATH}"
         else
             echo "register${METHOD}${API_NAME}(s)" >> "${TOOLS_PATH}"

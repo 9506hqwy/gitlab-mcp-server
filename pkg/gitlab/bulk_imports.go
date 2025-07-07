@@ -274,3 +274,26 @@ func getBulkImportsImportIdEntitiesEntityIdFailuresHandler(ctx context.Context, 
 
 	return toResult(c.GetApiV4BulkImportsImportIdEntitiesEntityIdFailures(ctx, import_id, entity_id, authorizationHeader))
 }
+
+func registerPostBulkImportsImportIdCancel(s *server.MCPServer) {
+	tool := mcp.NewTool("post_bulk_imports_import_id_cancel",
+		mcp.WithDescription("This feature was introduced in GitLab 17.1"),
+		mcp.WithNumber("import_id",
+			mcp.Description("The ID of user's GitLab Migration"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, postBulkImportsImportIdCancelHandler)
+}
+
+func postBulkImportsImportIdCancelHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	import_id := int32(request.GetInt("import_id", math.MinInt))
+
+	return toResult(c.PostApiV4BulkImportsImportIdCancel(ctx, import_id, authorizationHeader))
+}

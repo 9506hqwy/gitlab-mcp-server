@@ -5,6 +5,9 @@ import (
 )
 
 func RegisterTools(s *server.MCPServer, readonly bool) {
+	if !readonly {
+		registerPostGroupsIdAccessRequests(s)
+	}
 	registerGetGroupsIdAccessRequests(s)
 	registerGetGroupsIdEpicsEpicIidAwardEmoji(s)
 	// registerGetGroupsIdEpicsEpicIidAwardEmojiAwardId(s)
@@ -17,13 +20,28 @@ func RegisterTools(s *server.MCPServer, readonly bool) {
 	registerGetGroupsIdCustomAttributesKey(s)
 	registerGetGroups(s)
 	registerGetGroupsId(s)
+	if !readonly {
+		registerPostGroupsIdArchive(s)
+	}
+	if !readonly {
+		registerPostGroupsIdUnarchive(s)
+	}
+	if !readonly {
+		registerPostGroupsIdRestore(s)
+	}
 	registerGetGroupsIdGroupsShared(s)
 	registerGetGroupsIdInvitedGroups(s)
 	registerGetGroupsIdProjects(s)
 	registerGetGroupsIdProjectsShared(s)
 	registerGetGroupsIdSubgroups(s)
 	registerGetGroupsIdDescendantGroups(s)
+	if !readonly {
+		registerPostGroupsIdProjectsProjectId(s)
+	}
 	registerGetGroupsIdTransferLocations(s)
+	if !readonly {
+		registerPostGroupsIdLdapSync(s)
+	}
 	registerGetGroupsIdAuditEvents(s)
 	registerGetGroupsIdAuditEventsAuditEventId(s)
 	registerGetGroupsIdSamlUsers(s)
@@ -31,6 +49,9 @@ func RegisterTools(s *server.MCPServer, readonly bool) {
 	registerGetGroupsIdUsers(s)
 	registerGetGroupsIdSshCertificates(s)
 	registerGetGroupsIdRunners(s)
+	if !readonly {
+		registerPostGroupsIdRunnersResetRegistrationToken(s)
+	}
 	// registerGetGroupsIdPackagesDebianPoolDistributionProjectIdLetterPackageNamePackageVersionFileName(s)
 	registerGetGroupsIdDeployTokens(s)
 	registerGetGroupsIdDeployTokensTokenId(s)
@@ -42,10 +63,17 @@ func RegisterTools(s *server.MCPServer, readonly bool) {
 	registerGetGroupsIdDebianDistributionsCodename(s)
 	// registerGetGroupsIdDebianDistributionsCodenameKeyAsc(s)
 	registerGetGroupsIdExportDownload(s)
+	if !readonly {
+		registerPostGroupsIdExport(s)
+	}
 	registerGetGroupsIdExportRelationsDownload(s)
 	registerGetGroupsIdExportRelationsStatus(s)
+	if !readonly {
+		registerPostGroupsImportAuthorize(s)
+	}
 	registerGetGroupsIdPackages(s)
 	registerGetGroupsIdPlaceholderReassignments(s)
+	// if !readonly { registerPostGroupsIdPlaceholderReassignmentsAuthorize(s) }
 	registerGetGroupsIdVariables(s)
 	registerGetGroupsIdVariablesKey(s)
 	registerGetGroupsIdIntegrations(s)
@@ -58,11 +86,19 @@ func RegisterTools(s *server.MCPServer, readonly bool) {
 	registerGetGroupsIdMembersAll(s)
 	registerGetGroupsIdMembersUserId(s)
 	registerGetGroupsIdMembersAllUserId(s)
+	if !readonly {
+		registerPostGroupsIdMembersUserIdOverride(s)
+	}
+	if !readonly {
+		registerPostGroupsIdMembersApproveAll(s)
+	}
 	registerGetGroupsIdPendingMembers(s)
 	registerGetGroupsIdBillableMembers(s)
 	// registerGetGroupsIdBillableMembersUserIdMemberships(s)
 	registerGetGroupsIdBillableMembersUserIdIndirect(s)
 	registerGetGroupsIdMergeRequests(s)
+	// if !readonly { registerPostGroupsIdPackagesNpmNpmV1SecurityAdvisoriesBulk(s) }
+	// if !readonly { registerPostGroupsIdPackagesNpmNpmV1SecurityAuditsQuick(s) }
 	registerGetGroupsIdPackagesNugetIndex(s)
 	registerGetGroupsIdPackagesNugetV2(s)
 	registerGetGroupsIdPackagesNugetV2Metadata(s)
@@ -71,7 +107,11 @@ func RegisterTools(s *server.MCPServer, readonly bool) {
 	registerGetGroupsIdReleases(s)
 	registerGetGroupsIdWikis(s)
 	registerGetGroupsIdWikisSlug(s)
+	if !readonly {
+		registerPostProjectsIdAccessRequests(s)
+	}
 	registerGetProjectsIdAccessRequests(s)
+	// if !readonly { registerPostProjectsIdAlertManagementAlertsAlertIidMetricImagesAuthorize(s) }
 	// registerGetProjectsIdAlertManagementAlertsAlertIidMetricImages(s)
 	registerGetProjectsIdIssuesIssueIidAwardEmoji(s)
 	// registerGetProjectsIdIssuesIssueIidAwardEmojiAwardId(s)
@@ -92,13 +132,25 @@ func RegisterTools(s *server.MCPServer, readonly bool) {
 	registerGetProjectsIdRepositoryBranchesBranch(s)
 	registerGetProjectsIdJobsArtifactsRefNameDownload(s)
 	registerGetProjectsIdJobsJobIdArtifacts(s)
+	if !readonly {
+		registerPostProjectsIdJobsJobIdArtifactsKeep(s)
+	}
 	registerGetProjectsIdJobs(s)
 	registerGetProjectsIdJobsJobId(s)
 	registerGetProjectsIdJobsJobIdTrace(s)
+	if !readonly {
+		registerPostProjectsIdJobsJobIdRetry(s)
+	}
+	if !readonly {
+		registerPostProjectsIdJobsJobIdErase(s)
+	}
 	registerGetProjectsIdResourceGroups(s)
 	registerGetProjectsIdResourceGroupsKey(s)
 	registerGetProjectsIdResourceGroupsKeyUpcomingJobs(s)
 	registerGetProjectsIdRunners(s)
+	if !readonly {
+		registerPostProjectsIdRunnersResetRegistrationToken(s)
+	}
 	registerGetProjectsIdSecureFiles(s)
 	registerGetProjectsIdSecureFilesSecureFileId(s)
 	// registerGetProjectsIdSecureFilesSecureFileIdDownload(s)
@@ -110,9 +162,17 @@ func RegisterTools(s *server.MCPServer, readonly bool) {
 	registerGetProjectsIdPipelinesPipelineIdVariables(s)
 	registerGetProjectsIdPipelinesPipelineIdTestReport(s)
 	registerGetProjectsIdPipelinesPipelineIdTestReportSummary(s)
+	if !readonly {
+		registerPostProjectsIdPipelinesPipelineIdRetry(s)
+	}
+	if !readonly {
+		registerPostProjectsIdPipelinesPipelineIdCancel(s)
+	}
 	registerGetProjectsIdPipelineSchedules(s)
 	// registerGetProjectsIdPipelineSchedulesPipelineScheduleId(s)
 	// registerGetProjectsIdPipelineSchedulesPipelineScheduleIdPipelines(s)
+	// if !readonly { registerPostProjectsIdPipelineSchedulesPipelineScheduleIdTakeOwnership(s) }
+	// if !readonly { registerPostProjectsIdPipelineSchedulesPipelineScheduleIdPlay(s) }
 	registerGetProjectsIdTriggers(s)
 	registerGetProjectsIdTriggersTriggerId(s)
 	registerGetProjectsIdVariables(s)
@@ -142,6 +202,8 @@ func RegisterTools(s *server.MCPServer, readonly bool) {
 	// registerGetProjectsIdPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelDigest(s)
 	// registerGetProjectsIdPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelPackagesConanPackageReferenceDownloadUrls(s)
 	// registerGetProjectsIdPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelDownloadUrls(s)
+	// if !readonly { registerPostProjectsIdPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelPackagesConanPackageReferenceUploadUrls(s) }
+	// if !readonly { registerPostProjectsIdPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelUploadUrls(s) }
 	// registerGetProjectsIdPackagesConanV1FilesPackageNamePackageVersionPackageUsernamePackageChannelRecipeRevisionExportFileName(s)
 	// registerGetProjectsIdPackagesConanV1FilesPackageNamePackageVersionPackageUsernamePackageChannelRecipeRevisionPackageConanPackageReferencePackageRevisionFileName(s)
 	registerGetProjectsIdPackagesConanV2UsersAuthenticate(s)
@@ -160,6 +222,9 @@ func RegisterTools(s *server.MCPServer, readonly bool) {
 	// registerGetProjectsIdPackagesDebianPoolDistributionLetterPackageNamePackageVersionFileName(s)
 	registerGetProjectsIdDeployKeys(s)
 	registerGetProjectsIdDeployKeysKeyId(s)
+	if !readonly {
+		registerPostProjectsIdDeployKeysKeyIdEnable(s)
+	}
 	registerGetProjectsIdDeployTokens(s)
 	registerGetProjectsIdDeployTokensTokenId(s)
 	registerGetProjectsIdDeployments(s)
@@ -167,8 +232,12 @@ func RegisterTools(s *server.MCPServer, readonly bool) {
 	registerGetProjectsIdDeploymentsDeploymentIdMergeRequests(s)
 	registerGetProjectsIdMergeRequestsMergeRequestIidDraftNotes(s)
 	// registerGetProjectsIdMergeRequestsMergeRequestIidDraftNotesDraftNoteId(s)
+	// if !readonly { registerPostProjectsIdMergeRequestsMergeRequestIidDraftNotesBulkPublish(s) }
 	registerGetProjectsIdEnvironments(s)
 	registerGetProjectsIdEnvironmentsEnvironmentId(s)
+	if !readonly {
+		registerPostProjectsIdErrorTrackingClientKeys(s)
+	}
 	registerGetProjectsIdErrorTrackingClientKeys(s)
 	registerGetProjectsIdErrorTrackingSettings(s)
 	registerGetProjectsIdFeatureFlags(s)
@@ -182,6 +251,7 @@ func RegisterTools(s *server.MCPServer, readonly bool) {
 	registerGetProjectsIdFreezePeriodsFreezePeriodId(s)
 	registerGetProjectsIdPackagesHelmChannelIndexYaml(s)
 	// registerGetProjectsIdPackagesHelmChannelChartsFileNameTgz(s)
+	// if !readonly { registerPostProjectsIdPackagesHelmApiChannelChartsAuthorize(s) }
 	registerGetProjectsIdServices(s)
 	registerGetProjectsIdServicesSlug(s)
 	registerGetProjectsIdIntegrations(s)
@@ -190,6 +260,9 @@ func RegisterTools(s *server.MCPServer, readonly bool) {
 	registerGetProjectsIdIssuesIssueIidLinks(s)
 	// registerGetProjectsIdIssuesIssueIidLinksIssueLinkId(s)
 	registerGetProjectsIdCiLint(s)
+	if !readonly {
+		registerPostProjectsIdUploadsAuthorize(s)
+	}
 	registerGetProjectsIdUploads(s)
 	registerGetProjectsIdUploadsUploadId(s)
 	registerGetProjectsIdUploadsSecretFilename(s)
@@ -198,7 +271,15 @@ func RegisterTools(s *server.MCPServer, readonly bool) {
 	registerGetProjectsIdMembersUserId(s)
 	registerGetProjectsIdMembersAllUserId(s)
 	registerGetProjectsIdMergeRequestsMergeRequestIidApprovals(s)
+	if !readonly {
+		registerPostProjectsIdMergeRequestsMergeRequestIidUnapprove(s)
+	}
 	// registerGetProjectsIdMergeRequestsMergeRequestIidApprovalState(s)
+	if !readonly {
+		registerPostProjectsIdCreateCiConfig(s)
+	}
+	// if !readonly { registerPostProjectsIdMergeRequestsMergeRequestIidResetTimeEstimate(s) }
+	// if !readonly { registerPostProjectsIdMergeRequestsMergeRequestIidResetSpentTime(s) }
 	registerGetProjectsIdMergeRequestsMergeRequestIidTimeStats(s)
 	registerGetProjectsIdMergeRequests(s)
 	registerGetProjectsIdMergeRequestsMergeRequestIid(s)
@@ -211,10 +292,13 @@ func RegisterTools(s *server.MCPServer, readonly bool) {
 	registerGetProjectsIdMergeRequestsMergeRequestIidRawDiffs(s)
 	registerGetProjectsIdMergeRequestsMergeRequestIidPipelines(s)
 	registerGetProjectsIdMergeRequestsMergeRequestIidMergeRef(s)
+	// if !readonly { registerPostProjectsIdMergeRequestsMergeRequestIidCancelMergeWhenPipelineSucceeds(s) }
 	registerGetProjectsIdMergeRequestsMergeRequestIidClosesIssues(s)
 	// registerGetProjectsIdMergeRequestsMergeRequestIidRelatedIssues(s)
 	registerGetProjectsIdMergeRequestsMergeRequestIidVersions(s)
 	// registerGetProjectsIdMergeRequestsMergeRequestIidVersionsVersionId(s)
+	// if !readonly { registerPostProjectsIdPackagesNpmNpmV1SecurityAdvisoriesBulk(s) }
+	// if !readonly { registerPostProjectsIdPackagesNpmNpmV1SecurityAuditsQuick(s) }
 	registerGetProjectsIdPackagesNugetIndex(s)
 	registerGetProjectsIdPackagesNugetV2(s)
 	registerGetProjectsIdPackagesNugetV2Metadata(s)
@@ -241,7 +325,17 @@ func RegisterTools(s *server.MCPServer, readonly bool) {
 	registerGetProjectsIdHooks(s)
 	registerGetProjectsIdHooksHookId(s)
 	registerGetProjectsIdHooksHookIdEvents(s)
+	if !readonly {
+		registerPostProjectsIdHooksHookIdTestTrigger(s)
+	}
+	// if !readonly { registerPostProjectsIdHooksHookIdEventsHookLogIdResend(s) }
+	if !readonly {
+		registerPostProjectsImportAuthorize(s)
+	}
 	registerGetProjectsIdImport(s)
+	if !readonly {
+		registerPostProjectsImportRelationAuthorize(s)
+	}
 	registerGetProjectsIdRelationImports(s)
 	registerGetProjectsIdJobTokenScope(s)
 	registerGetProjectsIdJobTokenScopeAllowlist(s)
@@ -261,16 +355,40 @@ func RegisterTools(s *server.MCPServer, readonly bool) {
 	registerGetProjectsIdTemplatesTypeName(s)
 	registerGetProjectsIdCustomAttributes(s)
 	registerGetProjectsIdCustomAttributesKey(s)
+	if !readonly {
+		registerPostProjectsIdRestore(s)
+	}
 	registerGetProjects(s)
 	registerGetProjectsIdShareLocations(s)
 	registerGetProjectsId(s)
 	registerGetProjectsIdForks(s)
 	registerGetProjectsIdPagesAccess(s)
+	if !readonly {
+		registerPostProjectsIdArchive(s)
+	}
+	if !readonly {
+		registerPostProjectsIdUnarchive(s)
+	}
+	if !readonly {
+		registerPostProjectsIdStar(s)
+	}
+	if !readonly {
+		registerPostProjectsIdUnstar(s)
+	}
 	registerGetProjectsIdStarrers(s)
 	registerGetProjectsIdLanguages(s)
+	if !readonly {
+		registerPostProjectsIdForkForkedFromId(s)
+	}
+	if !readonly {
+		registerPostProjectsIdImportProjectMembersProjectId(s)
+	}
 	registerGetProjectsIdUsers(s)
 	registerGetProjectsIdGroups(s)
 	registerGetProjectsIdInvitedGroups(s)
+	if !readonly {
+		registerPostProjectsIdRepositorySize(s)
+	}
 	registerGetProjectsIdTransferLocations(s)
 	registerGetProjectsIdStorage(s)
 	registerGetProjectsIdAuditEvents(s)
@@ -280,12 +398,21 @@ func RegisterTools(s *server.MCPServer, readonly bool) {
 	registerGetProjectsIdProtectedTags(s)
 	registerGetProjectsIdProtectedTagsName(s)
 	registerGetProjectsIdPackagesPypiSimple(s)
+	if !readonly {
+		registerPostProjectsIdPackagesPypiAuthorize(s)
+	}
 	registerGetProjectsIdReleases(s)
 	registerGetProjectsIdReleasesTagName(s)
+	if !readonly {
+		registerPostProjectsIdReleasesTagNameEvidence(s)
+	}
 	registerGetProjectsIdReleasesTagNameAssetsLinks(s)
 	// registerGetProjectsIdReleasesTagNameAssetsLinksLinkId(s)
 	registerGetProjectsIdRemoteMirrors(s)
 	registerGetProjectsIdRemoteMirrorsMirrorId(s)
+	if !readonly {
+		registerPostProjectsIdRemoteMirrorsMirrorIdSync(s)
+	}
 	registerGetProjectsIdRemoteMirrorsMirrorIdPublicKey(s)
 	registerGetProjectsIdRepositoryTree(s)
 	registerGetProjectsIdRepositoryBlobsShaRaw(s)
@@ -300,14 +427,24 @@ func RegisterTools(s *server.MCPServer, readonly bool) {
 	// registerGetProjectsIdIssuesEventableIdResourceMilestoneEventsEventId(s)
 	// registerGetProjectsIdMergeRequestsEventableIdResourceMilestoneEvents(s)
 	// registerGetProjectsIdMergeRequestsEventableIdResourceMilestoneEventsEventId(s)
+	if !readonly {
+		registerPostProjectsIdPackagesRpm(s)
+	}
+	if !readonly {
+		registerPostProjectsIdPackagesRpmAuthorize(s)
+	}
 	registerGetProjectsIdPackagesRubygemsFileName(s)
 	// registerGetProjectsIdPackagesRubygemsQuickMarshal48FileName(s)
 	registerGetProjectsIdPackagesRubygemsGemsFileName(s)
+	// if !readonly { registerPostProjectsIdPackagesRubygemsApiV1GemsAuthorize(s) }
 	registerGetProjectsIdPackagesRubygemsApiV1Dependencies(s)
 	registerGetProjectsIdRepositoryTags(s)
 	registerGetProjectsIdRepositoryTagsTagName(s)
 	registerGetProjectsIdRepositoryTagsTagNameSignature(s)
 	// registerGetProjectsIdPackagesTerraformModulesModuleNameModuleSystem(s)
+	if !readonly {
+		registerPostProjectsIdTerraformStateName(s)
+	}
 	registerGetProjectsIdTerraformStateName(s)
 	// registerGetProjectsIdTerraformStateNameVersionsSerial(s)
 	registerGetProjectsIdWikis(s)
@@ -322,6 +459,9 @@ func RegisterTools(s *server.MCPServer, readonly bool) {
 	registerGetBroadcastMessages(s)
 	registerGetBroadcastMessagesId(s)
 	registerGetApplications(s)
+	if !readonly {
+		registerPostApplicationsIdRenewSecret(s)
+	}
 	registerGetAvatar(s)
 	registerGetBulkImports(s)
 	registerGetBulkImportsEntities(s)
@@ -329,6 +469,9 @@ func RegisterTools(s *server.MCPServer, readonly bool) {
 	registerGetBulkImportsImportIdEntities(s)
 	registerGetBulkImportsImportIdEntitiesEntityId(s)
 	// registerGetBulkImportsImportIdEntitiesEntityIdFailures(s)
+	if !readonly {
+		registerPostBulkImportsImportIdCancel(s)
+	}
 	registerGetJob(s)
 	registerGetJobAllowedAgents(s)
 	registerGetRunners(s)
@@ -336,6 +479,12 @@ func RegisterTools(s *server.MCPServer, readonly bool) {
 	registerGetRunnersId(s)
 	registerGetRunnersIdManagers(s)
 	registerGetRunnersIdJobs(s)
+	if !readonly {
+		registerPostRunnersIdResetAuthenticationToken(s)
+	}
+	if !readonly {
+		registerPostRunnersResetRegistrationToken(s)
+	}
 	registerGetJobsIdArtifacts(s)
 	registerGetGroupIdPackagesComposerPackages(s)
 	registerGetGroupIdPackagesComposerPSha(s)
@@ -350,11 +499,22 @@ func RegisterTools(s *server.MCPServer, readonly bool) {
 	// registerGetPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelDigest(s)
 	// registerGetPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelPackagesConanPackageReferenceDownloadUrls(s)
 	// registerGetPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelDownloadUrls(s)
+	// if !readonly { registerPostPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelPackagesConanPackageReferenceUploadUrls(s) }
+	// if !readonly { registerPostPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelUploadUrls(s) }
 	// registerGetPackagesConanV1FilesPackageNamePackageVersionPackageUsernamePackageChannelRecipeRevisionExportFileName(s)
 	// registerGetPackagesConanV1FilesPackageNamePackageVersionPackageUsernamePackageChannelRecipeRevisionPackageConanPackageReferencePackageRevisionFileName(s)
+	if !readonly {
+		registerPostPackagesNpmNpmV1SecurityAdvisoriesBulk(s)
+	}
+	if !readonly {
+		registerPostPackagesNpmNpmV1SecurityAuditsQuick(s)
+	}
 	// registerGetPackagesTerraformModulesV1ModuleNamespaceModuleNameModuleSystemVersions(s)
 	// registerGetPackagesTerraformModulesV1ModuleNamespaceModuleNameModuleSystemDownload(s)
 	// registerGetPackagesTerraformModulesV1ModuleNamespaceModuleNameModuleSystem(s)
+	if !readonly {
+		registerPostContainerRegistryEventEvents(s)
+	}
 	registerGetRegistryRepositoriesId(s)
 	registerGetEvents(s)
 	registerGetUsersIdEvents(s)
@@ -366,6 +526,15 @@ func RegisterTools(s *server.MCPServer, readonly bool) {
 	registerGetGeoProxy(s)
 	registerGetGeoRetrieveReplicableNameReplicableId(s)
 	registerGetGeoRepositoriesGlRepositoryPipelineRefs(s)
+	if !readonly {
+		registerPostGeoNodeProxyIdGraphql(s)
+	}
+	if !readonly {
+		registerPostIntegrationsSlackInteractions(s)
+	}
+	if !readonly {
+		registerPostIntegrationsSlackOptions(s)
+	}
 	registerGetKeysId(s)
 	registerGetKeys(s)
 	registerGetMergeRequests(s)
@@ -387,6 +556,9 @@ func RegisterTools(s *server.MCPServer, readonly bool) {
 	registerGetSnippetsIdFilesRefFilePathRaw(s)
 	registerGetSnippetsIdUserAgentDetail(s)
 	registerGetHooks(s)
+	if !readonly {
+		registerPostHooksHookId(s)
+	}
 	registerGetHooksHookId(s)
 	registerGetFeatureFlagsUnleashProjectId(s)
 	registerGetFeatureFlagsUnleashProjectIdFeatures(s)
@@ -409,9 +581,37 @@ func RegisterTools(s *server.MCPServer, readonly bool) {
 	registerGetWebCommitsPublicKey(s)
 	registerGetIssues(s)
 	registerGetGroupsIdIssues(s)
+	if !readonly {
+		registerPostProjectsIdIssues(s)
+	}
 	registerGetProjectsIdIssues(s)
 	registerGetIssuesId(s)
 	registerGetProjectsIdIssuesIssueIid(s)
+	if !readonly {
+		registerPostProjectsIdIssuesIssueIidClone(s)
+	}
+	if !readonly {
+		registerPostProjectsIdIssuesIssueIidSubscribe(s)
+	}
+	if !readonly {
+		registerPostProjectsIdIssuesIssueIidUnsubscribe(s)
+	}
+	if !readonly {
+		registerPostProjectsIdIssuesIssueIidTodo(s)
+	}
+	if !readonly {
+		registerPostProjectsIdIssuesIssueIidNotes(s)
+	}
+	if !readonly {
+		registerPostProjectsIdIssuesIssueIidTimeEstimate(s)
+	}
+	// if !readonly { registerPostProjectsIdIssuesIssueIidResetTimeEstimate(s) }
+	if !readonly {
+		registerPostProjectsIdIssuesIssueIidAddSpentTime(s)
+	}
+	if !readonly {
+		registerPostProjectsIdIssuesIssueIidResetSpentTime(s)
+	}
 	registerGetProjectsIdIssuesIssueIidTimeStats(s)
 	registerGetProjectsIdIssuesIssueIidRelatedMergeRequests(s)
 	registerGetProjectsIdIssuesIssueIidClosedBy(s)

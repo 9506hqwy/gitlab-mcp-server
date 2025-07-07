@@ -75,3 +75,26 @@ func getGeoRepositoriesGlRepositoryPipelineRefsHandler(ctx context.Context, requ
 
 	return toResult(c.GetApiV4GeoRepositoriesGlRepositoryPipelineRefs(ctx, gl_repository, authorizationHeader))
 }
+
+func registerPostGeoNodeProxyIdGraphql(s *server.MCPServer) {
+	tool := mcp.NewTool("post_geo_node_proxy_id_graphql",
+		mcp.WithDescription("Query the GraphQL endpoint of an existing Geo node"),
+		mcp.WithNumber("id",
+			mcp.Description("The ID of the Geo node"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, postGeoNodeProxyIdGraphqlHandler)
+}
+
+func postGeoNodeProxyIdGraphqlHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := int32(request.GetInt("id", math.MinInt))
+
+	return toResult(c.PostApiV4GeoNodeProxyIdGraphql(ctx, id, authorizationHeader))
+}

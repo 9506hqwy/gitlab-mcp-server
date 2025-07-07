@@ -14,6 +14,29 @@ import (
 	openapi_types "github.com/oapi-codegen/runtime/types"
 )
 
+func registerPostProjectsIdAccessRequests(s *server.MCPServer) {
+	tool := mcp.NewTool("post_pjs_id_access_requests",
+		mcp.WithDescription("This feature was introduced in GitLab 8.11."),
+		mcp.WithString("id",
+			mcp.Description("The ID or URL-encoded path of the project owned by the authenticated user"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, postProjectsIdAccessRequestsHandler)
+}
+
+func postProjectsIdAccessRequestsHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := request.GetString("id", "")
+
+	return toResult(c.PostApiV4ProjectsIdAccessRequests(ctx, id, authorizationHeader))
+}
+
 func registerGetProjectsIdAccessRequests(s *server.MCPServer) {
 	tool := mcp.NewTool("get_pjs_id_access_requests",
 		mcp.WithDescription("This feature was introduced in GitLab 8.11."),
@@ -59,6 +82,34 @@ func parseGetProjectsIdAccessRequests(request mcp.CallToolRequest) client.GetApi
 	}
 
 	return params
+}
+
+func registerPostProjectsIdAlertManagementAlertsAlertIidMetricImagesAuthorize(s *server.MCPServer) {
+	tool := mcp.NewTool("post_pjs_id_alert_management_alerts_alert_iid_metric_images_authorize",
+		mcp.WithDescription("Workhorse authorize metric image file upload"),
+		mcp.WithString("id",
+			mcp.Description("The ID or URL-encoded path of the project (example: 17)"),
+			mcp.Required(),
+		),
+		mcp.WithNumber("alert_iid",
+			mcp.Description("The IID of the Alert (example: 23)"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, postProjectsIdAlertManagementAlertsAlertIidMetricImagesAuthorizeHandler)
+}
+
+func postProjectsIdAlertManagementAlertsAlertIidMetricImagesAuthorizeHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := request.GetString("id", "")
+	alert_iid := int32(request.GetInt("alert_iid", math.MinInt))
+
+	return toResult(c.PostApiV4ProjectsIdAlertManagementAlertsAlertIidMetricImagesAuthorize(ctx, id, alert_iid, authorizationHeader))
 }
 
 func registerGetProjectsIdAlertManagementAlertsAlertIidMetricImages(s *server.MCPServer) {
@@ -971,6 +1022,34 @@ func parseGetProjectsIdJobsJobIdArtifacts(request mcp.CallToolRequest) client.Ge
 	return params
 }
 
+func registerPostProjectsIdJobsJobIdArtifactsKeep(s *server.MCPServer) {
+	tool := mcp.NewTool("post_pjs_id_jobs_job_id_artifacts_keep",
+		mcp.WithDescription("Keep the artifacts to prevent them from being deleted"),
+		mcp.WithString("id",
+			mcp.Description("The ID or URL-encoded path of the project"),
+			mcp.Required(),
+		),
+		mcp.WithNumber("job_id",
+			mcp.Description("The ID of a job"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, postProjectsIdJobsJobIdArtifactsKeepHandler)
+}
+
+func postProjectsIdJobsJobIdArtifactsKeepHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := request.GetString("id", "")
+	job_id := int32(request.GetInt("job_id", math.MinInt))
+
+	return toResult(c.PostApiV4ProjectsIdJobsJobIdArtifactsKeep(ctx, id, job_id, authorizationHeader))
+}
+
 func registerGetProjectsIdJobs(s *server.MCPServer) {
 	tool := mcp.NewTool("get_pjs_id_jobs",
 		mcp.WithDescription("Get a projects jobs"),
@@ -1081,6 +1160,62 @@ func getProjectsIdJobsJobIdTraceHandler(ctx context.Context, request mcp.CallToo
 	job_id := int32(request.GetInt("job_id", math.MinInt))
 
 	return toResult(c.GetApiV4ProjectsIdJobsJobIdTrace(ctx, id, job_id, authorizationHeader))
+}
+
+func registerPostProjectsIdJobsJobIdRetry(s *server.MCPServer) {
+	tool := mcp.NewTool("post_pjs_id_jobs_job_id_retry",
+		mcp.WithDescription("Retry a specific job of a project"),
+		mcp.WithNumber("job_id",
+			mcp.Description("The ID of a job (example: 88)"),
+			mcp.Required(),
+		),
+		mcp.WithNumber("id",
+			mcp.Description("null"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, postProjectsIdJobsJobIdRetryHandler)
+}
+
+func postProjectsIdJobsJobIdRetryHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := int32(request.GetInt("id", math.MinInt))
+	job_id := int32(request.GetInt("job_id", math.MinInt))
+
+	return toResult(c.PostApiV4ProjectsIdJobsJobIdRetry(ctx, id, job_id, authorizationHeader))
+}
+
+func registerPostProjectsIdJobsJobIdErase(s *server.MCPServer) {
+	tool := mcp.NewTool("post_pjs_id_jobs_job_id_erase",
+		mcp.WithDescription("Erase job (remove artifacts and the trace)"),
+		mcp.WithNumber("job_id",
+			mcp.Description("The ID of a build (example: 88)"),
+			mcp.Required(),
+		),
+		mcp.WithNumber("id",
+			mcp.Description("null"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, postProjectsIdJobsJobIdEraseHandler)
+}
+
+func postProjectsIdJobsJobIdEraseHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := int32(request.GetInt("id", math.MinInt))
+	job_id := int32(request.GetInt("job_id", math.MinInt))
+
+	return toResult(c.PostApiV4ProjectsIdJobsJobIdErase(ctx, id, job_id, authorizationHeader))
 }
 
 func registerGetProjectsIdResourceGroups(s *server.MCPServer) {
@@ -1312,6 +1447,29 @@ func parseGetProjectsIdRunners(request mcp.CallToolRequest) client.GetApiV4Proje
 	}
 
 	return params
+}
+
+func registerPostProjectsIdRunnersResetRegistrationToken(s *server.MCPServer) {
+	tool := mcp.NewTool("post_pjs_id_runners_reset_registration_token",
+		mcp.WithDescription("Reset runner registration token"),
+		mcp.WithString("id",
+			mcp.Description("The ID of a project"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, postProjectsIdRunnersResetRegistrationTokenHandler)
+}
+
+func postProjectsIdRunnersResetRegistrationTokenHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := request.GetString("id", "")
+
+	return toResult(c.PostApiV4ProjectsIdRunnersResetRegistrationToken(ctx, id, authorizationHeader))
 }
 
 func registerGetProjectsIdSecureFiles(s *server.MCPServer) {
@@ -1879,6 +2037,62 @@ func getProjectsIdPipelinesPipelineIdTestReportSummaryHandler(ctx context.Contex
 	return toResult(c.GetApiV4ProjectsIdPipelinesPipelineIdTestReportSummary(ctx, id, pipeline_id, authorizationHeader))
 }
 
+func registerPostProjectsIdPipelinesPipelineIdRetry(s *server.MCPServer) {
+	tool := mcp.NewTool("post_pjs_id_pls_pipeline_id_retry",
+		mcp.WithDescription("This feature was introduced in GitLab 8.11."),
+		mcp.WithString("id",
+			mcp.Description("The project ID or URL-encoded path (example: 11)"),
+			mcp.Required(),
+		),
+		mcp.WithNumber("pipeline_id",
+			mcp.Description("The pipeline ID (example: 18)"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, postProjectsIdPipelinesPipelineIdRetryHandler)
+}
+
+func postProjectsIdPipelinesPipelineIdRetryHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := request.GetString("id", "")
+	pipeline_id := int32(request.GetInt("pipeline_id", math.MinInt))
+
+	return toResult(c.PostApiV4ProjectsIdPipelinesPipelineIdRetry(ctx, id, pipeline_id, authorizationHeader))
+}
+
+func registerPostProjectsIdPipelinesPipelineIdCancel(s *server.MCPServer) {
+	tool := mcp.NewTool("post_pjs_id_pls_pipeline_id_cancel",
+		mcp.WithDescription("This feature was introduced in GitLab 8.11."),
+		mcp.WithString("id",
+			mcp.Description("The project ID or URL-encoded path (example: 11)"),
+			mcp.Required(),
+		),
+		mcp.WithNumber("pipeline_id",
+			mcp.Description("The pipeline ID (example: 18)"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, postProjectsIdPipelinesPipelineIdCancelHandler)
+}
+
+func postProjectsIdPipelinesPipelineIdCancelHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := request.GetString("id", "")
+	pipeline_id := int32(request.GetInt("pipeline_id", math.MinInt))
+
+	return toResult(c.PostApiV4ProjectsIdPipelinesPipelineIdCancel(ctx, id, pipeline_id, authorizationHeader))
+}
+
 func registerGetProjectsIdPipelineSchedules(s *server.MCPServer) {
 	tool := mcp.NewTool("get_pjs_id_pipeline_schedules",
 		mcp.WithDescription("Get all pipeline schedules"),
@@ -1991,6 +2205,62 @@ func getProjectsIdPipelineSchedulesPipelineScheduleIdPipelinesHandler(ctx contex
 	pipeline_schedule_id := int32(request.GetInt("pipeline_schedule_id", math.MinInt))
 
 	return toResult(c.GetApiV4ProjectsIdPipelineSchedulesPipelineScheduleIdPipelines(ctx, id, pipeline_schedule_id, authorizationHeader))
+}
+
+func registerPostProjectsIdPipelineSchedulesPipelineScheduleIdTakeOwnership(s *server.MCPServer) {
+	tool := mcp.NewTool("post_pjs_id_pipeline_schedules_pipeline_schedule_id_take_ownership",
+		mcp.WithDescription("Take ownership of a pipeline schedule"),
+		mcp.WithString("id",
+			mcp.Description("The ID or URL-encoded path of the project (example: 18)"),
+			mcp.Required(),
+		),
+		mcp.WithNumber("pipeline_schedule_id",
+			mcp.Description("The pipeline schedule id (example: 13)"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, postProjectsIdPipelineSchedulesPipelineScheduleIdTakeOwnershipHandler)
+}
+
+func postProjectsIdPipelineSchedulesPipelineScheduleIdTakeOwnershipHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := request.GetString("id", "")
+	pipeline_schedule_id := int32(request.GetInt("pipeline_schedule_id", math.MinInt))
+
+	return toResult(c.PostApiV4ProjectsIdPipelineSchedulesPipelineScheduleIdTakeOwnership(ctx, id, pipeline_schedule_id, authorizationHeader))
+}
+
+func registerPostProjectsIdPipelineSchedulesPipelineScheduleIdPlay(s *server.MCPServer) {
+	tool := mcp.NewTool("post_pjs_id_pipeline_schedules_pipeline_schedule_id_play",
+		mcp.WithDescription("This feature was added in GitLab 12.8"),
+		mcp.WithString("id",
+			mcp.Description("The ID or URL-encoded path of the project (example: 18)"),
+			mcp.Required(),
+		),
+		mcp.WithNumber("pipeline_schedule_id",
+			mcp.Description("The pipeline schedule id (example: 13)"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, postProjectsIdPipelineSchedulesPipelineScheduleIdPlayHandler)
+}
+
+func postProjectsIdPipelineSchedulesPipelineScheduleIdPlayHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := request.GetString("id", "")
+	pipeline_schedule_id := int32(request.GetInt("pipeline_schedule_id", math.MinInt))
+
+	return toResult(c.PostApiV4ProjectsIdPipelineSchedulesPipelineScheduleIdPlay(ctx, id, pipeline_schedule_id, authorizationHeader))
 }
 
 func registerGetProjectsIdTriggers(s *server.MCPServer) {
@@ -3350,6 +3620,97 @@ func getProjectsIdPackagesConanV1ConansPackageNamePackageVersionPackageUsernameP
 	return toResult(c.GetApiV4ProjectsIdPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelDownloadUrls(ctx, id, package_name, package_version, package_username, package_channel, authorizationHeader))
 }
 
+func registerPostProjectsIdPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelPackagesConanPackageReferenceUploadUrls(s *server.MCPServer) {
+	tool := mcp.NewTool("post_pjs_id_pkgs_conan_v1_conans_package_name_package_version_package_username_package_channel_packages_conan_package_reference_upload_urls",
+		mcp.WithDescription("This feature was introduced in GitLab 12.4"),
+		mcp.WithString("id",
+			mcp.Description("The ID or URL-encoded path of the project"),
+			mcp.Required(),
+		),
+		mcp.WithString("package_name",
+			mcp.Description("Package name (example: my-package)"),
+			mcp.Required(),
+		),
+		mcp.WithString("package_version",
+			mcp.Description("Package version (example: 1.0)"),
+			mcp.Required(),
+		),
+		mcp.WithString("package_username",
+			mcp.Description("Package username (example: my-group+my-project)"),
+			mcp.Required(),
+		),
+		mcp.WithString("package_channel",
+			mcp.Description("Package channel (example: stable)"),
+			mcp.Required(),
+		),
+		mcp.WithString("conan_package_reference",
+			mcp.Description("Conan package ID (example: 103f6067a947f366ef91fc1b7da351c588d1827f)"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, postProjectsIdPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelPackagesConanPackageReferenceUploadUrlsHandler)
+}
+
+func postProjectsIdPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelPackagesConanPackageReferenceUploadUrlsHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := request.GetString("id", "")
+	package_name := request.GetString("package_name", "")
+	package_version := request.GetString("package_version", "")
+	package_username := request.GetString("package_username", "")
+	package_channel := request.GetString("package_channel", "")
+	conan_package_reference := request.GetString("conan_package_reference", "")
+
+	return toResult(c.PostApiV4ProjectsIdPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelPackagesConanPackageReferenceUploadUrls(ctx, id, package_name, package_version, package_username, package_channel, conan_package_reference, authorizationHeader))
+}
+
+func registerPostProjectsIdPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelUploadUrls(s *server.MCPServer) {
+	tool := mcp.NewTool("post_pjs_id_pkgs_conan_v1_conans_package_name_package_version_package_username_package_channel_upload_urls",
+		mcp.WithDescription("This feature was introduced in GitLab 12.4"),
+		mcp.WithString("id",
+			mcp.Description("The ID or URL-encoded path of the project"),
+			mcp.Required(),
+		),
+		mcp.WithString("package_name",
+			mcp.Description("Package name (example: my-package)"),
+			mcp.Required(),
+		),
+		mcp.WithString("package_version",
+			mcp.Description("Package version (example: 1.0)"),
+			mcp.Required(),
+		),
+		mcp.WithString("package_username",
+			mcp.Description("Package username (example: my-group+my-project)"),
+			mcp.Required(),
+		),
+		mcp.WithString("package_channel",
+			mcp.Description("Package channel (example: stable)"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, postProjectsIdPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelUploadUrlsHandler)
+}
+
+func postProjectsIdPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelUploadUrlsHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := request.GetString("id", "")
+	package_name := request.GetString("package_name", "")
+	package_version := request.GetString("package_version", "")
+	package_username := request.GetString("package_username", "")
+	package_channel := request.GetString("package_channel", "")
+
+	return toResult(c.PostApiV4ProjectsIdPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelUploadUrls(ctx, id, package_name, package_version, package_username, package_channel, authorizationHeader))
+}
+
 func registerGetProjectsIdPackagesConanV1FilesPackageNamePackageVersionPackageUsernamePackageChannelRecipeRevisionExportFileName(s *server.MCPServer) {
 	tool := mcp.NewTool("get_pjs_id_pkgs_conan_v1_files_package_name_package_version_package_username_package_channel_recipe_revision_export_file_name",
 		mcp.WithDescription("This feature was introduced in GitLab 12.6"),
@@ -4183,6 +4544,34 @@ func getProjectsIdDeployKeysKeyIdHandler(ctx context.Context, request mcp.CallTo
 	return toResult(c.GetApiV4ProjectsIdDeployKeysKeyId(ctx, id, key_id, authorizationHeader))
 }
 
+func registerPostProjectsIdDeployKeysKeyIdEnable(s *server.MCPServer) {
+	tool := mcp.NewTool("post_pjs_id_deploy_keys_key_id_enable",
+		mcp.WithDescription("Enables a deploy key for a project so this can be used. Returns the enabled key, with a status code 201 when successful. This feature was added in GitLab 8.11."),
+		mcp.WithString("id",
+			mcp.Description("The ID or URL-encoded path of the project owned by the authenticated user"),
+			mcp.Required(),
+		),
+		mcp.WithNumber("key_id",
+			mcp.Description("The ID of the deploy key"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, postProjectsIdDeployKeysKeyIdEnableHandler)
+}
+
+func postProjectsIdDeployKeysKeyIdEnableHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := request.GetString("id", "")
+	key_id := int32(request.GetInt("key_id", math.MinInt))
+
+	return toResult(c.PostApiV4ProjectsIdDeployKeysKeyIdEnable(ctx, id, key_id, authorizationHeader))
+}
+
 func registerGetProjectsIdDeployTokens(s *server.MCPServer) {
 	tool := mcp.NewTool("get_pjs_id_deploy_tokens",
 		mcp.WithDescription("Get a list of a project's deploy tokens. This feature was introduced in GitLab 12.9."),
@@ -4907,6 +5296,34 @@ func getProjectsIdMergeRequestsMergeRequestIidDraftNotesDraftNoteIdHandler(ctx c
 	return toResult(c.GetApiV4ProjectsIdMergeRequestsMergeRequestIidDraftNotesDraftNoteId(ctx, id, merge_request_iid, draft_note_id, authorizationHeader))
 }
 
+func registerPostProjectsIdMergeRequestsMergeRequestIidDraftNotesBulkPublish(s *server.MCPServer) {
+	tool := mcp.NewTool("post_pjs_id_mrs_merge_request_iid_draft_notes_bulk_publish",
+		mcp.WithDescription("Bulk publish all pending draft notes"),
+		mcp.WithString("id",
+			mcp.Description("The ID of a project"),
+			mcp.Required(),
+		),
+		mcp.WithNumber("merge_request_iid",
+			mcp.Description("The ID of a merge request"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, postProjectsIdMergeRequestsMergeRequestIidDraftNotesBulkPublishHandler)
+}
+
+func postProjectsIdMergeRequestsMergeRequestIidDraftNotesBulkPublishHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := request.GetString("id", "")
+	merge_request_iid := int32(request.GetInt("merge_request_iid", math.MinInt))
+
+	return toResult(c.PostApiV4ProjectsIdMergeRequestsMergeRequestIidDraftNotesBulkPublish(ctx, id, merge_request_iid, authorizationHeader))
+}
+
 func registerGetProjectsIdEnvironments(s *server.MCPServer) {
 	tool := mcp.NewTool("get_pjs_id_environments",
 		mcp.WithDescription("Get all environments for a given project. This feature was introduced in GitLab 8.11."),
@@ -5009,6 +5426,29 @@ func getProjectsIdEnvironmentsEnvironmentIdHandler(ctx context.Context, request 
 	environment_id := int32(request.GetInt("environment_id", math.MinInt))
 
 	return toResult(c.GetApiV4ProjectsIdEnvironmentsEnvironmentId(ctx, id, environment_id, authorizationHeader))
+}
+
+func registerPostProjectsIdErrorTrackingClientKeys(s *server.MCPServer) {
+	tool := mcp.NewTool("post_pjs_id_error_tracking_client_keys",
+		mcp.WithDescription("Creates a new client key for a project. The public key attribute is generated automatically.This feature was introduced in GitLab 14.3."),
+		mcp.WithString("id",
+			mcp.Description("The ID or URL-encoded path of the project owned by the authenticated user"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, postProjectsIdErrorTrackingClientKeysHandler)
+}
+
+func postProjectsIdErrorTrackingClientKeysHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := request.GetString("id", "")
+
+	return toResult(c.PostApiV4ProjectsIdErrorTrackingClientKeys(ctx, id, authorizationHeader))
 }
 
 func registerGetProjectsIdErrorTrackingClientKeys(s *server.MCPServer) {
@@ -5520,6 +5960,34 @@ func getProjectsIdPackagesHelmChannelChartsFileNameTgzHandler(ctx context.Contex
 	return toResult(c.GetApiV4ProjectsIdPackagesHelmChannelChartsFileNameTgz(ctx, id, channel, file_name, authorizationHeader))
 }
 
+func registerPostProjectsIdPackagesHelmApiChannelChartsAuthorize(s *server.MCPServer) {
+	tool := mcp.NewTool("post_pjs_id_pkgs_helm_api_channel_charts_authorize",
+		mcp.WithDescription("This feature was introduced in GitLab 14.0"),
+		mcp.WithNumber("id",
+			mcp.Description("The ID or full path of a project"),
+			mcp.Required(),
+		),
+		mcp.WithString("channel",
+			mcp.Description("Helm channel (example: stable)"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, postProjectsIdPackagesHelmApiChannelChartsAuthorizeHandler)
+}
+
+func postProjectsIdPackagesHelmApiChannelChartsAuthorizeHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := int32(request.GetInt("id", math.MinInt))
+	channel := request.GetString("channel", "")
+
+	return toResult(c.PostApiV4ProjectsIdPackagesHelmApiChannelChartsAuthorize(ctx, id, channel, authorizationHeader))
+}
+
 func registerGetProjectsIdServices(s *server.MCPServer) {
 	tool := mcp.NewTool("get_pjs_id_services",
 		mcp.WithDescription("Get a list of all active integrations."),
@@ -5816,6 +6284,29 @@ func parseGetProjectsIdCiLint(request mcp.CallToolRequest) client.GetApiV4Projec
 	}
 
 	return params
+}
+
+func registerPostProjectsIdUploadsAuthorize(s *server.MCPServer) {
+	tool := mcp.NewTool("post_pjs_id_uploads_authorize",
+		mcp.WithDescription("This feature was introduced in GitLab 13.11"),
+		mcp.WithNumber("id",
+			mcp.Description("null"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, postProjectsIdUploadsAuthorizeHandler)
+}
+
+func postProjectsIdUploadsAuthorizeHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := int32(request.GetInt("id", math.MinInt))
+
+	return toResult(c.PostApiV4ProjectsIdUploadsAuthorize(ctx, id, authorizationHeader))
 }
 
 func registerGetProjectsIdUploads(s *server.MCPServer) {
@@ -6193,6 +6684,34 @@ func getProjectsIdMergeRequestsMergeRequestIidApprovalsHandler(ctx context.Conte
 	return toResult(c.GetApiV4ProjectsIdMergeRequestsMergeRequestIidApprovals(ctx, id, merge_request_iid, authorizationHeader))
 }
 
+func registerPostProjectsIdMergeRequestsMergeRequestIidUnapprove(s *server.MCPServer) {
+	tool := mcp.NewTool("post_pjs_id_mrs_merge_request_iid_unapprove",
+		mcp.WithDescription("Remove an approval from a merge request"),
+		mcp.WithNumber("id",
+			mcp.Description("null"),
+			mcp.Required(),
+		),
+		mcp.WithNumber("merge_request_iid",
+			mcp.Description("null"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, postProjectsIdMergeRequestsMergeRequestIidUnapproveHandler)
+}
+
+func postProjectsIdMergeRequestsMergeRequestIidUnapproveHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := int32(request.GetInt("id", math.MinInt))
+	merge_request_iid := int32(request.GetInt("merge_request_iid", math.MinInt))
+
+	return toResult(c.PostApiV4ProjectsIdMergeRequestsMergeRequestIidUnapprove(ctx, id, merge_request_iid, authorizationHeader))
+}
+
 func registerGetProjectsIdMergeRequestsMergeRequestIidApprovalState(s *server.MCPServer) {
 	tool := mcp.NewTool("get_pjs_id_mrs_merge_request_iid_approval_state",
 		mcp.WithDescription("Get approval state of merge request"),
@@ -6219,6 +6738,85 @@ func getProjectsIdMergeRequestsMergeRequestIidApprovalStateHandler(ctx context.C
 	merge_request_iid := int32(request.GetInt("merge_request_iid", math.MinInt))
 
 	return toResult(c.GetApiV4ProjectsIdMergeRequestsMergeRequestIidApprovalState(ctx, id, merge_request_iid, authorizationHeader))
+}
+
+func registerPostProjectsIdCreateCiConfig(s *server.MCPServer) {
+	tool := mcp.NewTool("post_pjs_id_create_ci_config",
+		mcp.WithDescription("Creates merge request for missing ci config in project"),
+		mcp.WithNumber("id",
+			mcp.Description("null"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, postProjectsIdCreateCiConfigHandler)
+}
+
+func postProjectsIdCreateCiConfigHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := int32(request.GetInt("id", math.MinInt))
+
+	return toResult(c.PostApiV4ProjectsIdCreateCiConfig(ctx, id, authorizationHeader))
+}
+
+func registerPostProjectsIdMergeRequestsMergeRequestIidResetTimeEstimate(s *server.MCPServer) {
+	tool := mcp.NewTool("post_pjs_id_mrs_merge_request_iid_reset_time_estimate",
+		mcp.WithDescription("Resets the estimated time for this merge_request to 0 seconds."),
+		mcp.WithString("id",
+			mcp.Description("The ID or URL-encoded path of the project."),
+			mcp.Required(),
+		),
+		mcp.WithNumber("merge_request_iid",
+			mcp.Description("The internal ID of the merge_request."),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, postProjectsIdMergeRequestsMergeRequestIidResetTimeEstimateHandler)
+}
+
+func postProjectsIdMergeRequestsMergeRequestIidResetTimeEstimateHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := request.GetString("id", "")
+	merge_request_iid := int32(request.GetInt("merge_request_iid", math.MinInt))
+
+	return toResult(c.PostApiV4ProjectsIdMergeRequestsMergeRequestIidResetTimeEstimate(ctx, id, merge_request_iid, authorizationHeader))
+}
+
+func registerPostProjectsIdMergeRequestsMergeRequestIidResetSpentTime(s *server.MCPServer) {
+	tool := mcp.NewTool("post_pjs_id_mrs_merge_request_iid_reset_spent_time",
+		mcp.WithDescription("Resets the total spent time for this merge_request to 0 seconds."),
+		mcp.WithString("id",
+			mcp.Description("The ID or URL-encoded path of the project."),
+			mcp.Required(),
+		),
+		mcp.WithNumber("merge_request_iid",
+			mcp.Description("The internal ID of the merge_request"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, postProjectsIdMergeRequestsMergeRequestIidResetSpentTimeHandler)
+}
+
+func postProjectsIdMergeRequestsMergeRequestIidResetSpentTimeHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := request.GetString("id", "")
+	merge_request_iid := int32(request.GetInt("merge_request_iid", math.MinInt))
+
+	return toResult(c.PostApiV4ProjectsIdMergeRequestsMergeRequestIidResetSpentTime(ctx, id, merge_request_iid, authorizationHeader))
 }
 
 func registerGetProjectsIdMergeRequestsMergeRequestIidTimeStats(s *server.MCPServer) {
@@ -7084,6 +7682,34 @@ func getProjectsIdMergeRequestsMergeRequestIidMergeRefHandler(ctx context.Contex
 	return toResult(c.GetApiV4ProjectsIdMergeRequestsMergeRequestIidMergeRef(ctx, id, merge_request_iid, authorizationHeader))
 }
 
+func registerPostProjectsIdMergeRequestsMergeRequestIidCancelMergeWhenPipelineSucceeds(s *server.MCPServer) {
+	tool := mcp.NewTool("post_pjs_id_mrs_merge_request_iid_cancel_merge_when_pipeline_succeeds",
+		mcp.WithDescription("Cancel merge if \"Merge When Pipeline Succeeds\" is enabled"),
+		mcp.WithString("id",
+			mcp.Description("The ID or URL-encoded path of the project."),
+			mcp.Required(),
+		),
+		mcp.WithNumber("merge_request_iid",
+			mcp.Description("null"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, postProjectsIdMergeRequestsMergeRequestIidCancelMergeWhenPipelineSucceedsHandler)
+}
+
+func postProjectsIdMergeRequestsMergeRequestIidCancelMergeWhenPipelineSucceedsHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := request.GetString("id", "")
+	merge_request_iid := int32(request.GetInt("merge_request_iid", math.MinInt))
+
+	return toResult(c.PostApiV4ProjectsIdMergeRequestsMergeRequestIidCancelMergeWhenPipelineSucceeds(ctx, id, merge_request_iid, authorizationHeader))
+}
+
 func registerGetProjectsIdMergeRequestsMergeRequestIidClosesIssues(s *server.MCPServer) {
 	tool := mcp.NewTool("get_pjs_id_mrs_merge_request_iid_closes_issues",
 		mcp.WithDescription("Get all the issues that would be closed by merging the provided merge request."),
@@ -7283,6 +7909,52 @@ func parseGetProjectsIdMergeRequestsMergeRequestIidVersionsVersionId(request mcp
 	params.Unidiff = &unidiff
 
 	return params
+}
+
+func registerPostProjectsIdPackagesNpmNpmV1SecurityAdvisoriesBulk(s *server.MCPServer) {
+	tool := mcp.NewTool("post_pjs_id_pkgs_npm_npm_v1_security_advisories_bulk",
+		mcp.WithDescription("This feature was introduced in GitLab 15.6"),
+		mcp.WithString("id",
+			mcp.Description("The ID or URL-encoded path of the project"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, postProjectsIdPackagesNpmNpmV1SecurityAdvisoriesBulkHandler)
+}
+
+func postProjectsIdPackagesNpmNpmV1SecurityAdvisoriesBulkHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := request.GetString("id", "")
+
+	return toResult(c.PostApiV4ProjectsIdPackagesNpmNpmV1SecurityAdvisoriesBulk(ctx, id, authorizationHeader))
+}
+
+func registerPostProjectsIdPackagesNpmNpmV1SecurityAuditsQuick(s *server.MCPServer) {
+	tool := mcp.NewTool("post_pjs_id_pkgs_npm_npm_v1_security_audits_quick",
+		mcp.WithDescription("This feature was introduced in GitLab 15.6"),
+		mcp.WithString("id",
+			mcp.Description("The ID or URL-encoded path of the project"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, postProjectsIdPackagesNpmNpmV1SecurityAuditsQuickHandler)
+}
+
+func postProjectsIdPackagesNpmNpmV1SecurityAuditsQuickHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := request.GetString("id", "")
+
+	return toResult(c.PostApiV4ProjectsIdPackagesNpmNpmV1SecurityAuditsQuick(ctx, id, authorizationHeader))
 }
 
 func registerGetProjectsIdPackagesNugetIndex(s *server.MCPServer) {
@@ -8407,6 +9079,90 @@ func parseGetProjectsIdHooksHookIdEvents(request mcp.CallToolRequest) client.Get
 	return params
 }
 
+func registerPostProjectsIdHooksHookIdTestTrigger(s *server.MCPServer) {
+	tool := mcp.NewTool("post_pjs_id_hooks_hook_id_test_trigger",
+		mcp.WithDescription("Triggers a hook test"),
+		mcp.WithNumber("hook_id",
+			mcp.Description("The ID of the hook"),
+			mcp.Required(),
+		),
+		mcp.WithString("trigger",
+			mcp.Description("The type of trigger hook"),
+			mcp.Required(),
+			mcp.Enum("confidential_issues_events", "confidential_note_events", "deployment_events", "emoji_events", "feature_flag_events", "issues_events", "job_events", "merge_requests_events", "note_events", "pipeline_events", "push_events", "releases_events", "resource_access_token_events", "tag_push_events", "wiki_page_events", "vulnerability_events"),
+		),
+		mcp.WithNumber("id",
+			mcp.Description("null"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, postProjectsIdHooksHookIdTestTriggerHandler)
+}
+
+func postProjectsIdHooksHookIdTestTriggerHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := int32(request.GetInt("id", math.MinInt))
+	hook_id := int32(request.GetInt("hook_id", math.MinInt))
+	trigger := request.GetString("trigger", "")
+
+	return toResult(c.PostApiV4ProjectsIdHooksHookIdTestTrigger(ctx, id, hook_id, trigger, authorizationHeader))
+}
+
+func registerPostProjectsIdHooksHookIdEventsHookLogIdResend(s *server.MCPServer) {
+	tool := mcp.NewTool("post_pjs_id_hooks_hook_id_events_hook_log_id_resend",
+		mcp.WithDescription("Resend a webhook event"),
+		mcp.WithNumber("id",
+			mcp.Description("null"),
+			mcp.Required(),
+		),
+		mcp.WithNumber("hook_id",
+			mcp.Description("null"),
+			mcp.Required(),
+		),
+		mcp.WithNumber("hook_log_id",
+			mcp.Description("null"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, postProjectsIdHooksHookIdEventsHookLogIdResendHandler)
+}
+
+func postProjectsIdHooksHookIdEventsHookLogIdResendHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := int32(request.GetInt("id", math.MinInt))
+	hook_id := int32(request.GetInt("hook_id", math.MinInt))
+	hook_log_id := int32(request.GetInt("hook_log_id", math.MinInt))
+
+	return toResult(c.PostApiV4ProjectsIdHooksHookIdEventsHookLogIdResend(ctx, id, hook_id, hook_log_id, authorizationHeader))
+}
+
+func registerPostProjectsImportAuthorize(s *server.MCPServer) {
+	tool := mcp.NewTool("post_pjs_import_authorize",
+		mcp.WithDescription("This feature was introduced in GitLab 12.9"),
+	)
+
+	s.AddTool(tool, postProjectsImportAuthorizeHandler)
+}
+
+func postProjectsImportAuthorizeHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	return toResult(c.PostApiV4ProjectsImportAuthorize(ctx, authorizationHeader))
+}
+
 func registerGetProjectsIdImport(s *server.MCPServer) {
 	tool := mcp.NewTool("get_pjs_id_import",
 		mcp.WithDescription("This feature was introduced in GitLab 10.6."),
@@ -8428,6 +9184,23 @@ func getProjectsIdImportHandler(ctx context.Context, request mcp.CallToolRequest
 	id := request.GetString("id", "")
 
 	return toResult(c.GetApiV4ProjectsIdImport(ctx, id, authorizationHeader))
+}
+
+func registerPostProjectsImportRelationAuthorize(s *server.MCPServer) {
+	tool := mcp.NewTool("post_pjs_import_relation_authorize",
+		mcp.WithDescription("This feature was introduced in GitLab 16.11"),
+	)
+
+	s.AddTool(tool, postProjectsImportRelationAuthorizeHandler)
+}
+
+func postProjectsImportRelationAuthorizeHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	return toResult(c.PostApiV4ProjectsImportRelationAuthorize(ctx, authorizationHeader))
 }
 
 func registerGetProjectsIdRelationImports(s *server.MCPServer) {
@@ -9195,6 +9968,29 @@ func getProjectsIdCustomAttributesKeyHandler(ctx context.Context, request mcp.Ca
 	return toResult(c.GetApiV4ProjectsIdCustomAttributesKey(ctx, id, key, authorizationHeader))
 }
 
+func registerPostProjectsIdRestore(s *server.MCPServer) {
+	tool := mcp.NewTool("post_pjs_id_restore",
+		mcp.WithDescription("Restore a project"),
+		mcp.WithNumber("id",
+			mcp.Description("null"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, postProjectsIdRestoreHandler)
+}
+
+func postProjectsIdRestoreHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := int32(request.GetInt("id", math.MinInt))
+
+	return toResult(c.PostApiV4ProjectsIdRestore(ctx, id, authorizationHeader))
+}
+
 func registerGetProjects(s *server.MCPServer) {
 	tool := mcp.NewTool("get_pjs",
 		mcp.WithDescription("Get a list of visible projects for authenticated user"),
@@ -9882,6 +10678,98 @@ func getProjectsIdPagesAccessHandler(ctx context.Context, request mcp.CallToolRe
 	return toResult(c.GetApiV4ProjectsIdPagesAccess(ctx, id, authorizationHeader))
 }
 
+func registerPostProjectsIdArchive(s *server.MCPServer) {
+	tool := mcp.NewTool("post_pjs_id_archive",
+		mcp.WithDescription("Archive a project"),
+		mcp.WithString("id",
+			mcp.Description("The ID or URL-encoded path of the project"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, postProjectsIdArchiveHandler)
+}
+
+func postProjectsIdArchiveHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := request.GetString("id", "")
+
+	return toResult(c.PostApiV4ProjectsIdArchive(ctx, id, authorizationHeader))
+}
+
+func registerPostProjectsIdUnarchive(s *server.MCPServer) {
+	tool := mcp.NewTool("post_pjs_id_unarchive",
+		mcp.WithDescription("Unarchive a project"),
+		mcp.WithString("id",
+			mcp.Description("The ID or URL-encoded path of the project"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, postProjectsIdUnarchiveHandler)
+}
+
+func postProjectsIdUnarchiveHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := request.GetString("id", "")
+
+	return toResult(c.PostApiV4ProjectsIdUnarchive(ctx, id, authorizationHeader))
+}
+
+func registerPostProjectsIdStar(s *server.MCPServer) {
+	tool := mcp.NewTool("post_pjs_id_star",
+		mcp.WithDescription("Star a project"),
+		mcp.WithString("id",
+			mcp.Description("The ID or URL-encoded path of the project"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, postProjectsIdStarHandler)
+}
+
+func postProjectsIdStarHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := request.GetString("id", "")
+
+	return toResult(c.PostApiV4ProjectsIdStar(ctx, id, authorizationHeader))
+}
+
+func registerPostProjectsIdUnstar(s *server.MCPServer) {
+	tool := mcp.NewTool("post_pjs_id_unstar",
+		mcp.WithDescription("Unstar a project"),
+		mcp.WithString("id",
+			mcp.Description("The ID or URL-encoded path of the project"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, postProjectsIdUnstarHandler)
+}
+
+func postProjectsIdUnstarHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := request.GetString("id", "")
+
+	return toResult(c.PostApiV4ProjectsIdUnstar(ctx, id, authorizationHeader))
+}
+
 func registerGetProjectsIdStarrers(s *server.MCPServer) {
 	tool := mcp.NewTool("get_pjs_id_starrers",
 		mcp.WithDescription("Get the users who starred a project"),
@@ -9959,6 +10847,62 @@ func getProjectsIdLanguagesHandler(ctx context.Context, request mcp.CallToolRequ
 	id := request.GetString("id", "")
 
 	return toResult(c.GetApiV4ProjectsIdLanguages(ctx, id, authorizationHeader))
+}
+
+func registerPostProjectsIdForkForkedFromId(s *server.MCPServer) {
+	tool := mcp.NewTool("post_pjs_id_fork_forked_from_id",
+		mcp.WithDescription("Mark this project as forked from another"),
+		mcp.WithString("id",
+			mcp.Description("The ID or URL-encoded path of the project"),
+			mcp.Required(),
+		),
+		mcp.WithString("forked_from_id",
+			mcp.Description("The ID of the project it was forked from (example: gitlab)"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, postProjectsIdForkForkedFromIdHandler)
+}
+
+func postProjectsIdForkForkedFromIdHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := request.GetString("id", "")
+	forked_from_id := request.GetString("forked_from_id", "")
+
+	return toResult(c.PostApiV4ProjectsIdForkForkedFromId(ctx, id, forked_from_id, authorizationHeader))
+}
+
+func registerPostProjectsIdImportProjectMembersProjectId(s *server.MCPServer) {
+	tool := mcp.NewTool("post_pjs_id_import_project_members_project_id",
+		mcp.WithDescription("This feature was introduced in GitLab 14.2"),
+		mcp.WithString("id",
+			mcp.Description("The ID or URL-encoded path of the project"),
+			mcp.Required(),
+		),
+		mcp.WithNumber("project_id",
+			mcp.Description("The ID of the source project to import the members from."),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, postProjectsIdImportProjectMembersProjectIdHandler)
+}
+
+func postProjectsIdImportProjectMembersProjectIdHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := request.GetString("id", "")
+	project_id := int32(request.GetInt("project_id", math.MinInt))
+
+	return toResult(c.PostApiV4ProjectsIdImportProjectMembersProjectId(ctx, id, project_id, authorizationHeader))
 }
 
 func registerGetProjectsIdUsers(s *server.MCPServer) {
@@ -10204,6 +11148,29 @@ func parseGetProjectsIdInvitedGroups(request mcp.CallToolRequest) client.GetApiV
 	params.WithCustomAttributes = &with_custom_attributes
 
 	return params
+}
+
+func registerPostProjectsIdRepositorySize(s *server.MCPServer) {
+	tool := mcp.NewTool("post_pjs_id_repo_size",
+		mcp.WithDescription("This feature was introduced in GitLab 15.0."),
+		mcp.WithString("id",
+			mcp.Description("The ID or URL-encoded path of the project"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, postProjectsIdRepositorySizeHandler)
+}
+
+func postProjectsIdRepositorySizeHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := request.GetString("id", "")
+
+	return toResult(c.PostApiV4ProjectsIdRepositorySize(ctx, id, authorizationHeader))
 }
 
 func registerGetProjectsIdTransferLocations(s *server.MCPServer) {
@@ -10560,6 +11527,29 @@ func getProjectsIdPackagesPypiSimpleHandler(ctx context.Context, request mcp.Cal
 	return toResult(c.GetApiV4ProjectsIdPackagesPypiSimple(ctx, id, authorizationHeader))
 }
 
+func registerPostProjectsIdPackagesPypiAuthorize(s *server.MCPServer) {
+	tool := mcp.NewTool("post_pjs_id_pkgs_pypi_authorize",
+		mcp.WithDescription("This feature was introduced in GitLab 12.10"),
+		mcp.WithString("id",
+			mcp.Description("The ID or URL-encoded path of the project"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, postProjectsIdPackagesPypiAuthorizeHandler)
+}
+
+func postProjectsIdPackagesPypiAuthorizeHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := request.GetString("id", "")
+
+	return toResult(c.PostApiV4ProjectsIdPackagesPypiAuthorize(ctx, id, authorizationHeader))
+}
+
 func registerGetProjectsIdReleases(s *server.MCPServer) {
 	tool := mcp.NewTool("get_pjs_id_releases",
 		mcp.WithDescription("Returns a paginated list of releases. This feature was introduced in GitLab 11.7."),
@@ -10691,6 +11681,34 @@ func parseGetProjectsIdReleasesTagName(request mcp.CallToolRequest) client.GetAp
 	params.IncludeHtmlDescription = &include_html_description
 
 	return params
+}
+
+func registerPostProjectsIdReleasesTagNameEvidence(s *server.MCPServer) {
+	tool := mcp.NewTool("post_pjs_id_releases_tag_name_evidence",
+		mcp.WithDescription("Creates an evidence for an existing Release. This feature was introduced in GitLab 12.10."),
+		mcp.WithString("tag_name",
+			mcp.Description("The Git tag the release is associated with"),
+			mcp.Required(),
+		),
+		mcp.WithNumber("id",
+			mcp.Description("null"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, postProjectsIdReleasesTagNameEvidenceHandler)
+}
+
+func postProjectsIdReleasesTagNameEvidenceHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := int32(request.GetInt("id", math.MinInt))
+	tag_name := request.GetString("tag_name", "")
+
+	return toResult(c.PostApiV4ProjectsIdReleasesTagNameEvidence(ctx, id, tag_name, authorizationHeader))
 }
 
 func registerGetProjectsIdReleasesTagNameAssetsLinks(s *server.MCPServer) {
@@ -10851,6 +11869,34 @@ func getProjectsIdRemoteMirrorsMirrorIdHandler(ctx context.Context, request mcp.
 	mirror_id := request.GetString("mirror_id", "")
 
 	return toResult(c.GetApiV4ProjectsIdRemoteMirrorsMirrorId(ctx, id, mirror_id, authorizationHeader))
+}
+
+func registerPostProjectsIdRemoteMirrorsMirrorIdSync(s *server.MCPServer) {
+	tool := mcp.NewTool("post_pjs_id_remote_mirrors_mirror_id_sync",
+		mcp.WithDescription("Triggers a push mirror operation"),
+		mcp.WithString("id",
+			mcp.Description("The ID or URL-encoded path of the project"),
+			mcp.Required(),
+		),
+		mcp.WithString("mirror_id",
+			mcp.Description("The ID of a remote mirror"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, postProjectsIdRemoteMirrorsMirrorIdSyncHandler)
+}
+
+func postProjectsIdRemoteMirrorsMirrorIdSyncHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := request.GetString("id", "")
+	mirror_id := request.GetString("mirror_id", "")
+
+	return toResult(c.PostApiV4ProjectsIdRemoteMirrorsMirrorIdSync(ctx, id, mirror_id, authorizationHeader))
 }
 
 func registerGetProjectsIdRemoteMirrorsMirrorIdPublicKey(s *server.MCPServer) {
@@ -11575,6 +12621,52 @@ func getProjectsIdMergeRequestsEventableIdResourceMilestoneEventsEventIdHandler(
 	return toResult(c.GetApiV4ProjectsIdMergeRequestsEventableIdResourceMilestoneEventsEventId(ctx, id, eventable_id, event_id, authorizationHeader))
 }
 
+func registerPostProjectsIdPackagesRpm(s *server.MCPServer) {
+	tool := mcp.NewTool("post_pjs_id_pkgs_rpm",
+		mcp.WithDescription("This feature was introduced in GitLab 15.7"),
+		mcp.WithString("id",
+			mcp.Description("The ID or URL-encoded path of the project"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, postProjectsIdPackagesRpmHandler)
+}
+
+func postProjectsIdPackagesRpmHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := request.GetString("id", "")
+
+	return toResult(c.PostApiV4ProjectsIdPackagesRpm(ctx, id, authorizationHeader))
+}
+
+func registerPostProjectsIdPackagesRpmAuthorize(s *server.MCPServer) {
+	tool := mcp.NewTool("post_pjs_id_pkgs_rpm_authorize",
+		mcp.WithDescription("This feature was introduced in GitLab 15.7"),
+		mcp.WithString("id",
+			mcp.Description("The ID or URL-encoded path of the project"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, postProjectsIdPackagesRpmAuthorizeHandler)
+}
+
+func postProjectsIdPackagesRpmAuthorizeHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := request.GetString("id", "")
+
+	return toResult(c.PostApiV4ProjectsIdPackagesRpmAuthorize(ctx, id, authorizationHeader))
+}
+
 func registerGetProjectsIdPackagesRubygemsFileName(s *server.MCPServer) {
 	tool := mcp.NewTool("get_pjs_id_pkgs_rubygems_file_name",
 		mcp.WithDescription("This feature was introduced in GitLab 13.9"),
@@ -11657,6 +12749,29 @@ func getProjectsIdPackagesRubygemsGemsFileNameHandler(ctx context.Context, reque
 	file_name := request.GetString("file_name", "")
 
 	return toResult(c.GetApiV4ProjectsIdPackagesRubygemsGemsFileName(ctx, id, file_name, authorizationHeader))
+}
+
+func registerPostProjectsIdPackagesRubygemsApiV1GemsAuthorize(s *server.MCPServer) {
+	tool := mcp.NewTool("post_pjs_id_pkgs_rubygems_api_v1_gems_authorize",
+		mcp.WithDescription("This feature was introduced in GitLab 13.9"),
+		mcp.WithNumber("id",
+			mcp.Description("The ID or URL-encoded path of the project"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, postProjectsIdPackagesRubygemsApiV1GemsAuthorizeHandler)
+}
+
+func postProjectsIdPackagesRubygemsApiV1GemsAuthorizeHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := int32(request.GetInt("id", math.MinInt))
+
+	return toResult(c.PostApiV4ProjectsIdPackagesRubygemsApiV1GemsAuthorize(ctx, id, authorizationHeader))
 }
 
 func registerGetProjectsIdPackagesRubygemsApiV1Dependencies(s *server.MCPServer) {
@@ -11890,6 +13005,34 @@ func parseGetProjectsIdPackagesTerraformModulesModuleNameModuleSystem(request mc
 	return params
 }
 
+func registerPostProjectsIdTerraformStateName(s *server.MCPServer) {
+	tool := mcp.NewTool("post_pjs_id_terraform_state_name",
+		mcp.WithDescription("Add a new Terraform state or update an existing one"),
+		mcp.WithString("id",
+			mcp.Description("The ID or URL-encoded path of the project"),
+			mcp.Required(),
+		),
+		mcp.WithNumber("name",
+			mcp.Description("null"),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, postProjectsIdTerraformStateNameHandler)
+}
+
+func postProjectsIdTerraformStateNameHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := request.GetString("id", "")
+	name := int32(request.GetInt("name", math.MinInt))
+
+	return toResult(c.PostApiV4ProjectsIdTerraformStateName(ctx, id, name, authorizationHeader))
+}
+
 func registerGetProjectsIdTerraformStateName(s *server.MCPServer) {
 	tool := mcp.NewTool("get_pjs_id_terraform_state_name",
 		mcp.WithDescription("Get a Terraform state by its name"),
@@ -12046,6 +13189,182 @@ func parseGetProjectsIdWikisSlug(request mcp.CallToolRequest) client.GetApiV4Pro
 
 	render_html := request.GetBool("render_html", false)
 	params.RenderHtml = &render_html
+
+	return params
+}
+
+func registerPostProjectsIdIssues(s *server.MCPServer) {
+	tool := mcp.NewTool("post_pjs_id_issues",
+		mcp.WithDescription("New issue"),
+		mcp.WithString("id",
+			mcp.Description("The global ID or URL-encoded path of the project."),
+			mcp.Required(),
+		),
+		mcp.WithNumber("assignee_id",
+			mcp.Description("The ID of the user to assign the issue to. Only appears on GitLab Free."),
+		),
+		mcp.WithString("assignee_ids",
+			mcp.Description("The IDs of the users to assign the issue to. Premium and Ultimate only."),
+		),
+		mcp.WithBoolean("confidential",
+			mcp.Description("Set an issue to be confidential. Default is false."),
+		),
+		mcp.WithString("created_at",
+			mcp.Description("When the issue was created. Date time string, ISO 8601 formatted, for example 2016-03-11T03:45:40Z. Requires administrator or project/group owner rights."),
+		),
+		mcp.WithString("description",
+			mcp.Description("The description of an issue. Limited to 1,048,576 characters."),
+		),
+		mcp.WithString("discussion_to_resolve",
+			mcp.Description("The ID of a discussion to resolve. This fills out the issue with a default description and mark the discussion as resolved. Use in combination with merge_request_to_resolve_discussions_of."),
+		),
+		mcp.WithString("due_date",
+			mcp.Description("The due date. Date time string in the format YYYY-MM-DD, for example 2016-03-11."),
+		),
+		mcp.WithNumber("epic_id",
+			mcp.Description("ID of the epic to add the issue to. Valid values are greater than or equal to 0. Premium and Ultimate only."),
+		),
+		mcp.WithNumber("epic_iid",
+			mcp.Description("IID of the epic to add the issue to. Valid values are greater than or equal to 0. (deprecated, scheduled for removal in API version 5). Premium and Ultimate only."),
+		),
+		mcp.WithString("iid",
+			mcp.Description("The internal ID of the project's issue (requires administrator or project owner rights)."),
+		),
+		mcp.WithString("issue_type",
+			mcp.Description("The type of issue. One of issue, incident, test_case or task. Default is issue."),
+		),
+		mcp.WithString("labels",
+			mcp.Description("Comma-separated label names to assign to the new issue. If a label does not already exist, this creates a new project label and assigns it to the issue."),
+		),
+		mcp.WithNumber("merge_request_to_resolve_discussions_of",
+			mcp.Description("The IID of a merge request in which to resolve all issues. This fills out the issue with a default description and mark all discussions as resolved. When passing a description or title, these values take precedence over the default values."),
+		),
+		mcp.WithNumber("milestone_id",
+			mcp.Description("The global ID of a milestone to assign issue. To find the milestone_id associated with a milestone, view an issue with the milestone assigned and use the API to retrieve the issue's details."),
+		),
+		mcp.WithString("title",
+			mcp.Description("The title of an issue."),
+			mcp.Required(),
+		),
+		mcp.WithNumber("weight",
+			mcp.Description("The weight of the issue. Valid values are greater than or equal to 0. Premium and Ultimate only."),
+		),
+	)
+
+	s.AddTool(tool, postProjectsIdIssuesHandler)
+}
+
+func postProjectsIdIssuesHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := request.GetString("id", "")
+	params := parsePostProjectsIdIssues(request)
+	return toResult(c.PostApiV4ProjectsIdIssues(ctx, id, &params, authorizationHeader))
+}
+
+func parsePostProjectsIdIssues(request mcp.CallToolRequest) client.PostApiV4ProjectsIdIssuesParams {
+	params := client.PostApiV4ProjectsIdIssuesParams{}
+
+	assignee_id := request.GetInt("assignee_id", math.MinInt)
+	if assignee_id != math.MinInt {
+
+		params.AssigneeId = &assignee_id
+	}
+
+	assignee_ids := request.GetString("assignee_ids", "")
+	if assignee_ids != "" {
+		assignee_ids := strings.Split(assignee_ids, ",")
+		var intSlice []int
+		for _, v := range assignee_ids {
+			intValue, _ := strconv.Atoi(v)
+			intSlice = append(intSlice, intValue)
+		}
+		params.AssigneeIds = &intSlice
+	}
+
+	confidential := request.GetBool("confidential", false)
+	params.Confidential = &confidential
+
+	created_at := request.GetString("created_at", "")
+	if created_at != "" {
+
+		params.CreatedAt = &created_at
+	}
+
+	description := request.GetString("description", "")
+	if description != "" {
+
+		params.Description = &description
+	}
+
+	discussion_to_resolve := request.GetString("discussion_to_resolve", "")
+	if discussion_to_resolve != "" {
+
+		params.DiscussionToResolve = &discussion_to_resolve
+	}
+
+	due_date := request.GetString("due_date", "")
+	if due_date != "" {
+
+		params.DueDate = &due_date
+	}
+
+	epic_id := request.GetInt("epic_id", math.MinInt)
+	if epic_id != math.MinInt {
+
+		params.EpicId = &epic_id
+	}
+
+	epic_iid := request.GetInt("epic_iid", math.MinInt)
+	if epic_iid != math.MinInt {
+
+		params.EpicIid = &epic_iid
+	}
+
+	iid := request.GetString("iid", "")
+	if iid != "" {
+
+		params.Iid = &iid
+	}
+
+	issue_type := request.GetString("issue_type", "")
+	if issue_type != "" {
+
+		params.IssueType = &issue_type
+	}
+
+	labels := request.GetString("labels", "")
+	if labels != "" {
+
+		params.Labels = &labels
+	}
+
+	merge_request_to_resolve_discussions_of := request.GetInt("merge_request_to_resolve_discussions_of", math.MinInt)
+	if merge_request_to_resolve_discussions_of != math.MinInt {
+
+		params.MergeRequestToResolveDiscussionsOf = &merge_request_to_resolve_discussions_of
+	}
+
+	milestone_id := request.GetInt("milestone_id", math.MinInt)
+	if milestone_id != math.MinInt {
+
+		params.MilestoneId = &milestone_id
+	}
+
+	title := request.GetString("title", "")
+	if title != "" {
+
+		params.Title = title
+	}
+
+	weight := request.GetInt("weight", math.MinInt)
+	if weight != math.MinInt {
+
+		params.Weight = &weight
+	}
 
 	return params
 }
@@ -12338,6 +13657,337 @@ func getProjectsIdIssuesIssueIidHandler(ctx context.Context, request mcp.CallToo
 	issue_iid := request.GetInt("issue_iid", math.MinInt)
 
 	return toResult(c.GetApiV4ProjectsIdIssuesIssueIid(ctx, id, issue_iid, authorizationHeader))
+}
+
+func registerPostProjectsIdIssuesIssueIidClone(s *server.MCPServer) {
+	tool := mcp.NewTool("post_pjs_id_issues_issue_iid_clone",
+		mcp.WithDescription("Clone an issue"),
+		mcp.WithString("id",
+			mcp.Description("ID or URL-encoded path of the project."),
+			mcp.Required(),
+		),
+		mcp.WithNumber("issue_iid",
+			mcp.Description("Internal ID of a project's issue."),
+			mcp.Required(),
+		),
+		mcp.WithNumber("to_project_id",
+			mcp.Description("ID of the new project."),
+			mcp.Required(),
+		),
+		mcp.WithBoolean("with_notes",
+			mcp.Description("Clone the issue with notes. Default is false."),
+		),
+	)
+
+	s.AddTool(tool, postProjectsIdIssuesIssueIidCloneHandler)
+}
+
+func postProjectsIdIssuesIssueIidCloneHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := request.GetString("id", "")
+	issue_iid := request.GetInt("issue_iid", math.MinInt)
+	params := parsePostProjectsIdIssuesIssueIidClone(request)
+	return toResult(c.PostApiV4ProjectsIdIssuesIssueIidClone(ctx, id, issue_iid, &params, authorizationHeader))
+}
+
+func parsePostProjectsIdIssuesIssueIidClone(request mcp.CallToolRequest) client.PostApiV4ProjectsIdIssuesIssueIidCloneParams {
+	params := client.PostApiV4ProjectsIdIssuesIssueIidCloneParams{}
+
+	to_project_id := request.GetInt("to_project_id", math.MinInt)
+	if to_project_id != math.MinInt {
+
+		params.ToProjectId = to_project_id
+	}
+
+	with_notes := request.GetBool("with_notes", false)
+	params.WithNotes = &with_notes
+
+	return params
+}
+
+func registerPostProjectsIdIssuesIssueIidSubscribe(s *server.MCPServer) {
+	tool := mcp.NewTool("post_pjs_id_issues_issue_iid_subscribe",
+		mcp.WithDescription("Subscribe to an issue"),
+		mcp.WithString("id",
+			mcp.Description("The global ID or URL-encoded path of the project."),
+			mcp.Required(),
+		),
+		mcp.WithNumber("issue_iid",
+			mcp.Description("The internal ID of a project's issue."),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, postProjectsIdIssuesIssueIidSubscribeHandler)
+}
+
+func postProjectsIdIssuesIssueIidSubscribeHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := request.GetString("id", "")
+	issue_iid := request.GetInt("issue_iid", math.MinInt)
+
+	return toResult(c.PostApiV4ProjectsIdIssuesIssueIidSubscribe(ctx, id, issue_iid, authorizationHeader))
+}
+
+func registerPostProjectsIdIssuesIssueIidUnsubscribe(s *server.MCPServer) {
+	tool := mcp.NewTool("post_pjs_id_issues_issue_iid_unsubscribe",
+		mcp.WithDescription("Unsubscribe from an issue"),
+		mcp.WithString("id",
+			mcp.Description("The global ID or URL-encoded path of the project."),
+			mcp.Required(),
+		),
+		mcp.WithNumber("issue_iid",
+			mcp.Description("The internal ID of a project's issue."),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, postProjectsIdIssuesIssueIidUnsubscribeHandler)
+}
+
+func postProjectsIdIssuesIssueIidUnsubscribeHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := request.GetString("id", "")
+	issue_iid := request.GetInt("issue_iid", math.MinInt)
+
+	return toResult(c.PostApiV4ProjectsIdIssuesIssueIidUnsubscribe(ctx, id, issue_iid, authorizationHeader))
+}
+
+func registerPostProjectsIdIssuesIssueIidTodo(s *server.MCPServer) {
+	tool := mcp.NewTool("post_pjs_id_issues_issue_iid_todo",
+		mcp.WithDescription("Create a to-do item"),
+		mcp.WithString("id",
+			mcp.Description("The global ID or URL-encoded path of the project."),
+			mcp.Required(),
+		),
+		mcp.WithNumber("issue_iid",
+			mcp.Description("The internal ID of a project's issue."),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, postProjectsIdIssuesIssueIidTodoHandler)
+}
+
+func postProjectsIdIssuesIssueIidTodoHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := request.GetString("id", "")
+	issue_iid := request.GetInt("issue_iid", math.MinInt)
+
+	return toResult(c.PostApiV4ProjectsIdIssuesIssueIidTodo(ctx, id, issue_iid, authorizationHeader))
+}
+
+func registerPostProjectsIdIssuesIssueIidNotes(s *server.MCPServer) {
+	tool := mcp.NewTool("post_pjs_id_issues_issue_iid_notes",
+		mcp.WithDescription("Promote an issue to an epic"),
+		mcp.WithString("id",
+			mcp.Description("The global ID or URL-encoded path of the project."),
+			mcp.Required(),
+		),
+		mcp.WithNumber("issue_iid",
+			mcp.Description("The internal ID of a project's issue."),
+			mcp.Required(),
+		),
+		mcp.WithString("body",
+			mcp.Description("The content of a note. Must contain /promote at the start of a new line. If the note only contains /promote, promotes the issue, but doesn't add a comment. Otherwise, the other lines form a comment."),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, postProjectsIdIssuesIssueIidNotesHandler)
+}
+
+func postProjectsIdIssuesIssueIidNotesHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := request.GetString("id", "")
+	issue_iid := request.GetInt("issue_iid", math.MinInt)
+	params := parsePostProjectsIdIssuesIssueIidNotes(request)
+	return toResult(c.PostApiV4ProjectsIdIssuesIssueIidNotes(ctx, id, issue_iid, &params, authorizationHeader))
+}
+
+func parsePostProjectsIdIssuesIssueIidNotes(request mcp.CallToolRequest) client.PostApiV4ProjectsIdIssuesIssueIidNotesParams {
+	params := client.PostApiV4ProjectsIdIssuesIssueIidNotesParams{}
+
+	body := request.GetString("body", "")
+	if body != "" {
+
+		params.Body = body
+	}
+
+	return params
+}
+
+func registerPostProjectsIdIssuesIssueIidTimeEstimate(s *server.MCPServer) {
+	tool := mcp.NewTool("post_pjs_id_issues_issue_iid_time_estimate",
+		mcp.WithDescription("Set a time estimate for an issue"),
+		mcp.WithString("duration",
+			mcp.Description("The duration in human-readable format. For example: 3h30m."),
+			mcp.Required(),
+		),
+		mcp.WithString("id",
+			mcp.Description("The global ID or URL-encoded path of the project."),
+			mcp.Required(),
+		),
+		mcp.WithNumber("issue_iid",
+			mcp.Description("The internal ID of a project's issue."),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, postProjectsIdIssuesIssueIidTimeEstimateHandler)
+}
+
+func postProjectsIdIssuesIssueIidTimeEstimateHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := request.GetString("id", "")
+	issue_iid := request.GetInt("issue_iid", math.MinInt)
+	params := parsePostProjectsIdIssuesIssueIidTimeEstimate(request)
+	return toResult(c.PostApiV4ProjectsIdIssuesIssueIidTimeEstimate(ctx, id, issue_iid, &params, authorizationHeader))
+}
+
+func parsePostProjectsIdIssuesIssueIidTimeEstimate(request mcp.CallToolRequest) client.PostApiV4ProjectsIdIssuesIssueIidTimeEstimateParams {
+	params := client.PostApiV4ProjectsIdIssuesIssueIidTimeEstimateParams{}
+
+	duration := request.GetString("duration", "")
+	if duration != "" {
+
+		params.Duration = duration
+	}
+
+	return params
+}
+
+func registerPostProjectsIdIssuesIssueIidResetTimeEstimate(s *server.MCPServer) {
+	tool := mcp.NewTool("post_pjs_id_issues_issue_iid_reset_time_estimate",
+		mcp.WithDescription("Reset the time estimate for an issue"),
+		mcp.WithString("id",
+			mcp.Description("The global ID or URL-encoded path of the project."),
+			mcp.Required(),
+		),
+		mcp.WithNumber("issue_iid",
+			mcp.Description("The internal ID of a project's issue."),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, postProjectsIdIssuesIssueIidResetTimeEstimateHandler)
+}
+
+func postProjectsIdIssuesIssueIidResetTimeEstimateHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := request.GetString("id", "")
+	issue_iid := request.GetInt("issue_iid", math.MinInt)
+
+	return toResult(c.PostApiV4ProjectsIdIssuesIssueIidResetTimeEstimate(ctx, id, issue_iid, authorizationHeader))
+}
+
+func registerPostProjectsIdIssuesIssueIidAddSpentTime(s *server.MCPServer) {
+	tool := mcp.NewTool("post_pjs_id_issues_issue_iid_add_spent_time",
+		mcp.WithDescription("Add spent time for an issue"),
+		mcp.WithString("duration",
+			mcp.Description("The duration in human-readable format. For example: 3h30m"),
+			mcp.Required(),
+		),
+		mcp.WithString("id",
+			mcp.Description("The global ID or URL-encoded path of the project."),
+			mcp.Required(),
+		),
+		mcp.WithNumber("issue_iid",
+			mcp.Description("The internal ID of a project's issue."),
+			mcp.Required(),
+		),
+		mcp.WithString("summary",
+			mcp.Description("A summary of how the time was spent."),
+		),
+	)
+
+	s.AddTool(tool, postProjectsIdIssuesIssueIidAddSpentTimeHandler)
+}
+
+func postProjectsIdIssuesIssueIidAddSpentTimeHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := request.GetString("id", "")
+	issue_iid := request.GetInt("issue_iid", math.MinInt)
+	params := parsePostProjectsIdIssuesIssueIidAddSpentTime(request)
+	return toResult(c.PostApiV4ProjectsIdIssuesIssueIidAddSpentTime(ctx, id, issue_iid, &params, authorizationHeader))
+}
+
+func parsePostProjectsIdIssuesIssueIidAddSpentTime(request mcp.CallToolRequest) client.PostApiV4ProjectsIdIssuesIssueIidAddSpentTimeParams {
+	params := client.PostApiV4ProjectsIdIssuesIssueIidAddSpentTimeParams{}
+
+	duration := request.GetString("duration", "")
+	if duration != "" {
+
+		params.Duration = duration
+	}
+
+	summary := request.GetString("summary", "")
+	if summary != "" {
+
+		params.Summary = &summary
+	}
+
+	return params
+}
+
+func registerPostProjectsIdIssuesIssueIidResetSpentTime(s *server.MCPServer) {
+	tool := mcp.NewTool("post_pjs_id_issues_issue_iid_reset_spent_time",
+		mcp.WithDescription("Reset spent time for an issue"),
+		mcp.WithString("id",
+			mcp.Description("The global ID or URL-encoded path of the project."),
+			mcp.Required(),
+		),
+		mcp.WithNumber("issue_iid",
+			mcp.Description("The internal ID of a project's issue."),
+			mcp.Required(),
+		),
+	)
+
+	s.AddTool(tool, postProjectsIdIssuesIssueIidResetSpentTimeHandler)
+}
+
+func postProjectsIdIssuesIssueIidResetSpentTimeHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	id := request.GetString("id", "")
+	issue_iid := request.GetInt("issue_iid", math.MinInt)
+
+	return toResult(c.PostApiV4ProjectsIdIssuesIssueIidResetSpentTime(ctx, id, issue_iid, authorizationHeader))
 }
 
 func registerGetProjectsIdIssuesIssueIidTimeStats(s *server.MCPServer) {
