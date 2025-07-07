@@ -53,20 +53,3 @@ pushd /tmp
 
     go build -o ~/.local/bin/mcpcurl cmd/mcpcurl/main.go
 popd
-
-# Install SonarScanner CLI
-mkdir -p "${HOME}/.local/"
-SONAR_VERSION='7.1.0.4889'
-curl -sSfL \
-    -o 'sonar-scanner-cli-linux-x64.zip' \
-    --output-dir '/tmp' \
-    "https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-${SONAR_VERSION}-linux-x64.zip"
-unzip '/tmp/sonar-scanner-cli-linux-x64.zip' -d "${HOME}/.local/"
-mv "${HOME}/.local/sonar-scanner-${SONAR_VERSION}-linux-x64" "${HOME}/.local/sonar-scanner"
-echo 'export PATH=$PATH:~/.local/sonar-scanner/bin' >> ~/.bashrc
-
-#export SONAR_TOKEN=
-#sonar-scanner \
-#    -Dsonar.host.url=http://127.0.0.1:9000 \
-#    -Dsonar.projectKey=sonarqube-mcp-server \
-#    -Dsonar.sources=.
