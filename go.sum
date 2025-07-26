@@ -59,6 +59,8 @@ cloud.google.com/go/storage v1.22.1/go.mod h1:S8N1cAStu7BOeFfE8KAQzmyyLkK8p/vmRq
 dmitri.shuralyov.com/gpu/mtl v0.0.0-20190408044501-666a987793e9/go.mod h1:H6x//7gZCb22OMCxBHrMx7a5I7Hp++hsVxbQ4BYO7hU=
 github.com/9506hqwy/gitlab-client-go v0.0.0-20250703152154-6a7b4302bd68 h1:/Z1P0qSHXUFiQtXKRtOox0solcbD56FzMnBz63m7Sps=
 github.com/9506hqwy/gitlab-client-go v0.0.0-20250703152154-6a7b4302bd68/go.mod h1:C2CB+XT24/0oxKVJxSLIML0rI1Dn0/XQU2jwUCtCyww=
+github.com/9506hqwy/gitlab-client-go v0.0.0-20250711134726-64ae7c5aa012 h1:Bwvsmo7MDvBeMI8584yomIsINpC+XoqXXIplcfFRvpQ=
+github.com/9506hqwy/gitlab-client-go v0.0.0-20250711134726-64ae7c5aa012/go.mod h1:WjaQauz8Z2NYThSdthFDj+TJUqnVApxrVyFbMfb5g9U=
 github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03qcyfWMU=
 github.com/BurntSushi/toml v1.5.0 h1:W5quZX/G/csjUnuI8SUYlsHs9M38FC7znL0lIO+DvMg=
 github.com/BurntSushi/toml v1.5.0/go.mod h1:ukJfTF/6rtPPRCnwkur4qwRxa8vTRFBF0uk2lLoLwho=
