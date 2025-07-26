@@ -2,6 +2,10 @@
 
 This repository provides model context protocol server for GitLab server.
 
+## API Version
+
+* v18.1
+
 ## Build
 
 Build binary.
