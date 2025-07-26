@@ -96,11 +96,11 @@ EOF
 }
 
 function write-register-func() {
-    METHOD="$1"
-    OP_PATH="$2"
-    QUERY="$3"
+    local METHOD="$1"
+    local OP_PATH="$2"
+    local PATH_INFO="$3"
 
-    DESCRIPTION=$(yq -r "${QUERY}.description" "${TMP_DIR}/openapi.yml")
+    DESCRIPTION=$(yq -r ".description" <<<"${PATH_INFO}")
     DESCRIPTION=$(normalize "${DESCRIPTION}")
     DESCRIPTION="${DESCRIPTION//\"/\\\"}"
 
@@ -120,7 +120,7 @@ func register${METHOD}${API_NAME}(s *server.MCPServer) {
 EOF
 
     # parameters
-    yq "${QUERY}.parameters[] | . style=\"flow\"" "${TMP_DIR}/openapi.yml" | while read -r PARAMETER
+    yq '.parameters[] | . style="flow"' <<<"${PATH_INFO}" | while read -r PARAMETER
     do
         NAME=$(yq -r '.name' <<<"${PARAMETER}")
         DESCRIPTION=$(yq -r '.description' <<<"${PARAMETER}")
@@ -204,13 +204,13 @@ EOF
 }
 
 function write-handler-func() {
-    METHOD="$1"
-    OP_PATH="$2"
-    QUERY="$3"
+    local METHOD="$1"
+    local OP_PATH="$2"
+    local PATH_INFO="$3"
 
     TOOL_NAME=$(toolname "${OP_PATH}")
     API_NAME=$(capitalize "${TOOL_NAME}")
-    NUM_PARAMETER=$(yq -r "[${QUERY}.parameters[] | select(.in == \"query\")] | length" "${TMP_DIR}/openapi.yml")
+    NUM_PARAMETER=$(yq -r '[.parameters[] | select(.in == "query")] | length' <<<"${PATH_INFO}")
 
     # parameters
     PATH_STMT=()
@@ -220,7 +220,7 @@ function write-handler-func() {
         NAME="${NAME//{/}" # '{' -> ''
         NAME="${NAME//\}/}" # '}' -> ''
 
-        PARAMETER=$(yq "${QUERY}.parameters[] | select(.name == \"${NAME}\")" "${TMP_DIR}/openapi.yml")
+        PARAMETER=$(yq ".parameters[] | select(.name == \"${NAME}\")" <<<"${PATH_INFO}")
 
         VAR_NAME=${NAME//-/_} # '-' -> '_'
         VAR_NAME=${VAR_NAME//./}
@@ -280,11 +280,11 @@ EOF
 }
 
 function write-parser-func() {
-    METHOD="$1"
-    OP_PATH="$2"
-    QUERY="$3"
+    local METHOD="$1"
+    local OP_PATH="$2"
+    local PATH_INFO="$3"
 
-    NUM_PARAMETER=$(yq -r "[${QUERY}.parameters[] | select(.in == \"query\")] | length" "${TMP_DIR}/openapi.yml")
+    NUM_PARAMETER=$(yq -r '[.parameters[] | select(.in == "query")] | length' <<<"${PATH_INFO}")
     if [[ ${NUM_PARAMETER} -eq 0 ]]; then
         return
     fi
@@ -301,7 +301,7 @@ func parse${METHOD}${API_NAME}(request mcp.CallToolRequest) client.${METHOD}ApiV
 EOF
 
     # parameters
-    yq "${QUERY}.parameters[] | select(.in == \"query\") | . style=\"flow\"" "${TMP_DIR}/openapi.yml" | while read -r PARAMETER
+    yq '.parameters[] | select(.in == "query") | . style="flow"' <<<"${PATH_INFO}" | while read -r PARAMETER
     do
         NAME=$(yq -r '.name' <<<"${PARAMETER}")
 
@@ -429,40 +429,38 @@ do
     write-preceding "${OP_PATH}"
 done
 
-yq -r '.paths | keys | .[]' "${TMP_DIR}/openapi.yml" | while read -r OP_PATH
+yq '.paths | to_entries | .[] | . style="flow"' "${TMP_DIR}/openapi.yml" | while read -r PATH_INFO
 do
-    OP_QUERY=".paths.\"${OP_PATH}\".delete"
-    OP_DELETE=$(yq "${OP_QUERY}" "${TMP_DIR}/openapi.yml")
+    OP_PATH=$(yq -r '.key' <<<"${PATH_INFO}")
+
+    OP_DELETE=$(yq '.value.delete | . style="flow"' <<<"${PATH_INFO}")
     if [[ "$OP_DELETE" != 'null' ]]; then
-        write-register-func "Delete" "${OP_PATH}" "${OP_QUERY}"
-        write-handler-func "Delete" "${OP_PATH}" "${OP_QUERY}"
-        write-parser-func "Delete" "${OP_PATH}" "${OP_QUERY}"
+        write-register-func "Delete" "${OP_PATH}" "${OP_DELETE}"
+        write-handler-func "Delete" "${OP_PATH}" "${OP_DELETE}"
+        write-parser-func "Delete" "${OP_PATH}" "${OP_DELETE}"
     fi
 
-    OP_QUERY=".paths.\"${OP_PATH}\".post"
-    OP_POST=$(yq "${OP_QUERY}" "${TMP_DIR}/openapi.yml")
-    OP_REQ_BODY=$(yq "${OP_QUERY}.requestBody" "${TMP_DIR}/openapi.yml")
+    OP_POST=$(yq '.value.post | . style="flow"' <<<"${PATH_INFO}")
+    OP_REQ_BODY=$(yq ".requestBody" <<<"${OP_POST}")
     if [[ "$OP_POST" != 'null' && "$OP_REQ_BODY" == 'null' ]]; then
-        write-register-func "Post" "${OP_PATH}" "${OP_QUERY}"
-        write-handler-func "Post" "${OP_PATH}" "${OP_QUERY}"
-        write-parser-func "Post" "${OP_PATH}" "${OP_QUERY}"
+        write-register-func "Post" "${OP_PATH}" "${OP_POST}"
+        write-handler-func "Post" "${OP_PATH}" "${OP_POST}"
+        write-parser-func "Post" "${OP_PATH}" "${OP_POST}"
     fi
 
-    OP_QUERY=".paths.\"${OP_PATH}\".put"
-    OP_PUT=$(yq "${OP_QUERY}" "${TMP_DIR}/openapi.yml")
-    OP_REQ_BODY=$(yq "${OP_QUERY}.requestBody" "${TMP_DIR}/openapi.yml")
+    OP_PUT=$(yq '.value.put | . style="flow"' <<<"${PATH_INFO}")
+    OP_REQ_BODY=$(yq ".requestBody" <<<"${OP_PUT}")
     if [[ "$OP_PUT" != 'null' && "$OP_REQ_BODY" == 'null' ]]; then
-        write-register-func "Put" "${OP_PATH}" "${OP_QUERY}"
-        write-handler-func "Put" "${OP_PATH}" "${OP_QUERY}"
-        write-parser-func "Put" "${OP_PATH}" "${OP_QUERY}"
+        write-register-func "Put" "${OP_PATH}" "${OP_PUT}"
+        write-handler-func "Put" "${OP_PATH}" "${OP_PUT}"
+        write-parser-func "Put" "${OP_PATH}" "${OP_PUT}"
     fi
 
-    OP_QUERY=".paths.\"${OP_PATH}\".get"
-    OP_GET=$(yq "${OP_QUERY}" "${TMP_DIR}/openapi.yml")
+    OP_GET=$(yq '.value.get | . style="flow"' <<<"${PATH_INFO}")
     if [[ "$OP_GET" != 'null' ]]; then
-        write-register-func "Get" "${OP_PATH}" "${OP_QUERY}"
-        write-handler-func "Get" "${OP_PATH}" "${OP_QUERY}"
-        write-parser-func "Get" "${OP_PATH}" "${OP_QUERY}"
+        write-register-func "Get" "${OP_PATH}" "${OP_GET}"
+        write-handler-func "Get" "${OP_PATH}" "${OP_GET}"
+        write-parser-func "Get" "${OP_PATH}" "${OP_GET}"
     fi
 done
 
@@ -478,8 +476,10 @@ import (
 func RegisterTools(s *server.MCPServer, readonly bool) {
 EOF
 
-yq -r '.paths | keys | .[]' "${TMP_DIR}/openapi.yml" | while read -r OP_PATH
+yq '.paths | to_entries | .[] | . style="flow"' "${TMP_DIR}/openapi.yml" | while read -r PATH_INFO
 do
+    OP_PATH=$(yq -r '.key' <<<"${PATH_INFO}")
+
     TOOL_NAME=$(toolname "${OP_PATH}")
     TOOL_SNAME=$(shortname "${TOOL_NAME}")
     API_NAME=$(capitalize "${TOOL_NAME}")
@@ -488,7 +488,7 @@ do
     # to avoid exceeding the maximum length of 46 characters.
     # See https://github.com/microsoft/vscode/blob/1.101.2/src/vs/workbench/contrib/mcp/common/mcpTypes.ts#L710-L714
 
-    OP_DELETE=$(yq ".paths.\"${OP_PATH}\".delete" "${TMP_DIR}/openapi.yml")
+    OP_DELETE=$(yq '.value.delete' <<<"${PATH_INFO}")
     if [[ "$OP_DELETE" != 'null' ]]; then
         METHOD="Delete"
         if [[ ${#TOOL_SNAME} -gt 39 ]]; then # delete_XXX
@@ -498,8 +498,8 @@ do
         fi
     fi
 
-    OP_POST=$(yq ".paths.\"${OP_PATH}\".post" "${TMP_DIR}/openapi.yml")
-    OP_REQ_BODY=$(yq ".paths.\"${OP_PATH}\".post.requestBody" "${TMP_DIR}/openapi.yml")
+    OP_POST=$(yq '.value.post' <<<"${PATH_INFO}")
+    OP_REQ_BODY=$(yq ".value.post.requestBody" <<<"${PATH_INFO}")
     if [[ "$OP_POST" != 'null' && "$OP_REQ_BODY" == 'null' ]]; then
         METHOD="Post"
         if [[ ${#TOOL_SNAME} -gt 41 ]]; then # post_XXX
@@ -509,8 +509,8 @@ do
         fi
     fi
 
-    OP_PUT=$(yq ".paths.\"${OP_PATH}\".put" "${TMP_DIR}/openapi.yml")
-    OP_REQ_BODY=$(yq ".paths.\"${OP_PATH}\".put.requestBody" "${TMP_DIR}/openapi.yml")
+    OP_PUT=$(yq '.value.put' <<<"${PATH_INFO}")
+    OP_REQ_BODY=$(yq ".value.put.requestBody" <<<"${PATH_INFO}")
     if [[ "$OP_PUT" != 'null' && "$OP_REQ_BODY" == 'null' ]]; then
         METHOD="Put"
         if [[ ${#TOOL_SNAME} -gt 42 ]]; then # put_XXX
@@ -520,7 +520,7 @@ do
         fi
     fi
 
-    OP_GET=$(yq ".paths.\"${OP_PATH}\".get" "${TMP_DIR}/openapi.yml")
+    OP_GET=$(yq '.value.get' <<<"${PATH_INFO}")
     if [[ "$OP_GET" != 'null' ]]; then
         METHOD="Get"
         if [[ ${#TOOL_SNAME} -gt 42 ]]; then # get_XXX
