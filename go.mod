@@ -10,7 +10,7 @@ tool (
 
 require (
 	github.com/9506hqwy/gitlab-client-go v0.0.0-20250711134726-64ae7c5aa012
-	github.com/mark3labs/mcp-go v0.38.0
+	github.com/mark3labs/mcp-go v0.39.1
 	github.com/oapi-codegen/runtime v1.1.2
 	github.com/spf13/cobra v1.9.1
 	github.com/spf13/viper v1.20.1
