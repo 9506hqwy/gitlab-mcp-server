@@ -1,6 +1,6 @@
 module github.com/9506hqwy/gitlab-mcp-server
 
-go 1.24.3
+go 1.25.5
 
 tool (
 	github.com/google/go-licenses
@@ -10,7 +10,7 @@ tool (
 
 require (
 	github.com/9506hqwy/gitlab-client-go v0.0.0-20250711134726-64ae7c5aa012
-	github.com/mark3labs/mcp-go v0.48.0
+	github.com/mark3labs/mcp-go v0.49.0
 	github.com/oapi-codegen/runtime v1.4.0
 	github.com/spf13/cobra v1.10.2
 	github.com/spf13/viper v1.21.0
