@@ -38,7 +38,9 @@ var rootCmd = &cobra.Command{
 
 		if err := server.ServeStdio(s, server.WithStdioContextFunc(fromArgument)); err != nil {
 			if !errors.Is(err, context.Canceled) {
+				//revive:disable:deep-exit
 				log.Fatalf("Server error: %v", err)
+				//revive:enable:deep-exit
 			}
 		}
 	},
