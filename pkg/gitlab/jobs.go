@@ -2,54 +2,47 @@ package gitlab
 
 import (
 	"context"
-	"math"
+	"encoding/json"
 
+	"github.com/invopop/jsonschema"
 	"github.com/mark3labs/mcp-go/mcp"
 	"github.com/mark3labs/mcp-go/server"
 
 	client "github.com/9506hqwy/gitlab-client-go/pkg/gitlab"
 )
 
-func registerGetJobsIdArtifacts(s *server.MCPServer) {
-	tool := mcp.NewTool("get_jobs_id_artifacts",
-		mcp.WithDescription("Download the artifacts file for job"),
-		mcp.WithNumber("id",
-			mcp.Description("Job's ID"),
-			mcp.Required(),
-		),
-		mcp.WithString("token",
-			mcp.Description("Job's authentication token"),
-		),
-		mcp.WithBoolean("direct_download",
-			mcp.Description("Perform direct download from remote storage instead of proxying artifacts (default: false)"),
-		),
-	)
-
-	s.AddTool(tool, getJobsIdArtifactsHandler)
+type GetJobsIdArtifactsRequest struct {
+	Id     int32                                 `json:"id" jsonschema:"description=Job's ID"`
+	Params *client.GetApiV4JobsIdArtifactsParams `json:"params,omitempty"`
 }
 
-func getJobsIdArtifactsHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+func registerGetJobsIdArtifacts(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&GetJobsIdArtifactsRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
+	tool := mcp.NewTool("get_jobs_id_artifacts",
+		mcp.WithDescription("Download the artifacts file for job"),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
+	)
+
+	s.AddTool(tool, mcp.NewTypedToolHandler(getJobsIdArtifactsHandler))
+}
+
+func getJobsIdArtifactsHandler(ctx context.Context, request mcp.CallToolRequest, req GetJobsIdArtifactsRequest) (*mcp.CallToolResult, error) {
 	c, err := newClient(ctx)
 	if err != nil {
 		return mcp.NewToolResultError(err.Error()), nil
 	}
 
-	id := int32(request.GetInt("id", math.MinInt))
-	params := parseGetJobsIdArtifacts(request)
-	return toResult(c.GetApiV4JobsIdArtifacts(ctx, id, &params, authorizationHeader))
-}
-
-func parseGetJobsIdArtifacts(request mcp.CallToolRequest) client.GetApiV4JobsIdArtifactsParams {
-	params := client.GetApiV4JobsIdArtifactsParams{}
-
-	token := request.GetString("token", "")
-	if token != "" {
-
-		params.Token = &token
-	}
-
-	direct_download := request.GetBool("direct_download", false)
-	params.DirectDownload = &direct_download
-
-	return params
+	return toResult(c.GetApiV4JobsIdArtifacts(ctx, req.Id, req.Params, authorizationHeader))
 }

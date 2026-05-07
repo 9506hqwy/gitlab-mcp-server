@@ -2,224 +2,253 @@ package gitlab
 
 import (
 	"context"
-	"math"
+	"encoding/json"
 
+	"github.com/invopop/jsonschema"
 	"github.com/mark3labs/mcp-go/mcp"
 	"github.com/mark3labs/mcp-go/server"
 
 	client "github.com/9506hqwy/gitlab-client-go/pkg/gitlab"
 )
 
-func registerGetAdminBatchedBackgroundMigrationsId(s *server.MCPServer) {
-	tool := mcp.NewTool("get_admin_batched_background_migrations_id",
-		mcp.WithDescription("Retrieve a batched background migration"),
-		mcp.WithString("database",
-			mcp.Description("The name of the database (default: main)"),
-
-			mcp.Enum("main", "ci", "sec", "embedding", "geo"),
-		),
-		mcp.WithNumber("id",
-			mcp.Description("The batched background migration id"),
-			mcp.Required(),
-		),
-	)
-
-	s.AddTool(tool, getAdminBatchedBackgroundMigrationsIdHandler)
+type GetAdminBatchedBackgroundMigrationsIdRequest struct {
+	Id     int32                                                    `json:"id" jsonschema:"description=The batched background migration id"`
+	Params *client.GetApiV4AdminBatchedBackgroundMigrationsIdParams `json:"params,omitempty"`
 }
 
-func getAdminBatchedBackgroundMigrationsIdHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+func registerGetAdminBatchedBackgroundMigrationsId(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&GetAdminBatchedBackgroundMigrationsIdRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
+	tool := mcp.NewTool("get_admin_batched_background_migrations_id",
+		mcp.WithDescription("Retrieve a batched background migration"),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
+	)
+
+	s.AddTool(tool, mcp.NewTypedToolHandler(getAdminBatchedBackgroundMigrationsIdHandler))
+}
+
+func getAdminBatchedBackgroundMigrationsIdHandler(ctx context.Context, request mcp.CallToolRequest, req GetAdminBatchedBackgroundMigrationsIdRequest) (*mcp.CallToolResult, error) {
 	c, err := newClient(ctx)
 	if err != nil {
 		return mcp.NewToolResultError(err.Error()), nil
 	}
 
-	id := int32(request.GetInt("id", math.MinInt))
-	params := parseGetAdminBatchedBackgroundMigrationsId(request)
-	return toResult(c.GetApiV4AdminBatchedBackgroundMigrationsId(ctx, id, &params, authorizationHeader))
+	return toResult(c.GetApiV4AdminBatchedBackgroundMigrationsId(ctx, req.Id, req.Params, authorizationHeader))
 }
 
-func parseGetAdminBatchedBackgroundMigrationsId(request mcp.CallToolRequest) client.GetApiV4AdminBatchedBackgroundMigrationsIdParams {
-	params := client.GetApiV4AdminBatchedBackgroundMigrationsIdParams{}
-
-	database := request.GetString("database", "")
-	if database != "" {
-
-		params.Database = &database
-	}
-
-	return params
+type GetAdminBatchedBackgroundMigrationsRequest struct {
+	Params *client.GetApiV4AdminBatchedBackgroundMigrationsParams `json:"params,omitempty"`
 }
 
 func registerGetAdminBatchedBackgroundMigrations(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&GetAdminBatchedBackgroundMigrationsRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
 	tool := mcp.NewTool("get_admin_batched_background_migrations",
 		mcp.WithDescription("Get the list of batched background migrations"),
-		mcp.WithString("database",
-			mcp.Description("The name of the database, the default `main` (default: main)"),
-
-			mcp.Enum("main", "ci", "sec", "embedding", "geo"),
-		),
-		mcp.WithString("job_class_name",
-			mcp.Description("Filter migrations by job class name."),
-		),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
 	)
 
-	s.AddTool(tool, getAdminBatchedBackgroundMigrationsHandler)
+	s.AddTool(tool, mcp.NewTypedToolHandler(getAdminBatchedBackgroundMigrationsHandler))
 }
 
-func getAdminBatchedBackgroundMigrationsHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+func getAdminBatchedBackgroundMigrationsHandler(ctx context.Context, request mcp.CallToolRequest, req GetAdminBatchedBackgroundMigrationsRequest) (*mcp.CallToolResult, error) {
 	c, err := newClient(ctx)
 	if err != nil {
 		return mcp.NewToolResultError(err.Error()), nil
 	}
 
-	params := parseGetAdminBatchedBackgroundMigrations(request)
-	return toResult(c.GetApiV4AdminBatchedBackgroundMigrations(ctx, &params, authorizationHeader))
+	return toResult(c.GetApiV4AdminBatchedBackgroundMigrations(ctx, req.Params, authorizationHeader))
 }
 
-func parseGetAdminBatchedBackgroundMigrations(request mcp.CallToolRequest) client.GetApiV4AdminBatchedBackgroundMigrationsParams {
-	params := client.GetApiV4AdminBatchedBackgroundMigrationsParams{}
-
-	database := request.GetString("database", "")
-	if database != "" {
-
-		params.Database = &database
-	}
-
-	job_class_name := request.GetString("job_class_name", "")
-	if job_class_name != "" {
-
-		params.JobClassName = &job_class_name
-	}
-
-	return params
+type GetAdminCiVariablesRequest struct {
+	Params *client.GetApiV4AdminCiVariablesParams `json:"params,omitempty"`
 }
 
 func registerGetAdminCiVariables(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&GetAdminCiVariablesRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
 	tool := mcp.NewTool("get_admin_ci_variables",
 		mcp.WithDescription("List all instance-level variables"),
-		mcp.WithNumber("page",
-			mcp.Description("Current page number (example: 1) (default: 1)"),
-		),
-		mcp.WithNumber("per_page",
-			mcp.Description("Number of items per page (example: 20) (default: 20)"),
-		),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
 	)
 
-	s.AddTool(tool, getAdminCiVariablesHandler)
+	s.AddTool(tool, mcp.NewTypedToolHandler(getAdminCiVariablesHandler))
 }
 
-func getAdminCiVariablesHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+func getAdminCiVariablesHandler(ctx context.Context, request mcp.CallToolRequest, req GetAdminCiVariablesRequest) (*mcp.CallToolResult, error) {
 	c, err := newClient(ctx)
 	if err != nil {
 		return mcp.NewToolResultError(err.Error()), nil
 	}
 
-	params := parseGetAdminCiVariables(request)
-	return toResult(c.GetApiV4AdminCiVariables(ctx, &params, authorizationHeader))
+	return toResult(c.GetApiV4AdminCiVariables(ctx, req.Params, authorizationHeader))
 }
 
-func parseGetAdminCiVariables(request mcp.CallToolRequest) client.GetApiV4AdminCiVariablesParams {
-	params := client.GetApiV4AdminCiVariablesParams{}
-
-	page := request.GetInt("page", 1)
-	if page != math.MinInt {
-		page := int32(page)
-		params.Page = &page
-	}
-
-	per_page := request.GetInt("per_page", 20)
-	if per_page != math.MinInt {
-		per_page := int32(per_page)
-		params.PerPage = &per_page
-	}
-
-	return params
+type DeleteAdminCiVariablesKeyRequest struct {
+	Key string `json:"key" jsonschema:"description=The key of a variable"`
 }
 
 func registerDeleteAdminCiVariablesKey(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&DeleteAdminCiVariablesKeyRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
 	tool := mcp.NewTool("delete_admin_ci_variables_key",
 		mcp.WithDescription("Delete an existing instance-level variable"),
-		mcp.WithString("key",
-			mcp.Description("The key of a variable"),
-			mcp.Required(),
-		),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
 	)
 
-	s.AddTool(tool, deleteAdminCiVariablesKeyHandler)
+	s.AddTool(tool, mcp.NewTypedToolHandler(deleteAdminCiVariablesKeyHandler))
 }
 
-func deleteAdminCiVariablesKeyHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+func deleteAdminCiVariablesKeyHandler(ctx context.Context, request mcp.CallToolRequest, req DeleteAdminCiVariablesKeyRequest) (*mcp.CallToolResult, error) {
 	c, err := newClient(ctx)
 	if err != nil {
 		return mcp.NewToolResultError(err.Error()), nil
 	}
 
-	key := request.GetString("key", "")
+	return toResult(c.DeleteApiV4AdminCiVariablesKey(ctx, req.Key, authorizationHeader))
+}
 
-	return toResult(c.DeleteApiV4AdminCiVariablesKey(ctx, key, authorizationHeader))
+type GetAdminCiVariablesKeyRequest struct {
+	Key string `json:"key" jsonschema:"description=The key of a variable"`
 }
 
 func registerGetAdminCiVariablesKey(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&GetAdminCiVariablesKeyRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
 	tool := mcp.NewTool("get_admin_ci_variables_key",
 		mcp.WithDescription("Get the details of a specific instance-level variable"),
-		mcp.WithString("key",
-			mcp.Description("The key of a variable"),
-			mcp.Required(),
-		),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
 	)
 
-	s.AddTool(tool, getAdminCiVariablesKeyHandler)
+	s.AddTool(tool, mcp.NewTypedToolHandler(getAdminCiVariablesKeyHandler))
 }
 
-func getAdminCiVariablesKeyHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+func getAdminCiVariablesKeyHandler(ctx context.Context, request mcp.CallToolRequest, req GetAdminCiVariablesKeyRequest) (*mcp.CallToolResult, error) {
 	c, err := newClient(ctx)
 	if err != nil {
 		return mcp.NewToolResultError(err.Error()), nil
 	}
 
-	key := request.GetString("key", "")
+	return toResult(c.GetApiV4AdminCiVariablesKey(ctx, req.Key, authorizationHeader))
+}
 
-	return toResult(c.GetApiV4AdminCiVariablesKey(ctx, key, authorizationHeader))
+type GetAdminDatabasesDatabaseNameDictionaryTablesTableNameRequest struct {
+	DatabaseName string `json:"database_name" jsonschema:"description=The database name"`
+	TableName    string `json:"table_name" jsonschema:"description=The table name"`
 }
 
 func registerGetAdminDatabasesDatabaseNameDictionaryTablesTableName(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&GetAdminDatabasesDatabaseNameDictionaryTablesTableNameRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
 	tool := mcp.NewTool("get_admin_databases_database_name_dictionary_tables_table_name",
 		mcp.WithDescription("Retrieve dictionary details"),
-		mcp.WithString("database_name",
-			mcp.Description("The database name"),
-			mcp.Required(),
-			mcp.Enum("main", "ci"),
-		),
-		mcp.WithString("table_name",
-			mcp.Description("The table name"),
-			mcp.Required(),
-		),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
 	)
 
-	s.AddTool(tool, getAdminDatabasesDatabaseNameDictionaryTablesTableNameHandler)
+	s.AddTool(tool, mcp.NewTypedToolHandler(getAdminDatabasesDatabaseNameDictionaryTablesTableNameHandler))
 }
 
-func getAdminDatabasesDatabaseNameDictionaryTablesTableNameHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+func getAdminDatabasesDatabaseNameDictionaryTablesTableNameHandler(ctx context.Context, request mcp.CallToolRequest, req GetAdminDatabasesDatabaseNameDictionaryTablesTableNameRequest) (*mcp.CallToolResult, error) {
 	c, err := newClient(ctx)
 	if err != nil {
 		return mcp.NewToolResultError(err.Error()), nil
 	}
 
-	database_name := request.GetString("database_name", "")
-	table_name := request.GetString("table_name", "")
+	return toResult(c.GetApiV4AdminDatabasesDatabaseNameDictionaryTablesTableName(ctx, req.DatabaseName, req.TableName, authorizationHeader))
+}
 
-	return toResult(c.GetApiV4AdminDatabasesDatabaseNameDictionaryTablesTableName(ctx, database_name, table_name, authorizationHeader))
+type GetAdminClustersRequest struct {
 }
 
 func registerGetAdminClusters(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&GetAdminClustersRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
 	tool := mcp.NewTool("get_admin_clusters",
 		mcp.WithDescription("This feature was introduced in GitLab 13.2. Returns a list of instance clusters."),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
 	)
 
-	s.AddTool(tool, getAdminClustersHandler)
+	s.AddTool(tool, mcp.NewTypedToolHandler(getAdminClustersHandler))
 }
 
-func getAdminClustersHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+func getAdminClustersHandler(ctx context.Context, request mcp.CallToolRequest, req GetAdminClustersRequest) (*mcp.CallToolResult, error) {
 	c, err := newClient(ctx)
 	if err != nil {
 		return mcp.NewToolResultError(err.Error()), nil
@@ -228,48 +257,72 @@ func getAdminClustersHandler(ctx context.Context, request mcp.CallToolRequest) (
 	return toResult(c.GetApiV4AdminClusters(ctx, authorizationHeader))
 }
 
-func registerDeleteAdminClustersClusterId(s *server.MCPServer) {
-	tool := mcp.NewTool("delete_admin_clusters_cluster_id",
-		mcp.WithDescription("This feature was introduced in GitLab 13.2. Deletes an existing instance cluster. Does not remove existing resources within the connected Kubernetes cluster."),
-		mcp.WithNumber("cluster_id",
-			mcp.Description("The cluster ID"),
-			mcp.Required(),
-		),
-	)
-
-	s.AddTool(tool, deleteAdminClustersClusterIdHandler)
+type DeleteAdminClustersClusterIdRequest struct {
+	ClusterId int32 `json:"cluster_id" jsonschema:"description=The cluster ID"`
 }
 
-func deleteAdminClustersClusterIdHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+func registerDeleteAdminClustersClusterId(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&DeleteAdminClustersClusterIdRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
+	tool := mcp.NewTool("delete_admin_clusters_cluster_id",
+		mcp.WithDescription("This feature was introduced in GitLab 13.2. Deletes an existing instance cluster. Does not remove existing resources within the connected Kubernetes cluster."),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
+	)
+
+	s.AddTool(tool, mcp.NewTypedToolHandler(deleteAdminClustersClusterIdHandler))
+}
+
+func deleteAdminClustersClusterIdHandler(ctx context.Context, request mcp.CallToolRequest, req DeleteAdminClustersClusterIdRequest) (*mcp.CallToolResult, error) {
 	c, err := newClient(ctx)
 	if err != nil {
 		return mcp.NewToolResultError(err.Error()), nil
 	}
 
-	cluster_id := int32(request.GetInt("cluster_id", math.MinInt))
+	return toResult(c.DeleteApiV4AdminClustersClusterId(ctx, req.ClusterId, authorizationHeader))
+}
 
-	return toResult(c.DeleteApiV4AdminClustersClusterId(ctx, cluster_id, authorizationHeader))
+type GetAdminClustersClusterIdRequest struct {
+	ClusterId int32 `json:"cluster_id" jsonschema:"description=The cluster ID"`
 }
 
 func registerGetAdminClustersClusterId(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&GetAdminClustersClusterIdRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
 	tool := mcp.NewTool("get_admin_clusters_cluster_id",
 		mcp.WithDescription("This feature was introduced in GitLab 13.2. Returns a single instance cluster."),
-		mcp.WithNumber("cluster_id",
-			mcp.Description("The cluster ID"),
-			mcp.Required(),
-		),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
 	)
 
-	s.AddTool(tool, getAdminClustersClusterIdHandler)
+	s.AddTool(tool, mcp.NewTypedToolHandler(getAdminClustersClusterIdHandler))
 }
 
-func getAdminClustersClusterIdHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+func getAdminClustersClusterIdHandler(ctx context.Context, request mcp.CallToolRequest, req GetAdminClustersClusterIdRequest) (*mcp.CallToolResult, error) {
 	c, err := newClient(ctx)
 	if err != nil {
 		return mcp.NewToolResultError(err.Error()), nil
 	}
 
-	cluster_id := int32(request.GetInt("cluster_id", math.MinInt))
-
-	return toResult(c.GetApiV4AdminClustersClusterId(ctx, cluster_id, authorizationHeader))
+	return toResult(c.GetApiV4AdminClustersClusterId(ctx, req.ClusterId, authorizationHeader))
 }

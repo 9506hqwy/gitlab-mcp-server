@@ -2,98 +2,116 @@ package gitlab
 
 import (
 	"context"
-	"math"
+	"encoding/json"
 
+	"github.com/invopop/jsonschema"
 	"github.com/mark3labs/mcp-go/mcp"
 	"github.com/mark3labs/mcp-go/server"
 
 	client "github.com/9506hqwy/gitlab-client-go/pkg/gitlab"
 )
 
-func registerGetBroadcastMessages(s *server.MCPServer) {
-	tool := mcp.NewTool("get_broadcast_messages",
-		mcp.WithDescription("This feature was introduced in GitLab 8.12."),
-		mcp.WithNumber("page",
-			mcp.Description("Current page number (example: 1) (default: 1)"),
-		),
-		mcp.WithNumber("per_page",
-			mcp.Description("Number of items per page (example: 20) (default: 20)"),
-		),
-	)
-
-	s.AddTool(tool, getBroadcastMessagesHandler)
+type GetBroadcastMessagesRequest struct {
+	Params *client.GetApiV4BroadcastMessagesParams `json:"params,omitempty"`
 }
 
-func getBroadcastMessagesHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+func registerGetBroadcastMessages(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&GetBroadcastMessagesRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
+	tool := mcp.NewTool("get_broadcast_messages",
+		mcp.WithDescription("This feature was introduced in GitLab 8.12."),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
+	)
+
+	s.AddTool(tool, mcp.NewTypedToolHandler(getBroadcastMessagesHandler))
+}
+
+func getBroadcastMessagesHandler(ctx context.Context, request mcp.CallToolRequest, req GetBroadcastMessagesRequest) (*mcp.CallToolResult, error) {
 	c, err := newClient(ctx)
 	if err != nil {
 		return mcp.NewToolResultError(err.Error()), nil
 	}
 
-	params := parseGetBroadcastMessages(request)
-	return toResult(c.GetApiV4BroadcastMessages(ctx, &params, authorizationHeader))
+	return toResult(c.GetApiV4BroadcastMessages(ctx, req.Params, authorizationHeader))
 }
 
-func parseGetBroadcastMessages(request mcp.CallToolRequest) client.GetApiV4BroadcastMessagesParams {
-	params := client.GetApiV4BroadcastMessagesParams{}
-
-	page := request.GetInt("page", 1)
-	if page != math.MinInt {
-		page := int32(page)
-		params.Page = &page
-	}
-
-	per_page := request.GetInt("per_page", 20)
-	if per_page != math.MinInt {
-		per_page := int32(per_page)
-		params.PerPage = &per_page
-	}
-
-	return params
+type DeleteBroadcastMessagesIdRequest struct {
+	Id int32 `json:"id" jsonschema:"description=Broadcast message ID"`
 }
 
 func registerDeleteBroadcastMessagesId(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&DeleteBroadcastMessagesIdRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
 	tool := mcp.NewTool("delete_broadcast_messages_id",
 		mcp.WithDescription("This feature was introduced in GitLab 8.12."),
-		mcp.WithNumber("id",
-			mcp.Description("Broadcast message ID"),
-			mcp.Required(),
-		),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
 	)
 
-	s.AddTool(tool, deleteBroadcastMessagesIdHandler)
+	s.AddTool(tool, mcp.NewTypedToolHandler(deleteBroadcastMessagesIdHandler))
 }
 
-func deleteBroadcastMessagesIdHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+func deleteBroadcastMessagesIdHandler(ctx context.Context, request mcp.CallToolRequest, req DeleteBroadcastMessagesIdRequest) (*mcp.CallToolResult, error) {
 	c, err := newClient(ctx)
 	if err != nil {
 		return mcp.NewToolResultError(err.Error()), nil
 	}
 
-	id := int32(request.GetInt("id", math.MinInt))
+	return toResult(c.DeleteApiV4BroadcastMessagesId(ctx, req.Id, authorizationHeader))
+}
 
-	return toResult(c.DeleteApiV4BroadcastMessagesId(ctx, id, authorizationHeader))
+type GetBroadcastMessagesIdRequest struct {
+	Id int32 `json:"id" jsonschema:"description=Broadcast message ID"`
 }
 
 func registerGetBroadcastMessagesId(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&GetBroadcastMessagesIdRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
 	tool := mcp.NewTool("get_broadcast_messages_id",
 		mcp.WithDescription("This feature was introduced in GitLab 8.12."),
-		mcp.WithNumber("id",
-			mcp.Description("Broadcast message ID"),
-			mcp.Required(),
-		),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
 	)
 
-	s.AddTool(tool, getBroadcastMessagesIdHandler)
+	s.AddTool(tool, mcp.NewTypedToolHandler(getBroadcastMessagesIdHandler))
 }
 
-func getBroadcastMessagesIdHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+func getBroadcastMessagesIdHandler(ctx context.Context, request mcp.CallToolRequest, req GetBroadcastMessagesIdRequest) (*mcp.CallToolResult, error) {
 	c, err := newClient(ctx)
 	if err != nil {
 		return mcp.NewToolResultError(err.Error()), nil
 	}
 
-	id := int32(request.GetInt("id", math.MinInt))
-
-	return toResult(c.GetApiV4BroadcastMessagesId(ctx, id, authorizationHeader))
+	return toResult(c.GetApiV4BroadcastMessagesId(ctx, req.Id, authorizationHeader))
 }

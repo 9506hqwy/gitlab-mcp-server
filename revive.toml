@@ -29,6 +29,9 @@ Disabled = true
 [rule.line-length-limit]
 Disabled = true
 
+[rule.max-public-structs]
+Disabled = true
+
 [rule.package-comments]
 Disabled = true
 

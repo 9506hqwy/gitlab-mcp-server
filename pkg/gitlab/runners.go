@@ -2,490 +2,357 @@ package gitlab
 
 import (
 	"context"
-	"math"
-	"strings"
+	"encoding/json"
 
+	"github.com/invopop/jsonschema"
 	"github.com/mark3labs/mcp-go/mcp"
 	"github.com/mark3labs/mcp-go/server"
 
 	client "github.com/9506hqwy/gitlab-client-go/pkg/gitlab"
 )
 
-func registerDeleteRunners(s *server.MCPServer) {
-	tool := mcp.NewTool("delete_runners",
-		mcp.WithDescription("Delete a registered runner"),
-		mcp.WithString("token",
-			mcp.Description("The runner's authentication token"),
-			mcp.Required(),
-		),
-	)
-
-	s.AddTool(tool, deleteRunnersHandler)
+type DeleteRunnersRequest struct {
+	Params *client.DeleteApiV4RunnersParams `json:"params,omitempty"`
 }
 
-func deleteRunnersHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+func registerDeleteRunners(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&DeleteRunnersRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
+	tool := mcp.NewTool("delete_runners",
+		mcp.WithDescription("Delete a registered runner"),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
+	)
+
+	s.AddTool(tool, mcp.NewTypedToolHandler(deleteRunnersHandler))
+}
+
+func deleteRunnersHandler(ctx context.Context, request mcp.CallToolRequest, req DeleteRunnersRequest) (*mcp.CallToolResult, error) {
 	c, err := newClient(ctx)
 	if err != nil {
 		return mcp.NewToolResultError(err.Error()), nil
 	}
 
-	params := parseDeleteRunners(request)
-	return toResult(c.DeleteApiV4Runners(ctx, &params, authorizationHeader))
+	return toResult(c.DeleteApiV4Runners(ctx, req.Params, authorizationHeader))
 }
 
-func parseDeleteRunners(request mcp.CallToolRequest) client.DeleteApiV4RunnersParams {
-	params := client.DeleteApiV4RunnersParams{}
-
-	token := request.GetString("token", "")
-	if token != "" {
-
-		params.Token = token
-	}
-
-	return params
+type GetRunnersRequest struct {
+	Params *client.GetApiV4RunnersParams `json:"params,omitempty"`
 }
 
 func registerGetRunners(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&GetRunnersRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
 	tool := mcp.NewTool("get_runners",
 		mcp.WithDescription("Get runners available for user"),
-		mcp.WithString("scope",
-			mcp.Description("Deprecated: Use `type` or `status` instead. The scope of runners to return"),
-
-			mcp.Enum("specific", "shared", "instance_type", "group_type", "project_type", "active", "paused", "online", "offline", "never_contacted", "stale"),
-		),
-		mcp.WithString("type",
-			mcp.Description("The type of runners to return"),
-
-			mcp.Enum("instance_type", "group_type", "project_type"),
-		),
-		mcp.WithBoolean("paused",
-			mcp.Description("Whether to include only runners that are accepting or ignoring new jobs"),
-		),
-		mcp.WithString("status",
-			mcp.Description("The status of runners to return"),
-
-			mcp.Enum("active", "paused", "online", "offline", "never_contacted", "stale"),
-		),
-		mcp.WithString("tag_list",
-			mcp.Description("A list of runner tags (example: ['macos', 'shell'])"),
-		),
-		mcp.WithString("version_prefix",
-			mcp.Description("The version prefix of runners to return (example: '15.1.' or '16.')"),
-		),
-		mcp.WithNumber("page",
-			mcp.Description("Current page number (example: 1) (default: 1)"),
-		),
-		mcp.WithNumber("per_page",
-			mcp.Description("Number of items per page (example: 20) (default: 20)"),
-		),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
 	)
 
-	s.AddTool(tool, getRunnersHandler)
+	s.AddTool(tool, mcp.NewTypedToolHandler(getRunnersHandler))
 }
 
-func getRunnersHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+func getRunnersHandler(ctx context.Context, request mcp.CallToolRequest, req GetRunnersRequest) (*mcp.CallToolResult, error) {
 	c, err := newClient(ctx)
 	if err != nil {
 		return mcp.NewToolResultError(err.Error()), nil
 	}
 
-	params := parseGetRunners(request)
-	return toResult(c.GetApiV4Runners(ctx, &params, authorizationHeader))
+	return toResult(c.GetApiV4Runners(ctx, req.Params, authorizationHeader))
 }
 
-func parseGetRunners(request mcp.CallToolRequest) client.GetApiV4RunnersParams {
-	params := client.GetApiV4RunnersParams{}
-
-	scope := request.GetString("scope", "")
-	if scope != "" {
-
-		params.Scope = &scope
-	}
-
-	_type := request.GetString("type", "")
-	if _type != "" {
-
-		params.Type = &_type
-	}
-
-	paused := request.GetBool("paused", false)
-	params.Paused = &paused
-
-	status := request.GetString("status", "")
-	if status != "" {
-
-		params.Status = &status
-	}
-
-	tag_list := request.GetString("tag_list", "")
-	if tag_list != "" {
-		tag_list := strings.Split(tag_list, ",")
-		params.TagList = &tag_list
-	}
-
-	version_prefix := request.GetString("version_prefix", "")
-	if version_prefix != "" {
-
-		params.VersionPrefix = &version_prefix
-	}
-
-	page := request.GetInt("page", 1)
-	if page != math.MinInt {
-		page := int32(page)
-		params.Page = &page
-	}
-
-	per_page := request.GetInt("per_page", 20)
-	if per_page != math.MinInt {
-		per_page := int32(per_page)
-		params.PerPage = &per_page
-	}
-
-	return params
+type DeleteRunnersManagersRequest struct {
+	Params *client.DeleteApiV4RunnersManagersParams `json:"params,omitempty"`
 }
 
 func registerDeleteRunnersManagers(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&DeleteRunnersManagersRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
 	tool := mcp.NewTool("delete_runners_managers",
 		mcp.WithDescription("Delete a registered runner manager"),
-		mcp.WithString("token",
-			mcp.Description("The runner's authentication token"),
-			mcp.Required(),
-		),
-		mcp.WithString("system_id",
-			mcp.Description("The runner's system identifier."),
-			mcp.Required(),
-		),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
 	)
 
-	s.AddTool(tool, deleteRunnersManagersHandler)
+	s.AddTool(tool, mcp.NewTypedToolHandler(deleteRunnersManagersHandler))
 }
 
-func deleteRunnersManagersHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+func deleteRunnersManagersHandler(ctx context.Context, request mcp.CallToolRequest, req DeleteRunnersManagersRequest) (*mcp.CallToolResult, error) {
 	c, err := newClient(ctx)
 	if err != nil {
 		return mcp.NewToolResultError(err.Error()), nil
 	}
 
-	params := parseDeleteRunnersManagers(request)
-	return toResult(c.DeleteApiV4RunnersManagers(ctx, &params, authorizationHeader))
+	return toResult(c.DeleteApiV4RunnersManagers(ctx, req.Params, authorizationHeader))
 }
 
-func parseDeleteRunnersManagers(request mcp.CallToolRequest) client.DeleteApiV4RunnersManagersParams {
-	params := client.DeleteApiV4RunnersManagersParams{}
-
-	token := request.GetString("token", "")
-	if token != "" {
-
-		params.Token = token
-	}
-
-	system_id := request.GetString("system_id", "")
-	if system_id != "" {
-
-		params.SystemId = system_id
-	}
-
-	return params
+type GetRunnersAllRequest struct {
+	Params *client.GetApiV4RunnersAllParams `json:"params,omitempty"`
 }
 
 func registerGetRunnersAll(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&GetRunnersAllRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
 	tool := mcp.NewTool("get_runners_all",
 		mcp.WithDescription("Get a list of all runners in the GitLab instance (shared and project). Access is restricted to users with either administrator access or auditor access."),
-		mcp.WithString("scope",
-			mcp.Description("Deprecated: Use `type` or `status` instead. The scope of runners to return"),
-
-			mcp.Enum("specific", "shared", "instance_type", "group_type", "project_type", "active", "paused", "online", "offline", "never_contacted", "stale"),
-		),
-		mcp.WithString("type",
-			mcp.Description("The type of runners to return"),
-
-			mcp.Enum("instance_type", "group_type", "project_type"),
-		),
-		mcp.WithBoolean("paused",
-			mcp.Description("Whether to include only runners that are accepting or ignoring new jobs"),
-		),
-		mcp.WithString("status",
-			mcp.Description("The status of runners to return"),
-
-			mcp.Enum("active", "paused", "online", "offline", "never_contacted", "stale"),
-		),
-		mcp.WithString("tag_list",
-			mcp.Description("A list of runner tags (example: ['macos', 'shell'])"),
-		),
-		mcp.WithString("version_prefix",
-			mcp.Description("The version prefix of runners to return (example: '15.1.' or '16.')"),
-		),
-		mcp.WithNumber("page",
-			mcp.Description("Current page number (example: 1) (default: 1)"),
-		),
-		mcp.WithNumber("per_page",
-			mcp.Description("Number of items per page (example: 20) (default: 20)"),
-		),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
 	)
 
-	s.AddTool(tool, getRunnersAllHandler)
+	s.AddTool(tool, mcp.NewTypedToolHandler(getRunnersAllHandler))
 }
 
-func getRunnersAllHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+func getRunnersAllHandler(ctx context.Context, request mcp.CallToolRequest, req GetRunnersAllRequest) (*mcp.CallToolResult, error) {
 	c, err := newClient(ctx)
 	if err != nil {
 		return mcp.NewToolResultError(err.Error()), nil
 	}
 
-	params := parseGetRunnersAll(request)
-	return toResult(c.GetApiV4RunnersAll(ctx, &params, authorizationHeader))
+	return toResult(c.GetApiV4RunnersAll(ctx, req.Params, authorizationHeader))
 }
 
-func parseGetRunnersAll(request mcp.CallToolRequest) client.GetApiV4RunnersAllParams {
-	params := client.GetApiV4RunnersAllParams{}
-
-	scope := request.GetString("scope", "")
-	if scope != "" {
-
-		params.Scope = &scope
-	}
-
-	_type := request.GetString("type", "")
-	if _type != "" {
-
-		params.Type = &_type
-	}
-
-	paused := request.GetBool("paused", false)
-	params.Paused = &paused
-
-	status := request.GetString("status", "")
-	if status != "" {
-
-		params.Status = &status
-	}
-
-	tag_list := request.GetString("tag_list", "")
-	if tag_list != "" {
-		tag_list := strings.Split(tag_list, ",")
-		params.TagList = &tag_list
-	}
-
-	version_prefix := request.GetString("version_prefix", "")
-	if version_prefix != "" {
-
-		params.VersionPrefix = &version_prefix
-	}
-
-	page := request.GetInt("page", 1)
-	if page != math.MinInt {
-		page := int32(page)
-		params.Page = &page
-	}
-
-	per_page := request.GetInt("per_page", 20)
-	if per_page != math.MinInt {
-		per_page := int32(per_page)
-		params.PerPage = &per_page
-	}
-
-	return params
+type DeleteRunnersIdRequest struct {
+	Id int32 `json:"id" jsonschema:"description=The ID of a runner"`
 }
 
 func registerDeleteRunnersId(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&DeleteRunnersIdRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
 	tool := mcp.NewTool("delete_runners_id",
 		mcp.WithDescription("Remove a runner"),
-		mcp.WithNumber("id",
-			mcp.Description("The ID of a runner"),
-			mcp.Required(),
-		),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
 	)
 
-	s.AddTool(tool, deleteRunnersIdHandler)
+	s.AddTool(tool, mcp.NewTypedToolHandler(deleteRunnersIdHandler))
 }
 
-func deleteRunnersIdHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+func deleteRunnersIdHandler(ctx context.Context, request mcp.CallToolRequest, req DeleteRunnersIdRequest) (*mcp.CallToolResult, error) {
 	c, err := newClient(ctx)
 	if err != nil {
 		return mcp.NewToolResultError(err.Error()), nil
 	}
 
-	id := int32(request.GetInt("id", math.MinInt))
+	return toResult(c.DeleteApiV4RunnersId(ctx, req.Id, authorizationHeader))
+}
 
-	return toResult(c.DeleteApiV4RunnersId(ctx, id, authorizationHeader))
+type GetRunnersIdRequest struct {
+	Id int32 `json:"id" jsonschema:"description=The ID of a runner"`
 }
 
 func registerGetRunnersId(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&GetRunnersIdRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
 	tool := mcp.NewTool("get_runners_id",
 		mcp.WithDescription("At least the Maintainer role is required to get runner details at the project and group level. Instance-level runner details via this endpoint are available to all signed in users."),
-		mcp.WithNumber("id",
-			mcp.Description("The ID of a runner"),
-			mcp.Required(),
-		),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
 	)
 
-	s.AddTool(tool, getRunnersIdHandler)
+	s.AddTool(tool, mcp.NewTypedToolHandler(getRunnersIdHandler))
 }
 
-func getRunnersIdHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+func getRunnersIdHandler(ctx context.Context, request mcp.CallToolRequest, req GetRunnersIdRequest) (*mcp.CallToolResult, error) {
 	c, err := newClient(ctx)
 	if err != nil {
 		return mcp.NewToolResultError(err.Error()), nil
 	}
 
-	id := int32(request.GetInt("id", math.MinInt))
+	return toResult(c.GetApiV4RunnersId(ctx, req.Id, authorizationHeader))
+}
 
-	return toResult(c.GetApiV4RunnersId(ctx, id, authorizationHeader))
+type GetRunnersIdManagersRequest struct {
+	Id int32 `json:"id" jsonschema:"description=The ID of a runner"`
 }
 
 func registerGetRunnersIdManagers(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&GetRunnersIdManagersRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
 	tool := mcp.NewTool("get_runners_id_managers",
 		mcp.WithDescription("Get a list of all runner's managers"),
-		mcp.WithNumber("id",
-			mcp.Description("The ID of a runner"),
-			mcp.Required(),
-		),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
 	)
 
-	s.AddTool(tool, getRunnersIdManagersHandler)
+	s.AddTool(tool, mcp.NewTypedToolHandler(getRunnersIdManagersHandler))
 }
 
-func getRunnersIdManagersHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+func getRunnersIdManagersHandler(ctx context.Context, request mcp.CallToolRequest, req GetRunnersIdManagersRequest) (*mcp.CallToolResult, error) {
 	c, err := newClient(ctx)
 	if err != nil {
 		return mcp.NewToolResultError(err.Error()), nil
 	}
 
-	id := int32(request.GetInt("id", math.MinInt))
+	return toResult(c.GetApiV4RunnersIdManagers(ctx, req.Id, authorizationHeader))
+}
 
-	return toResult(c.GetApiV4RunnersIdManagers(ctx, id, authorizationHeader))
+type GetRunnersIdJobsRequest struct {
+	Id     int32                               `json:"id" jsonschema:"description=The ID of a runner"`
+	Params *client.GetApiV4RunnersIdJobsParams `json:"params,omitempty"`
 }
 
 func registerGetRunnersIdJobs(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&GetRunnersIdJobsRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
 	tool := mcp.NewTool("get_runners_id_jobs",
 		mcp.WithDescription("List jobs that are being processed or were processed by the specified runner. The list of jobs is limited to projects where the user has at least the Reporter role."),
-		mcp.WithNumber("id",
-			mcp.Description("The ID of a runner"),
-			mcp.Required(),
-		),
-		mcp.WithString("system_id",
-			mcp.Description("System ID associated with the runner manager"),
-		),
-		mcp.WithString("status",
-			mcp.Description("Status of the job"),
-
-			mcp.Enum("created", "waiting_for_resource", "preparing", "waiting_for_callback", "pending", "running", "success", "failed", "canceling", "canceled", "skipped", "manual", "scheduled"),
-		),
-		mcp.WithString("order_by",
-			mcp.Description("Order by `id`"),
-
-			mcp.Enum("id"),
-		),
-		mcp.WithString("sort",
-			mcp.Description("Sort by `asc` or `desc` order. Specify `order_by` as well, including for `id` (default: desc)"),
-
-			mcp.Enum("asc", "desc"),
-		),
-		mcp.WithString("cursor",
-			mcp.Description("Cursor for obtaining the next set of records"),
-		),
-		mcp.WithNumber("page",
-			mcp.Description("Current page number (example: 1) (default: 1)"),
-		),
-		mcp.WithNumber("per_page",
-			mcp.Description("Number of items per page (example: 20) (default: 20)"),
-		),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
 	)
 
-	s.AddTool(tool, getRunnersIdJobsHandler)
+	s.AddTool(tool, mcp.NewTypedToolHandler(getRunnersIdJobsHandler))
 }
 
-func getRunnersIdJobsHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+func getRunnersIdJobsHandler(ctx context.Context, request mcp.CallToolRequest, req GetRunnersIdJobsRequest) (*mcp.CallToolResult, error) {
 	c, err := newClient(ctx)
 	if err != nil {
 		return mcp.NewToolResultError(err.Error()), nil
 	}
 
-	id := int32(request.GetInt("id", math.MinInt))
-	params := parseGetRunnersIdJobs(request)
-	return toResult(c.GetApiV4RunnersIdJobs(ctx, id, &params, authorizationHeader))
+	return toResult(c.GetApiV4RunnersIdJobs(ctx, req.Id, req.Params, authorizationHeader))
 }
 
-func parseGetRunnersIdJobs(request mcp.CallToolRequest) client.GetApiV4RunnersIdJobsParams {
-	params := client.GetApiV4RunnersIdJobsParams{}
-
-	system_id := request.GetString("system_id", "")
-	if system_id != "" {
-
-		params.SystemId = &system_id
-	}
-
-	status := request.GetString("status", "")
-	if status != "" {
-
-		params.Status = &status
-	}
-
-	order_by := request.GetString("order_by", "")
-	if order_by != "" {
-
-		params.OrderBy = &order_by
-	}
-
-	sort := request.GetString("sort", "")
-	if sort != "" {
-
-		params.Sort = &sort
-	}
-
-	cursor := request.GetString("cursor", "")
-	if cursor != "" {
-
-		params.Cursor = &cursor
-	}
-
-	page := request.GetInt("page", 1)
-	if page != math.MinInt {
-		page := int32(page)
-		params.Page = &page
-	}
-
-	per_page := request.GetInt("per_page", 20)
-	if per_page != math.MinInt {
-		per_page := int32(per_page)
-		params.PerPage = &per_page
-	}
-
-	return params
+type PostRunnersIdResetAuthenticationTokenRequest struct {
+	Id int32 `json:"id" jsonschema:"description=The ID of the runner"`
 }
 
 func registerPostRunnersIdResetAuthenticationToken(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&PostRunnersIdResetAuthenticationTokenRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
 	tool := mcp.NewTool("post_runners_id_reset_authentication_token",
 		mcp.WithDescription("Reset runner authentication token"),
-		mcp.WithNumber("id",
-			mcp.Description("The ID of the runner"),
-			mcp.Required(),
-		),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
 	)
 
-	s.AddTool(tool, postRunnersIdResetAuthenticationTokenHandler)
+	s.AddTool(tool, mcp.NewTypedToolHandler(postRunnersIdResetAuthenticationTokenHandler))
 }
 
-func postRunnersIdResetAuthenticationTokenHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+func postRunnersIdResetAuthenticationTokenHandler(ctx context.Context, request mcp.CallToolRequest, req PostRunnersIdResetAuthenticationTokenRequest) (*mcp.CallToolResult, error) {
 	c, err := newClient(ctx)
 	if err != nil {
 		return mcp.NewToolResultError(err.Error()), nil
 	}
 
-	id := int32(request.GetInt("id", math.MinInt))
+	return toResult(c.PostApiV4RunnersIdResetAuthenticationToken(ctx, req.Id, authorizationHeader))
+}
 
-	return toResult(c.PostApiV4RunnersIdResetAuthenticationToken(ctx, id, authorizationHeader))
+type PostRunnersResetRegistrationTokenRequest struct {
 }
 
 func registerPostRunnersResetRegistrationToken(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&PostRunnersResetRegistrationTokenRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
 	tool := mcp.NewTool("post_runners_reset_registration_token",
 		mcp.WithDescription("Reset runner registration token"),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
 	)
 
-	s.AddTool(tool, postRunnersResetRegistrationTokenHandler)
+	s.AddTool(tool, mcp.NewTypedToolHandler(postRunnersResetRegistrationTokenHandler))
 }
 
-func postRunnersResetRegistrationTokenHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+func postRunnersResetRegistrationTokenHandler(ctx context.Context, request mcp.CallToolRequest, req PostRunnersResetRegistrationTokenRequest) (*mcp.CallToolResult, error) {
 	c, err := newClient(ctx)
 	if err != nil {
 		return mcp.NewToolResultError(err.Error()), nil

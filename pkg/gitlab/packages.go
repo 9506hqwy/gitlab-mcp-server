@@ -2,22 +2,41 @@ package gitlab
 
 import (
 	"context"
+	"encoding/json"
 
+	"github.com/invopop/jsonschema"
 	"github.com/mark3labs/mcp-go/mcp"
 	"github.com/mark3labs/mcp-go/server"
 
 	client "github.com/9506hqwy/gitlab-client-go/pkg/gitlab"
 )
 
-func registerGetPackagesConanV1UsersAuthenticate(s *server.MCPServer) {
-	tool := mcp.NewTool("get_pkgs_conan_v1_users_authenticate",
-		mcp.WithDescription("This feature was introduced in GitLab 12.2"),
-	)
-
-	s.AddTool(tool, getPackagesConanV1UsersAuthenticateHandler)
+type GetPackagesConanV1UsersAuthenticateRequest struct {
 }
 
-func getPackagesConanV1UsersAuthenticateHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+func registerGetPackagesConanV1UsersAuthenticate(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&GetPackagesConanV1UsersAuthenticateRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
+	tool := mcp.NewTool("get_pkgs_conan_v1_users_authenticate",
+		mcp.WithDescription("This feature was introduced in GitLab 12.2"),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
+	)
+
+	s.AddTool(tool, mcp.NewTypedToolHandler(getPackagesConanV1UsersAuthenticateHandler))
+}
+
+func getPackagesConanV1UsersAuthenticateHandler(ctx context.Context, request mcp.CallToolRequest, req GetPackagesConanV1UsersAuthenticateRequest) (*mcp.CallToolResult, error) {
 	c, err := newClient(ctx)
 	if err != nil {
 		return mcp.NewToolResultError(err.Error()), nil
@@ -26,15 +45,32 @@ func getPackagesConanV1UsersAuthenticateHandler(ctx context.Context, request mcp
 	return toResult(c.GetApiV4PackagesConanV1UsersAuthenticate(ctx, authorizationHeader))
 }
 
-func registerGetPackagesConanV1UsersCheckCredentials(s *server.MCPServer) {
-	tool := mcp.NewTool("get_pkgs_conan_v1_users_check_credentials",
-		mcp.WithDescription("This feature was introduced in GitLab 12.4"),
-	)
-
-	s.AddTool(tool, getPackagesConanV1UsersCheckCredentialsHandler)
+type GetPackagesConanV1UsersCheckCredentialsRequest struct {
 }
 
-func getPackagesConanV1UsersCheckCredentialsHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+func registerGetPackagesConanV1UsersCheckCredentials(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&GetPackagesConanV1UsersCheckCredentialsRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
+	tool := mcp.NewTool("get_pkgs_conan_v1_users_check_credentials",
+		mcp.WithDescription("This feature was introduced in GitLab 12.4"),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
+	)
+
+	s.AddTool(tool, mcp.NewTypedToolHandler(getPackagesConanV1UsersCheckCredentialsHandler))
+}
+
+func getPackagesConanV1UsersCheckCredentialsHandler(ctx context.Context, request mcp.CallToolRequest, req GetPackagesConanV1UsersCheckCredentialsRequest) (*mcp.CallToolResult, error) {
 	c, err := newClient(ctx)
 	if err != nil {
 		return mcp.NewToolResultError(err.Error()), nil
@@ -43,87 +79,105 @@ func getPackagesConanV1UsersCheckCredentialsHandler(ctx context.Context, request
 	return toResult(c.GetApiV4PackagesConanV1UsersCheckCredentials(ctx, authorizationHeader))
 }
 
-func registerGetPackagesConanV1ConansSearch(s *server.MCPServer) {
-	tool := mcp.NewTool("get_pkgs_conan_v1_conans_search",
-		mcp.WithDescription("This feature was introduced in GitLab 12.4"),
-		mcp.WithString("q",
-			mcp.Description("Search query (example: Hello*)"),
-			mcp.Required(),
-		),
-	)
-
-	s.AddTool(tool, getPackagesConanV1ConansSearchHandler)
+type GetPackagesConanV1ConansSearchRequest struct {
+	Params *client.GetApiV4PackagesConanV1ConansSearchParams `json:"params,omitempty"`
 }
 
-func getPackagesConanV1ConansSearchHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+func registerGetPackagesConanV1ConansSearch(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&GetPackagesConanV1ConansSearchRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
+	tool := mcp.NewTool("get_pkgs_conan_v1_conans_search",
+		mcp.WithDescription("This feature was introduced in GitLab 12.4"),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
+	)
+
+	s.AddTool(tool, mcp.NewTypedToolHandler(getPackagesConanV1ConansSearchHandler))
+}
+
+func getPackagesConanV1ConansSearchHandler(ctx context.Context, request mcp.CallToolRequest, req GetPackagesConanV1ConansSearchRequest) (*mcp.CallToolResult, error) {
 	c, err := newClient(ctx)
 	if err != nil {
 		return mcp.NewToolResultError(err.Error()), nil
 	}
 
-	params := parseGetPackagesConanV1ConansSearch(request)
-	return toResult(c.GetApiV4PackagesConanV1ConansSearch(ctx, &params, authorizationHeader))
+	return toResult(c.GetApiV4PackagesConanV1ConansSearch(ctx, req.Params, authorizationHeader))
 }
 
-func parseGetPackagesConanV1ConansSearch(request mcp.CallToolRequest) client.GetApiV4PackagesConanV1ConansSearchParams {
-	params := client.GetApiV4PackagesConanV1ConansSearchParams{}
-
-	q := request.GetString("q", "")
-	if q != "" {
-
-		params.Q = q
-	}
-
-	return params
+type GetPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelSearchRequest struct {
+	PackageName     string `json:"package_name" jsonschema:"description=Package name"`
+	PackageVersion  string `json:"package_version" jsonschema:"description=Package version"`
+	PackageUsername string `json:"package_username" jsonschema:"description=Package username"`
+	PackageChannel  string `json:"package_channel" jsonschema:"description=Package channel"`
 }
 
 func registerGetPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelSearch(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&GetPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelSearchRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
 	tool := mcp.NewTool("get_pkgs_conan_v1_conans_package_name_package_version_package_username_package_channel_search",
 		mcp.WithDescription("This feature was introduced in GitLab 18.0"),
-		mcp.WithString("package_name",
-			mcp.Description("Package name (example: my-package)"),
-			mcp.Required(),
-		),
-		mcp.WithString("package_version",
-			mcp.Description("Package version (example: 1.0)"),
-			mcp.Required(),
-		),
-		mcp.WithString("package_username",
-			mcp.Description("Package username (example: my-group+my-project)"),
-			mcp.Required(),
-		),
-		mcp.WithString("package_channel",
-			mcp.Description("Package channel (example: stable)"),
-			mcp.Required(),
-		),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
 	)
 
-	s.AddTool(tool, getPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelSearchHandler)
+	s.AddTool(tool, mcp.NewTypedToolHandler(getPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelSearchHandler))
 }
 
-func getPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelSearchHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+func getPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelSearchHandler(ctx context.Context, request mcp.CallToolRequest, req GetPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelSearchRequest) (*mcp.CallToolResult, error) {
 	c, err := newClient(ctx)
 	if err != nil {
 		return mcp.NewToolResultError(err.Error()), nil
 	}
 
-	package_name := request.GetString("package_name", "")
-	package_version := request.GetString("package_version", "")
-	package_username := request.GetString("package_username", "")
-	package_channel := request.GetString("package_channel", "")
+	return toResult(c.GetApiV4PackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelSearch(ctx, req.PackageName, req.PackageVersion, req.PackageUsername, req.PackageChannel, authorizationHeader))
+}
 
-	return toResult(c.GetApiV4PackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelSearch(ctx, package_name, package_version, package_username, package_channel, authorizationHeader))
+type GetPackagesConanV1PingRequest struct {
 }
 
 func registerGetPackagesConanV1Ping(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&GetPackagesConanV1PingRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
 	tool := mcp.NewTool("get_pkgs_conan_v1_ping",
 		mcp.WithDescription("This feature was introduced in GitLab 12.2"),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
 	)
 
-	s.AddTool(tool, getPackagesConanV1PingHandler)
+	s.AddTool(tool, mcp.NewTypedToolHandler(getPackagesConanV1PingHandler))
 }
 
-func getPackagesConanV1PingHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+func getPackagesConanV1PingHandler(ctx context.Context, request mcp.CallToolRequest, req GetPackagesConanV1PingRequest) (*mcp.CallToolResult, error) {
 	c, err := newClient(ctx)
 	if err != nil {
 		return mcp.NewToolResultError(err.Error()), nil
@@ -132,593 +186,542 @@ func getPackagesConanV1PingHandler(ctx context.Context, request mcp.CallToolRequ
 	return toResult(c.GetApiV4PackagesConanV1Ping(ctx, authorizationHeader))
 }
 
-func registerGetPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelPackagesConanPackageReference(s *server.MCPServer) {
-	tool := mcp.NewTool("get_pkgs_conan_v1_conans_package_name_package_version_package_username_package_channel_packages_conan_package_reference",
-		mcp.WithDescription("This feature was introduced in GitLab 12.5"),
-		mcp.WithString("package_name",
-			mcp.Description("Package name (example: my-package)"),
-			mcp.Required(),
-		),
-		mcp.WithString("package_version",
-			mcp.Description("Package version (example: 1.0)"),
-			mcp.Required(),
-		),
-		mcp.WithString("package_username",
-			mcp.Description("Package username (example: my-group+my-project)"),
-			mcp.Required(),
-		),
-		mcp.WithString("package_channel",
-			mcp.Description("Package channel (example: stable)"),
-			mcp.Required(),
-		),
-		mcp.WithString("conan_package_reference",
-			mcp.Description("Conan package ID (example: 103f6067a947f366ef91fc1b7da351c588d1827f)"),
-			mcp.Required(),
-		),
-	)
-
-	s.AddTool(tool, getPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelPackagesConanPackageReferenceHandler)
+type GetPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelPackagesConanPackageReferenceRequest struct {
+	PackageName           string `json:"package_name" jsonschema:"description=Package name"`
+	PackageVersion        string `json:"package_version" jsonschema:"description=Package version"`
+	PackageUsername       string `json:"package_username" jsonschema:"description=Package username"`
+	PackageChannel        string `json:"package_channel" jsonschema:"description=Package channel"`
+	ConanPackageReference string `json:"conan_package_reference" jsonschema:"description=Conan package ID"`
 }
 
-func getPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelPackagesConanPackageReferenceHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+func registerGetPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelPackagesConanPackageReference(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&GetPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelPackagesConanPackageReferenceRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
+	tool := mcp.NewTool("get_pkgs_conan_v1_conans_package_name_package_version_package_username_package_channel_packages_conan_package_reference",
+		mcp.WithDescription("This feature was introduced in GitLab 12.5"),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
+	)
+
+	s.AddTool(tool, mcp.NewTypedToolHandler(getPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelPackagesConanPackageReferenceHandler))
+}
+
+func getPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelPackagesConanPackageReferenceHandler(ctx context.Context, request mcp.CallToolRequest, req GetPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelPackagesConanPackageReferenceRequest) (*mcp.CallToolResult, error) {
 	c, err := newClient(ctx)
 	if err != nil {
 		return mcp.NewToolResultError(err.Error()), nil
 	}
 
-	package_name := request.GetString("package_name", "")
-	package_version := request.GetString("package_version", "")
-	package_username := request.GetString("package_username", "")
-	package_channel := request.GetString("package_channel", "")
-	conan_package_reference := request.GetString("conan_package_reference", "")
+	return toResult(c.GetApiV4PackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelPackagesConanPackageReference(ctx, req.PackageName, req.PackageVersion, req.PackageUsername, req.PackageChannel, req.ConanPackageReference, authorizationHeader))
+}
 
-	return toResult(c.GetApiV4PackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelPackagesConanPackageReference(ctx, package_name, package_version, package_username, package_channel, conan_package_reference, authorizationHeader))
+type DeletePackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelRequest struct {
+	PackageName     string `json:"package_name" jsonschema:"description=Package name"`
+	PackageVersion  string `json:"package_version" jsonschema:"description=Package version"`
+	PackageUsername string `json:"package_username" jsonschema:"description=Package username"`
+	PackageChannel  string `json:"package_channel" jsonschema:"description=Package channel"`
 }
 
 func registerDeletePackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannel(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&DeletePackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
 	tool := mcp.NewTool("delete_pkgs_conan_v1_conans_package_name_package_version_package_username_package_channel",
 		mcp.WithDescription("This feature was introduced in GitLab 12.5"),
-		mcp.WithString("package_name",
-			mcp.Description("Package name (example: my-package)"),
-			mcp.Required(),
-		),
-		mcp.WithString("package_version",
-			mcp.Description("Package version (example: 1.0)"),
-			mcp.Required(),
-		),
-		mcp.WithString("package_username",
-			mcp.Description("Package username (example: my-group+my-project)"),
-			mcp.Required(),
-		),
-		mcp.WithString("package_channel",
-			mcp.Description("Package channel (example: stable)"),
-			mcp.Required(),
-		),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
 	)
 
-	s.AddTool(tool, deletePackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelHandler)
+	s.AddTool(tool, mcp.NewTypedToolHandler(deletePackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelHandler))
 }
 
-func deletePackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+func deletePackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelHandler(ctx context.Context, request mcp.CallToolRequest, req DeletePackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelRequest) (*mcp.CallToolResult, error) {
 	c, err := newClient(ctx)
 	if err != nil {
 		return mcp.NewToolResultError(err.Error()), nil
 	}
 
-	package_name := request.GetString("package_name", "")
-	package_version := request.GetString("package_version", "")
-	package_username := request.GetString("package_username", "")
-	package_channel := request.GetString("package_channel", "")
+	return toResult(c.DeleteApiV4PackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannel(ctx, req.PackageName, req.PackageVersion, req.PackageUsername, req.PackageChannel, authorizationHeader))
+}
 
-	return toResult(c.DeleteApiV4PackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannel(ctx, package_name, package_version, package_username, package_channel, authorizationHeader))
+type GetPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelRequest struct {
+	PackageName     string `json:"package_name" jsonschema:"description=Package name"`
+	PackageVersion  string `json:"package_version" jsonschema:"description=Package version"`
+	PackageUsername string `json:"package_username" jsonschema:"description=Package username"`
+	PackageChannel  string `json:"package_channel" jsonschema:"description=Package channel"`
 }
 
 func registerGetPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannel(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&GetPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
 	tool := mcp.NewTool("get_pkgs_conan_v1_conans_package_name_package_version_package_username_package_channel",
 		mcp.WithDescription("This feature was introduced in GitLab 12.5"),
-		mcp.WithString("package_name",
-			mcp.Description("Package name (example: my-package)"),
-			mcp.Required(),
-		),
-		mcp.WithString("package_version",
-			mcp.Description("Package version (example: 1.0)"),
-			mcp.Required(),
-		),
-		mcp.WithString("package_username",
-			mcp.Description("Package username (example: my-group+my-project)"),
-			mcp.Required(),
-		),
-		mcp.WithString("package_channel",
-			mcp.Description("Package channel (example: stable)"),
-			mcp.Required(),
-		),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
 	)
 
-	s.AddTool(tool, getPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelHandler)
+	s.AddTool(tool, mcp.NewTypedToolHandler(getPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelHandler))
 }
 
-func getPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+func getPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelHandler(ctx context.Context, request mcp.CallToolRequest, req GetPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelRequest) (*mcp.CallToolResult, error) {
 	c, err := newClient(ctx)
 	if err != nil {
 		return mcp.NewToolResultError(err.Error()), nil
 	}
 
-	package_name := request.GetString("package_name", "")
-	package_version := request.GetString("package_version", "")
-	package_username := request.GetString("package_username", "")
-	package_channel := request.GetString("package_channel", "")
+	return toResult(c.GetApiV4PackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannel(ctx, req.PackageName, req.PackageVersion, req.PackageUsername, req.PackageChannel, authorizationHeader))
+}
 
-	return toResult(c.GetApiV4PackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannel(ctx, package_name, package_version, package_username, package_channel, authorizationHeader))
+type GetPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelPackagesConanPackageReferenceDigestRequest struct {
+	PackageName           string `json:"package_name" jsonschema:"description=Package name"`
+	PackageVersion        string `json:"package_version" jsonschema:"description=Package version"`
+	PackageUsername       string `json:"package_username" jsonschema:"description=Package username"`
+	PackageChannel        string `json:"package_channel" jsonschema:"description=Package channel"`
+	ConanPackageReference string `json:"conan_package_reference" jsonschema:"description=Conan package ID"`
 }
 
 func registerGetPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelPackagesConanPackageReferenceDigest(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&GetPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelPackagesConanPackageReferenceDigestRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
 	tool := mcp.NewTool("get_pkgs_conan_v1_conans_package_name_package_version_package_username_package_channel_packages_conan_package_reference_digest",
 		mcp.WithDescription("This feature was introduced in GitLab 12.5"),
-		mcp.WithString("package_name",
-			mcp.Description("Package name (example: my-package)"),
-			mcp.Required(),
-		),
-		mcp.WithString("package_version",
-			mcp.Description("Package version (example: 1.0)"),
-			mcp.Required(),
-		),
-		mcp.WithString("package_username",
-			mcp.Description("Package username (example: my-group+my-project)"),
-			mcp.Required(),
-		),
-		mcp.WithString("package_channel",
-			mcp.Description("Package channel (example: stable)"),
-			mcp.Required(),
-		),
-		mcp.WithString("conan_package_reference",
-			mcp.Description("Conan package ID (example: 103f6067a947f366ef91fc1b7da351c588d1827f)"),
-			mcp.Required(),
-		),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
 	)
 
-	s.AddTool(tool, getPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelPackagesConanPackageReferenceDigestHandler)
+	s.AddTool(tool, mcp.NewTypedToolHandler(getPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelPackagesConanPackageReferenceDigestHandler))
 }
 
-func getPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelPackagesConanPackageReferenceDigestHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+func getPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelPackagesConanPackageReferenceDigestHandler(ctx context.Context, request mcp.CallToolRequest, req GetPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelPackagesConanPackageReferenceDigestRequest) (*mcp.CallToolResult, error) {
 	c, err := newClient(ctx)
 	if err != nil {
 		return mcp.NewToolResultError(err.Error()), nil
 	}
 
-	package_name := request.GetString("package_name", "")
-	package_version := request.GetString("package_version", "")
-	package_username := request.GetString("package_username", "")
-	package_channel := request.GetString("package_channel", "")
-	conan_package_reference := request.GetString("conan_package_reference", "")
+	return toResult(c.GetApiV4PackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelPackagesConanPackageReferenceDigest(ctx, req.PackageName, req.PackageVersion, req.PackageUsername, req.PackageChannel, req.ConanPackageReference, authorizationHeader))
+}
 
-	return toResult(c.GetApiV4PackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelPackagesConanPackageReferenceDigest(ctx, package_name, package_version, package_username, package_channel, conan_package_reference, authorizationHeader))
+type GetPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelDigestRequest struct {
+	PackageName     string `json:"package_name" jsonschema:"description=Package name"`
+	PackageVersion  string `json:"package_version" jsonschema:"description=Package version"`
+	PackageUsername string `json:"package_username" jsonschema:"description=Package username"`
+	PackageChannel  string `json:"package_channel" jsonschema:"description=Package channel"`
 }
 
 func registerGetPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelDigest(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&GetPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelDigestRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
 	tool := mcp.NewTool("get_pkgs_conan_v1_conans_package_name_package_version_package_username_package_channel_digest",
 		mcp.WithDescription("This feature was introduced in GitLab 12.5"),
-		mcp.WithString("package_name",
-			mcp.Description("Package name (example: my-package)"),
-			mcp.Required(),
-		),
-		mcp.WithString("package_version",
-			mcp.Description("Package version (example: 1.0)"),
-			mcp.Required(),
-		),
-		mcp.WithString("package_username",
-			mcp.Description("Package username (example: my-group+my-project)"),
-			mcp.Required(),
-		),
-		mcp.WithString("package_channel",
-			mcp.Description("Package channel (example: stable)"),
-			mcp.Required(),
-		),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
 	)
 
-	s.AddTool(tool, getPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelDigestHandler)
+	s.AddTool(tool, mcp.NewTypedToolHandler(getPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelDigestHandler))
 }
 
-func getPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelDigestHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+func getPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelDigestHandler(ctx context.Context, request mcp.CallToolRequest, req GetPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelDigestRequest) (*mcp.CallToolResult, error) {
 	c, err := newClient(ctx)
 	if err != nil {
 		return mcp.NewToolResultError(err.Error()), nil
 	}
 
-	package_name := request.GetString("package_name", "")
-	package_version := request.GetString("package_version", "")
-	package_username := request.GetString("package_username", "")
-	package_channel := request.GetString("package_channel", "")
+	return toResult(c.GetApiV4PackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelDigest(ctx, req.PackageName, req.PackageVersion, req.PackageUsername, req.PackageChannel, authorizationHeader))
+}
 
-	return toResult(c.GetApiV4PackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelDigest(ctx, package_name, package_version, package_username, package_channel, authorizationHeader))
+type GetPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelPackagesConanPackageReferenceDownloadUrlsRequest struct {
+	PackageName           string `json:"package_name" jsonschema:"description=Package name"`
+	PackageVersion        string `json:"package_version" jsonschema:"description=Package version"`
+	PackageUsername       string `json:"package_username" jsonschema:"description=Package username"`
+	PackageChannel        string `json:"package_channel" jsonschema:"description=Package channel"`
+	ConanPackageReference string `json:"conan_package_reference" jsonschema:"description=Conan package ID"`
 }
 
 func registerGetPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelPackagesConanPackageReferenceDownloadUrls(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&GetPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelPackagesConanPackageReferenceDownloadUrlsRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
 	tool := mcp.NewTool("get_pkgs_conan_v1_conans_package_name_package_version_package_username_package_channel_packages_conan_package_reference_download_urls",
 		mcp.WithDescription("This feature was introduced in GitLab 12.5"),
-		mcp.WithString("package_name",
-			mcp.Description("Package name (example: my-package)"),
-			mcp.Required(),
-		),
-		mcp.WithString("package_version",
-			mcp.Description("Package version (example: 1.0)"),
-			mcp.Required(),
-		),
-		mcp.WithString("package_username",
-			mcp.Description("Package username (example: my-group+my-project)"),
-			mcp.Required(),
-		),
-		mcp.WithString("package_channel",
-			mcp.Description("Package channel (example: stable)"),
-			mcp.Required(),
-		),
-		mcp.WithString("conan_package_reference",
-			mcp.Description("Conan package ID (example: 103f6067a947f366ef91fc1b7da351c588d1827f)"),
-			mcp.Required(),
-		),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
 	)
 
-	s.AddTool(tool, getPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelPackagesConanPackageReferenceDownloadUrlsHandler)
+	s.AddTool(tool, mcp.NewTypedToolHandler(getPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelPackagesConanPackageReferenceDownloadUrlsHandler))
 }
 
-func getPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelPackagesConanPackageReferenceDownloadUrlsHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+func getPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelPackagesConanPackageReferenceDownloadUrlsHandler(ctx context.Context, request mcp.CallToolRequest, req GetPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelPackagesConanPackageReferenceDownloadUrlsRequest) (*mcp.CallToolResult, error) {
 	c, err := newClient(ctx)
 	if err != nil {
 		return mcp.NewToolResultError(err.Error()), nil
 	}
 
-	package_name := request.GetString("package_name", "")
-	package_version := request.GetString("package_version", "")
-	package_username := request.GetString("package_username", "")
-	package_channel := request.GetString("package_channel", "")
-	conan_package_reference := request.GetString("conan_package_reference", "")
+	return toResult(c.GetApiV4PackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelPackagesConanPackageReferenceDownloadUrls(ctx, req.PackageName, req.PackageVersion, req.PackageUsername, req.PackageChannel, req.ConanPackageReference, authorizationHeader))
+}
 
-	return toResult(c.GetApiV4PackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelPackagesConanPackageReferenceDownloadUrls(ctx, package_name, package_version, package_username, package_channel, conan_package_reference, authorizationHeader))
+type GetPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelDownloadUrlsRequest struct {
+	PackageName     string `json:"package_name" jsonschema:"description=Package name"`
+	PackageVersion  string `json:"package_version" jsonschema:"description=Package version"`
+	PackageUsername string `json:"package_username" jsonschema:"description=Package username"`
+	PackageChannel  string `json:"package_channel" jsonschema:"description=Package channel"`
 }
 
 func registerGetPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelDownloadUrls(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&GetPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelDownloadUrlsRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
 	tool := mcp.NewTool("get_pkgs_conan_v1_conans_package_name_package_version_package_username_package_channel_download_urls",
 		mcp.WithDescription("This feature was introduced in GitLab 12.5"),
-		mcp.WithString("package_name",
-			mcp.Description("Package name (example: my-package)"),
-			mcp.Required(),
-		),
-		mcp.WithString("package_version",
-			mcp.Description("Package version (example: 1.0)"),
-			mcp.Required(),
-		),
-		mcp.WithString("package_username",
-			mcp.Description("Package username (example: my-group+my-project)"),
-			mcp.Required(),
-		),
-		mcp.WithString("package_channel",
-			mcp.Description("Package channel (example: stable)"),
-			mcp.Required(),
-		),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
 	)
 
-	s.AddTool(tool, getPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelDownloadUrlsHandler)
+	s.AddTool(tool, mcp.NewTypedToolHandler(getPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelDownloadUrlsHandler))
 }
 
-func getPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelDownloadUrlsHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+func getPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelDownloadUrlsHandler(ctx context.Context, request mcp.CallToolRequest, req GetPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelDownloadUrlsRequest) (*mcp.CallToolResult, error) {
 	c, err := newClient(ctx)
 	if err != nil {
 		return mcp.NewToolResultError(err.Error()), nil
 	}
 
-	package_name := request.GetString("package_name", "")
-	package_version := request.GetString("package_version", "")
-	package_username := request.GetString("package_username", "")
-	package_channel := request.GetString("package_channel", "")
+	return toResult(c.GetApiV4PackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelDownloadUrls(ctx, req.PackageName, req.PackageVersion, req.PackageUsername, req.PackageChannel, authorizationHeader))
+}
 
-	return toResult(c.GetApiV4PackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelDownloadUrls(ctx, package_name, package_version, package_username, package_channel, authorizationHeader))
+type PostPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelPackagesConanPackageReferenceUploadUrlsRequest struct {
+	PackageName           string `json:"package_name" jsonschema:"description=Package name"`
+	PackageVersion        string `json:"package_version" jsonschema:"description=Package version"`
+	PackageUsername       string `json:"package_username" jsonschema:"description=Package username"`
+	PackageChannel        string `json:"package_channel" jsonschema:"description=Package channel"`
+	ConanPackageReference string `json:"conan_package_reference" jsonschema:"description=Conan package ID"`
 }
 
 func registerPostPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelPackagesConanPackageReferenceUploadUrls(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&PostPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelPackagesConanPackageReferenceUploadUrlsRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
 	tool := mcp.NewTool("post_pkgs_conan_v1_conans_package_name_package_version_package_username_package_channel_packages_conan_package_reference_upload_urls",
 		mcp.WithDescription("This feature was introduced in GitLab 12.4"),
-		mcp.WithString("package_name",
-			mcp.Description("Package name (example: my-package)"),
-			mcp.Required(),
-		),
-		mcp.WithString("package_version",
-			mcp.Description("Package version (example: 1.0)"),
-			mcp.Required(),
-		),
-		mcp.WithString("package_username",
-			mcp.Description("Package username (example: my-group+my-project)"),
-			mcp.Required(),
-		),
-		mcp.WithString("package_channel",
-			mcp.Description("Package channel (example: stable)"),
-			mcp.Required(),
-		),
-		mcp.WithString("conan_package_reference",
-			mcp.Description("Conan package ID (example: 103f6067a947f366ef91fc1b7da351c588d1827f)"),
-			mcp.Required(),
-		),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
 	)
 
-	s.AddTool(tool, postPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelPackagesConanPackageReferenceUploadUrlsHandler)
+	s.AddTool(tool, mcp.NewTypedToolHandler(postPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelPackagesConanPackageReferenceUploadUrlsHandler))
 }
 
-func postPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelPackagesConanPackageReferenceUploadUrlsHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+func postPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelPackagesConanPackageReferenceUploadUrlsHandler(ctx context.Context, request mcp.CallToolRequest, req PostPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelPackagesConanPackageReferenceUploadUrlsRequest) (*mcp.CallToolResult, error) {
 	c, err := newClient(ctx)
 	if err != nil {
 		return mcp.NewToolResultError(err.Error()), nil
 	}
 
-	package_name := request.GetString("package_name", "")
-	package_version := request.GetString("package_version", "")
-	package_username := request.GetString("package_username", "")
-	package_channel := request.GetString("package_channel", "")
-	conan_package_reference := request.GetString("conan_package_reference", "")
+	return toResult(c.PostApiV4PackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelPackagesConanPackageReferenceUploadUrls(ctx, req.PackageName, req.PackageVersion, req.PackageUsername, req.PackageChannel, req.ConanPackageReference, authorizationHeader))
+}
 
-	return toResult(c.PostApiV4PackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelPackagesConanPackageReferenceUploadUrls(ctx, package_name, package_version, package_username, package_channel, conan_package_reference, authorizationHeader))
+type PostPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelUploadUrlsRequest struct {
+	PackageName     string `json:"package_name" jsonschema:"description=Package name"`
+	PackageVersion  string `json:"package_version" jsonschema:"description=Package version"`
+	PackageUsername string `json:"package_username" jsonschema:"description=Package username"`
+	PackageChannel  string `json:"package_channel" jsonschema:"description=Package channel"`
 }
 
 func registerPostPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelUploadUrls(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&PostPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelUploadUrlsRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
 	tool := mcp.NewTool("post_pkgs_conan_v1_conans_package_name_package_version_package_username_package_channel_upload_urls",
 		mcp.WithDescription("This feature was introduced in GitLab 12.4"),
-		mcp.WithString("package_name",
-			mcp.Description("Package name (example: my-package)"),
-			mcp.Required(),
-		),
-		mcp.WithString("package_version",
-			mcp.Description("Package version (example: 1.0)"),
-			mcp.Required(),
-		),
-		mcp.WithString("package_username",
-			mcp.Description("Package username (example: my-group+my-project)"),
-			mcp.Required(),
-		),
-		mcp.WithString("package_channel",
-			mcp.Description("Package channel (example: stable)"),
-			mcp.Required(),
-		),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
 	)
 
-	s.AddTool(tool, postPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelUploadUrlsHandler)
+	s.AddTool(tool, mcp.NewTypedToolHandler(postPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelUploadUrlsHandler))
 }
 
-func postPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelUploadUrlsHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+func postPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelUploadUrlsHandler(ctx context.Context, request mcp.CallToolRequest, req PostPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelUploadUrlsRequest) (*mcp.CallToolResult, error) {
 	c, err := newClient(ctx)
 	if err != nil {
 		return mcp.NewToolResultError(err.Error()), nil
 	}
 
-	package_name := request.GetString("package_name", "")
-	package_version := request.GetString("package_version", "")
-	package_username := request.GetString("package_username", "")
-	package_channel := request.GetString("package_channel", "")
+	return toResult(c.PostApiV4PackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelUploadUrls(ctx, req.PackageName, req.PackageVersion, req.PackageUsername, req.PackageChannel, authorizationHeader))
+}
 
-	return toResult(c.PostApiV4PackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelUploadUrls(ctx, package_name, package_version, package_username, package_channel, authorizationHeader))
+type GetPackagesConanV1FilesPackageNamePackageVersionPackageUsernamePackageChannelRecipeRevisionExportFileNameRequest struct {
+	PackageName     string `json:"package_name" jsonschema:"description=Package name"`
+	PackageVersion  string `json:"package_version" jsonschema:"description=Package version"`
+	PackageUsername string `json:"package_username" jsonschema:"description=Package username"`
+	PackageChannel  string `json:"package_channel" jsonschema:"description=Package channel"`
+	RecipeRevision  string `json:"recipe_revision" jsonschema:"description=Conan Recipe Revision"`
+	FileName        string `json:"file_name" jsonschema:"description=Package file name"`
 }
 
 func registerGetPackagesConanV1FilesPackageNamePackageVersionPackageUsernamePackageChannelRecipeRevisionExportFileName(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&GetPackagesConanV1FilesPackageNamePackageVersionPackageUsernamePackageChannelRecipeRevisionExportFileNameRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
 	tool := mcp.NewTool("get_pkgs_conan_v1_files_package_name_package_version_package_username_package_channel_recipe_revision_export_file_name",
 		mcp.WithDescription("This feature was introduced in GitLab 12.6"),
-		mcp.WithString("package_name",
-			mcp.Description("Package name (example: my-package)"),
-			mcp.Required(),
-		),
-		mcp.WithString("package_version",
-			mcp.Description("Package version (example: 1.0)"),
-			mcp.Required(),
-		),
-		mcp.WithString("package_username",
-			mcp.Description("Package username (example: my-group+my-project)"),
-			mcp.Required(),
-		),
-		mcp.WithString("package_channel",
-			mcp.Description("Package channel (example: stable)"),
-			mcp.Required(),
-		),
-		mcp.WithString("recipe_revision",
-			mcp.Description("Conan Recipe Revision (example: 0)"),
-			mcp.Required(),
-		),
-		mcp.WithString("file_name",
-			mcp.Description("Package file name (example: conanfile.py)"),
-			mcp.Required(),
-			mcp.Enum("conanfile.py", "conanmanifest.txt", "conan_sources.tgz", "conan_export.tgz", "conaninfo.txt", "conan_package.tgz"),
-		),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
 	)
 
-	s.AddTool(tool, getPackagesConanV1FilesPackageNamePackageVersionPackageUsernamePackageChannelRecipeRevisionExportFileNameHandler)
+	s.AddTool(tool, mcp.NewTypedToolHandler(getPackagesConanV1FilesPackageNamePackageVersionPackageUsernamePackageChannelRecipeRevisionExportFileNameHandler))
 }
 
-func getPackagesConanV1FilesPackageNamePackageVersionPackageUsernamePackageChannelRecipeRevisionExportFileNameHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+func getPackagesConanV1FilesPackageNamePackageVersionPackageUsernamePackageChannelRecipeRevisionExportFileNameHandler(ctx context.Context, request mcp.CallToolRequest, req GetPackagesConanV1FilesPackageNamePackageVersionPackageUsernamePackageChannelRecipeRevisionExportFileNameRequest) (*mcp.CallToolResult, error) {
 	c, err := newClient(ctx)
 	if err != nil {
 		return mcp.NewToolResultError(err.Error()), nil
 	}
 
-	package_name := request.GetString("package_name", "")
-	package_version := request.GetString("package_version", "")
-	package_username := request.GetString("package_username", "")
-	package_channel := request.GetString("package_channel", "")
-	recipe_revision := request.GetString("recipe_revision", "")
-	file_name := request.GetString("file_name", "")
+	return toResult(c.GetApiV4PackagesConanV1FilesPackageNamePackageVersionPackageUsernamePackageChannelRecipeRevisionExportFileName(ctx, req.PackageName, req.PackageVersion, req.PackageUsername, req.PackageChannel, req.RecipeRevision, req.FileName, authorizationHeader))
+}
 
-	return toResult(c.GetApiV4PackagesConanV1FilesPackageNamePackageVersionPackageUsernamePackageChannelRecipeRevisionExportFileName(ctx, package_name, package_version, package_username, package_channel, recipe_revision, file_name, authorizationHeader))
+type PutPackagesConanV1FilesPackageNamePackageVersionPackageUsernamePackageChannelRecipeRevisionExportFileNameAuthorizeRequest struct {
+	PackageName     string `json:"package_name" jsonschema:"description=Package name"`
+	PackageVersion  string `json:"package_version" jsonschema:"description=Package version"`
+	PackageUsername string `json:"package_username" jsonschema:"description=Package username"`
+	PackageChannel  string `json:"package_channel" jsonschema:"description=Package channel"`
+	RecipeRevision  string `json:"recipe_revision" jsonschema:"description=Conan Recipe Revision"`
+	FileName        string `json:"file_name" jsonschema:"description=Package file name"`
 }
 
 func registerPutPackagesConanV1FilesPackageNamePackageVersionPackageUsernamePackageChannelRecipeRevisionExportFileNameAuthorize(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&PutPackagesConanV1FilesPackageNamePackageVersionPackageUsernamePackageChannelRecipeRevisionExportFileNameAuthorizeRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
 	tool := mcp.NewTool("put_pkgs_conan_v1_files_package_name_package_version_package_username_package_channel_recipe_revision_export_file_name_authorize",
 		mcp.WithDescription("This feature was introduced in GitLab 12.6"),
-		mcp.WithString("package_name",
-			mcp.Description("Package name (example: my-package)"),
-			mcp.Required(),
-		),
-		mcp.WithString("package_version",
-			mcp.Description("Package version (example: 1.0)"),
-			mcp.Required(),
-		),
-		mcp.WithString("package_username",
-			mcp.Description("Package username (example: my-group+my-project)"),
-			mcp.Required(),
-		),
-		mcp.WithString("package_channel",
-			mcp.Description("Package channel (example: stable)"),
-			mcp.Required(),
-		),
-		mcp.WithString("recipe_revision",
-			mcp.Description("Conan Recipe Revision (example: 0)"),
-			mcp.Required(),
-		),
-		mcp.WithString("file_name",
-			mcp.Description("Package file name (example: conanfile.py)"),
-			mcp.Required(),
-			mcp.Enum("conanfile.py", "conanmanifest.txt", "conan_sources.tgz", "conan_export.tgz", "conaninfo.txt", "conan_package.tgz"),
-		),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
 	)
 
-	s.AddTool(tool, putPackagesConanV1FilesPackageNamePackageVersionPackageUsernamePackageChannelRecipeRevisionExportFileNameAuthorizeHandler)
+	s.AddTool(tool, mcp.NewTypedToolHandler(putPackagesConanV1FilesPackageNamePackageVersionPackageUsernamePackageChannelRecipeRevisionExportFileNameAuthorizeHandler))
 }
 
-func putPackagesConanV1FilesPackageNamePackageVersionPackageUsernamePackageChannelRecipeRevisionExportFileNameAuthorizeHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+func putPackagesConanV1FilesPackageNamePackageVersionPackageUsernamePackageChannelRecipeRevisionExportFileNameAuthorizeHandler(ctx context.Context, request mcp.CallToolRequest, req PutPackagesConanV1FilesPackageNamePackageVersionPackageUsernamePackageChannelRecipeRevisionExportFileNameAuthorizeRequest) (*mcp.CallToolResult, error) {
 	c, err := newClient(ctx)
 	if err != nil {
 		return mcp.NewToolResultError(err.Error()), nil
 	}
 
-	package_name := request.GetString("package_name", "")
-	package_version := request.GetString("package_version", "")
-	package_username := request.GetString("package_username", "")
-	package_channel := request.GetString("package_channel", "")
-	recipe_revision := request.GetString("recipe_revision", "")
-	file_name := request.GetString("file_name", "")
+	return toResult(c.PutApiV4PackagesConanV1FilesPackageNamePackageVersionPackageUsernamePackageChannelRecipeRevisionExportFileNameAuthorize(ctx, req.PackageName, req.PackageVersion, req.PackageUsername, req.PackageChannel, req.RecipeRevision, req.FileName, authorizationHeader))
+}
 
-	return toResult(c.PutApiV4PackagesConanV1FilesPackageNamePackageVersionPackageUsernamePackageChannelRecipeRevisionExportFileNameAuthorize(ctx, package_name, package_version, package_username, package_channel, recipe_revision, file_name, authorizationHeader))
+type GetPackagesConanV1FilesPackageNamePackageVersionPackageUsernamePackageChannelRecipeRevisionPackageConanPackageReferencePackageRevisionFileNameRequest struct {
+	PackageName           string `json:"package_name" jsonschema:"description=Package name"`
+	PackageVersion        string `json:"package_version" jsonschema:"description=Package version"`
+	PackageUsername       string `json:"package_username" jsonschema:"description=Package username"`
+	PackageChannel        string `json:"package_channel" jsonschema:"description=Package channel"`
+	RecipeRevision        string `json:"recipe_revision" jsonschema:"description=Conan Recipe Revision"`
+	ConanPackageReference string `json:"conan_package_reference" jsonschema:"description=Conan Package ID"`
+	PackageRevision       string `json:"package_revision" jsonschema:"description=Conan Package Revision"`
+	FileName              string `json:"file_name" jsonschema:"description=Package file name"`
 }
 
 func registerGetPackagesConanV1FilesPackageNamePackageVersionPackageUsernamePackageChannelRecipeRevisionPackageConanPackageReferencePackageRevisionFileName(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&GetPackagesConanV1FilesPackageNamePackageVersionPackageUsernamePackageChannelRecipeRevisionPackageConanPackageReferencePackageRevisionFileNameRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
 	tool := mcp.NewTool("get_pkgs_conan_v1_files_package_name_package_version_package_username_package_channel_recipe_revision_package_conan_package_reference_package_revision_file_name",
 		mcp.WithDescription("This feature was introduced in GitLab 12.5"),
-		mcp.WithString("package_name",
-			mcp.Description("Package name (example: my-package)"),
-			mcp.Required(),
-		),
-		mcp.WithString("package_version",
-			mcp.Description("Package version (example: 1.0)"),
-			mcp.Required(),
-		),
-		mcp.WithString("package_username",
-			mcp.Description("Package username (example: my-group+my-project)"),
-			mcp.Required(),
-		),
-		mcp.WithString("package_channel",
-			mcp.Description("Package channel (example: stable)"),
-			mcp.Required(),
-		),
-		mcp.WithString("recipe_revision",
-			mcp.Description("Conan Recipe Revision (example: 0)"),
-			mcp.Required(),
-		),
-		mcp.WithString("conan_package_reference",
-			mcp.Description("Conan Package ID (example: 103f6067a947f366ef91fc1b7da351c588d1827f)"),
-			mcp.Required(),
-		),
-		mcp.WithString("package_revision",
-			mcp.Description("Conan Package Revision (example: 0)"),
-			mcp.Required(),
-		),
-		mcp.WithString("file_name",
-			mcp.Description("Package file name (example: conaninfo.txt)"),
-			mcp.Required(),
-			mcp.Enum("conanfile.py", "conanmanifest.txt", "conan_sources.tgz", "conan_export.tgz", "conaninfo.txt", "conan_package.tgz"),
-		),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
 	)
 
-	s.AddTool(tool, getPackagesConanV1FilesPackageNamePackageVersionPackageUsernamePackageChannelRecipeRevisionPackageConanPackageReferencePackageRevisionFileNameHandler)
+	s.AddTool(tool, mcp.NewTypedToolHandler(getPackagesConanV1FilesPackageNamePackageVersionPackageUsernamePackageChannelRecipeRevisionPackageConanPackageReferencePackageRevisionFileNameHandler))
 }
 
-func getPackagesConanV1FilesPackageNamePackageVersionPackageUsernamePackageChannelRecipeRevisionPackageConanPackageReferencePackageRevisionFileNameHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+func getPackagesConanV1FilesPackageNamePackageVersionPackageUsernamePackageChannelRecipeRevisionPackageConanPackageReferencePackageRevisionFileNameHandler(ctx context.Context, request mcp.CallToolRequest, req GetPackagesConanV1FilesPackageNamePackageVersionPackageUsernamePackageChannelRecipeRevisionPackageConanPackageReferencePackageRevisionFileNameRequest) (*mcp.CallToolResult, error) {
 	c, err := newClient(ctx)
 	if err != nil {
 		return mcp.NewToolResultError(err.Error()), nil
 	}
 
-	package_name := request.GetString("package_name", "")
-	package_version := request.GetString("package_version", "")
-	package_username := request.GetString("package_username", "")
-	package_channel := request.GetString("package_channel", "")
-	recipe_revision := request.GetString("recipe_revision", "")
-	conan_package_reference := request.GetString("conan_package_reference", "")
-	package_revision := request.GetString("package_revision", "")
-	file_name := request.GetString("file_name", "")
+	return toResult(c.GetApiV4PackagesConanV1FilesPackageNamePackageVersionPackageUsernamePackageChannelRecipeRevisionPackageConanPackageReferencePackageRevisionFileName(ctx, req.PackageName, req.PackageVersion, req.PackageUsername, req.PackageChannel, req.RecipeRevision, req.ConanPackageReference, req.PackageRevision, req.FileName, authorizationHeader))
+}
 
-	return toResult(c.GetApiV4PackagesConanV1FilesPackageNamePackageVersionPackageUsernamePackageChannelRecipeRevisionPackageConanPackageReferencePackageRevisionFileName(ctx, package_name, package_version, package_username, package_channel, recipe_revision, conan_package_reference, package_revision, file_name, authorizationHeader))
+type PutPackagesConanV1FilesPackageNamePackageVersionPackageUsernamePackageChannelRecipeRevisionPackageConanPackageReferencePackageRevisionFileNameAuthorizeRequest struct {
+	PackageName           string `json:"package_name" jsonschema:"description=Package name"`
+	PackageVersion        string `json:"package_version" jsonschema:"description=Package version"`
+	PackageUsername       string `json:"package_username" jsonschema:"description=Package username"`
+	PackageChannel        string `json:"package_channel" jsonschema:"description=Package channel"`
+	RecipeRevision        string `json:"recipe_revision" jsonschema:"description=Conan Recipe Revision"`
+	ConanPackageReference string `json:"conan_package_reference" jsonschema:"description=Conan Package ID"`
+	PackageRevision       string `json:"package_revision" jsonschema:"description=Conan Package Revision"`
+	FileName              string `json:"file_name" jsonschema:"description=Package file name"`
 }
 
 func registerPutPackagesConanV1FilesPackageNamePackageVersionPackageUsernamePackageChannelRecipeRevisionPackageConanPackageReferencePackageRevisionFileNameAuthorize(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&PutPackagesConanV1FilesPackageNamePackageVersionPackageUsernamePackageChannelRecipeRevisionPackageConanPackageReferencePackageRevisionFileNameAuthorizeRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
 	tool := mcp.NewTool("put_pkgs_conan_v1_files_package_name_package_version_package_username_package_channel_recipe_revision_package_conan_package_reference_package_revision_file_name_authorize",
 		mcp.WithDescription("This feature was introduced in GitLab 12.6"),
-		mcp.WithString("package_name",
-			mcp.Description("Package name (example: my-package)"),
-			mcp.Required(),
-		),
-		mcp.WithString("package_version",
-			mcp.Description("Package version (example: 1.0)"),
-			mcp.Required(),
-		),
-		mcp.WithString("package_username",
-			mcp.Description("Package username (example: my-group+my-project)"),
-			mcp.Required(),
-		),
-		mcp.WithString("package_channel",
-			mcp.Description("Package channel (example: stable)"),
-			mcp.Required(),
-		),
-		mcp.WithString("recipe_revision",
-			mcp.Description("Conan Recipe Revision (example: 0)"),
-			mcp.Required(),
-		),
-		mcp.WithString("conan_package_reference",
-			mcp.Description("Conan Package ID (example: 103f6067a947f366ef91fc1b7da351c588d1827f)"),
-			mcp.Required(),
-		),
-		mcp.WithString("package_revision",
-			mcp.Description("Conan Package Revision (example: 0)"),
-			mcp.Required(),
-		),
-		mcp.WithString("file_name",
-			mcp.Description("Package file name (example: conaninfo.txt)"),
-			mcp.Required(),
-			mcp.Enum("conanfile.py", "conanmanifest.txt", "conan_sources.tgz", "conan_export.tgz", "conaninfo.txt", "conan_package.tgz"),
-		),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
 	)
 
-	s.AddTool(tool, putPackagesConanV1FilesPackageNamePackageVersionPackageUsernamePackageChannelRecipeRevisionPackageConanPackageReferencePackageRevisionFileNameAuthorizeHandler)
+	s.AddTool(tool, mcp.NewTypedToolHandler(putPackagesConanV1FilesPackageNamePackageVersionPackageUsernamePackageChannelRecipeRevisionPackageConanPackageReferencePackageRevisionFileNameAuthorizeHandler))
 }
 
-func putPackagesConanV1FilesPackageNamePackageVersionPackageUsernamePackageChannelRecipeRevisionPackageConanPackageReferencePackageRevisionFileNameAuthorizeHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+func putPackagesConanV1FilesPackageNamePackageVersionPackageUsernamePackageChannelRecipeRevisionPackageConanPackageReferencePackageRevisionFileNameAuthorizeHandler(ctx context.Context, request mcp.CallToolRequest, req PutPackagesConanV1FilesPackageNamePackageVersionPackageUsernamePackageChannelRecipeRevisionPackageConanPackageReferencePackageRevisionFileNameAuthorizeRequest) (*mcp.CallToolResult, error) {
 	c, err := newClient(ctx)
 	if err != nil {
 		return mcp.NewToolResultError(err.Error()), nil
 	}
 
-	package_name := request.GetString("package_name", "")
-	package_version := request.GetString("package_version", "")
-	package_username := request.GetString("package_username", "")
-	package_channel := request.GetString("package_channel", "")
-	recipe_revision := request.GetString("recipe_revision", "")
-	conan_package_reference := request.GetString("conan_package_reference", "")
-	package_revision := request.GetString("package_revision", "")
-	file_name := request.GetString("file_name", "")
+	return toResult(c.PutApiV4PackagesConanV1FilesPackageNamePackageVersionPackageUsernamePackageChannelRecipeRevisionPackageConanPackageReferencePackageRevisionFileNameAuthorize(ctx, req.PackageName, req.PackageVersion, req.PackageUsername, req.PackageChannel, req.RecipeRevision, req.ConanPackageReference, req.PackageRevision, req.FileName, authorizationHeader))
+}
 
-	return toResult(c.PutApiV4PackagesConanV1FilesPackageNamePackageVersionPackageUsernamePackageChannelRecipeRevisionPackageConanPackageReferencePackageRevisionFileNameAuthorize(ctx, package_name, package_version, package_username, package_channel, recipe_revision, conan_package_reference, package_revision, file_name, authorizationHeader))
+type PostPackagesNpmNpmV1SecurityAdvisoriesBulkRequest struct {
 }
 
 func registerPostPackagesNpmNpmV1SecurityAdvisoriesBulk(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&PostPackagesNpmNpmV1SecurityAdvisoriesBulkRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
 	tool := mcp.NewTool("post_pkgs_npm_npm_v1_security_advisories_bulk",
 		mcp.WithDescription("This feature was introduced in GitLab 15.6"),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
 	)
 
-	s.AddTool(tool, postPackagesNpmNpmV1SecurityAdvisoriesBulkHandler)
+	s.AddTool(tool, mcp.NewTypedToolHandler(postPackagesNpmNpmV1SecurityAdvisoriesBulkHandler))
 }
 
-func postPackagesNpmNpmV1SecurityAdvisoriesBulkHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+func postPackagesNpmNpmV1SecurityAdvisoriesBulkHandler(ctx context.Context, request mcp.CallToolRequest, req PostPackagesNpmNpmV1SecurityAdvisoriesBulkRequest) (*mcp.CallToolResult, error) {
 	c, err := newClient(ctx)
 	if err != nil {
 		return mcp.NewToolResultError(err.Error()), nil
@@ -727,15 +730,32 @@ func postPackagesNpmNpmV1SecurityAdvisoriesBulkHandler(ctx context.Context, requ
 	return toResult(c.PostApiV4PackagesNpmNpmV1SecurityAdvisoriesBulk(ctx, authorizationHeader))
 }
 
-func registerPostPackagesNpmNpmV1SecurityAuditsQuick(s *server.MCPServer) {
-	tool := mcp.NewTool("post_pkgs_npm_npm_v1_security_audits_quick",
-		mcp.WithDescription("This feature was introduced in GitLab 15.6"),
-	)
-
-	s.AddTool(tool, postPackagesNpmNpmV1SecurityAuditsQuickHandler)
+type PostPackagesNpmNpmV1SecurityAuditsQuickRequest struct {
 }
 
-func postPackagesNpmNpmV1SecurityAuditsQuickHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+func registerPostPackagesNpmNpmV1SecurityAuditsQuick(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&PostPackagesNpmNpmV1SecurityAuditsQuickRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
+	tool := mcp.NewTool("post_pkgs_npm_npm_v1_security_audits_quick",
+		mcp.WithDescription("This feature was introduced in GitLab 15.6"),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
+	)
+
+	s.AddTool(tool, mcp.NewTypedToolHandler(postPackagesNpmNpmV1SecurityAuditsQuickHandler))
+}
+
+func postPackagesNpmNpmV1SecurityAuditsQuickHandler(ctx context.Context, request mcp.CallToolRequest, req PostPackagesNpmNpmV1SecurityAuditsQuickRequest) (*mcp.CallToolResult, error) {
 	c, err := newClient(ctx)
 	if err != nil {
 		return mcp.NewToolResultError(err.Error()), nil
@@ -744,101 +764,113 @@ func postPackagesNpmNpmV1SecurityAuditsQuickHandler(ctx context.Context, request
 	return toResult(c.PostApiV4PackagesNpmNpmV1SecurityAuditsQuick(ctx, authorizationHeader))
 }
 
-func registerGetPackagesTerraformModulesV1ModuleNamespaceModuleNameModuleSystemVersions(s *server.MCPServer) {
-	tool := mcp.NewTool("get_pkgs_terraform_modules_v1_module_namespace_module_name_module_system_versions",
-		mcp.WithDescription("List versions for a module"),
-		mcp.WithString("module_namespace",
-			mcp.Description("Group's ID or slug"),
-			mcp.Required(),
-		),
-		mcp.WithString("module_name",
-			mcp.Description(""),
-			mcp.Required(),
-		),
-		mcp.WithString("module_system",
-			mcp.Description("null"),
-			mcp.Required(),
-		),
-	)
-
-	s.AddTool(tool, getPackagesTerraformModulesV1ModuleNamespaceModuleNameModuleSystemVersionsHandler)
+type GetPackagesTerraformModulesV1ModuleNamespaceModuleNameModuleSystemVersionsRequest struct {
+	ModuleNamespace string `json:"module_namespace" jsonschema:"description=Group's ID or slug"`
+	ModuleName      string `json:"module_name" jsonschema:"description="`
+	ModuleSystem    string `json:"module_system" jsonschema:"description=null"`
 }
 
-func getPackagesTerraformModulesV1ModuleNamespaceModuleNameModuleSystemVersionsHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+func registerGetPackagesTerraformModulesV1ModuleNamespaceModuleNameModuleSystemVersions(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&GetPackagesTerraformModulesV1ModuleNamespaceModuleNameModuleSystemVersionsRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
+	tool := mcp.NewTool("get_pkgs_terraform_modules_v1_module_namespace_module_name_module_system_versions",
+		mcp.WithDescription("List versions for a module"),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
+	)
+
+	s.AddTool(tool, mcp.NewTypedToolHandler(getPackagesTerraformModulesV1ModuleNamespaceModuleNameModuleSystemVersionsHandler))
+}
+
+func getPackagesTerraformModulesV1ModuleNamespaceModuleNameModuleSystemVersionsHandler(ctx context.Context, request mcp.CallToolRequest, req GetPackagesTerraformModulesV1ModuleNamespaceModuleNameModuleSystemVersionsRequest) (*mcp.CallToolResult, error) {
 	c, err := newClient(ctx)
 	if err != nil {
 		return mcp.NewToolResultError(err.Error()), nil
 	}
 
-	module_namespace := request.GetString("module_namespace", "")
-	module_name := request.GetString("module_name", "")
-	module_system := request.GetString("module_system", "")
+	return toResult(c.GetApiV4PackagesTerraformModulesV1ModuleNamespaceModuleNameModuleSystemVersions(ctx, req.ModuleNamespace, req.ModuleName, req.ModuleSystem, authorizationHeader))
+}
 
-	return toResult(c.GetApiV4PackagesTerraformModulesV1ModuleNamespaceModuleNameModuleSystemVersions(ctx, module_namespace, module_name, module_system, authorizationHeader))
+type GetPackagesTerraformModulesV1ModuleNamespaceModuleNameModuleSystemDownloadRequest struct {
+	ModuleNamespace string `json:"module_namespace" jsonschema:"description=Group's ID or slug"`
+	ModuleName      string `json:"module_name" jsonschema:"description="`
+	ModuleSystem    string `json:"module_system" jsonschema:"description=null"`
 }
 
 func registerGetPackagesTerraformModulesV1ModuleNamespaceModuleNameModuleSystemDownload(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&GetPackagesTerraformModulesV1ModuleNamespaceModuleNameModuleSystemDownloadRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
 	tool := mcp.NewTool("get_pkgs_terraform_modules_v1_module_namespace_module_name_module_system_download",
 		mcp.WithDescription("Download the latest version of a module"),
-		mcp.WithString("module_namespace",
-			mcp.Description("Group's ID or slug"),
-			mcp.Required(),
-		),
-		mcp.WithString("module_name",
-			mcp.Description(""),
-			mcp.Required(),
-		),
-		mcp.WithString("module_system",
-			mcp.Description("null"),
-			mcp.Required(),
-		),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
 	)
 
-	s.AddTool(tool, getPackagesTerraformModulesV1ModuleNamespaceModuleNameModuleSystemDownloadHandler)
+	s.AddTool(tool, mcp.NewTypedToolHandler(getPackagesTerraformModulesV1ModuleNamespaceModuleNameModuleSystemDownloadHandler))
 }
 
-func getPackagesTerraformModulesV1ModuleNamespaceModuleNameModuleSystemDownloadHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+func getPackagesTerraformModulesV1ModuleNamespaceModuleNameModuleSystemDownloadHandler(ctx context.Context, request mcp.CallToolRequest, req GetPackagesTerraformModulesV1ModuleNamespaceModuleNameModuleSystemDownloadRequest) (*mcp.CallToolResult, error) {
 	c, err := newClient(ctx)
 	if err != nil {
 		return mcp.NewToolResultError(err.Error()), nil
 	}
 
-	module_namespace := request.GetString("module_namespace", "")
-	module_name := request.GetString("module_name", "")
-	module_system := request.GetString("module_system", "")
+	return toResult(c.GetApiV4PackagesTerraformModulesV1ModuleNamespaceModuleNameModuleSystemDownload(ctx, req.ModuleNamespace, req.ModuleName, req.ModuleSystem, authorizationHeader))
+}
 
-	return toResult(c.GetApiV4PackagesTerraformModulesV1ModuleNamespaceModuleNameModuleSystemDownload(ctx, module_namespace, module_name, module_system, authorizationHeader))
+type GetPackagesTerraformModulesV1ModuleNamespaceModuleNameModuleSystemRequest struct {
+	ModuleNamespace string `json:"module_namespace" jsonschema:"description=Group's ID or slug"`
+	ModuleName      string `json:"module_name" jsonschema:"description="`
+	ModuleSystem    string `json:"module_system" jsonschema:"description=null"`
 }
 
 func registerGetPackagesTerraformModulesV1ModuleNamespaceModuleNameModuleSystem(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&GetPackagesTerraformModulesV1ModuleNamespaceModuleNameModuleSystemRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
 	tool := mcp.NewTool("get_pkgs_terraform_modules_v1_module_namespace_module_name_module_system",
 		mcp.WithDescription("Get details about the latest version of a module"),
-		mcp.WithString("module_namespace",
-			mcp.Description("Group's ID or slug"),
-			mcp.Required(),
-		),
-		mcp.WithString("module_name",
-			mcp.Description(""),
-			mcp.Required(),
-		),
-		mcp.WithString("module_system",
-			mcp.Description("null"),
-			mcp.Required(),
-		),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
 	)
 
-	s.AddTool(tool, getPackagesTerraformModulesV1ModuleNamespaceModuleNameModuleSystemHandler)
+	s.AddTool(tool, mcp.NewTypedToolHandler(getPackagesTerraformModulesV1ModuleNamespaceModuleNameModuleSystemHandler))
 }
 
-func getPackagesTerraformModulesV1ModuleNamespaceModuleNameModuleSystemHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+func getPackagesTerraformModulesV1ModuleNamespaceModuleNameModuleSystemHandler(ctx context.Context, request mcp.CallToolRequest, req GetPackagesTerraformModulesV1ModuleNamespaceModuleNameModuleSystemRequest) (*mcp.CallToolResult, error) {
 	c, err := newClient(ctx)
 	if err != nil {
 		return mcp.NewToolResultError(err.Error()), nil
 	}
 
-	module_namespace := request.GetString("module_namespace", "")
-	module_name := request.GetString("module_name", "")
-	module_system := request.GetString("module_system", "")
-
-	return toResult(c.GetApiV4PackagesTerraformModulesV1ModuleNamespaceModuleNameModuleSystem(ctx, module_namespace, module_name, module_system, authorizationHeader))
+	return toResult(c.GetApiV4PackagesTerraformModulesV1ModuleNamespaceModuleNameModuleSystem(ctx, req.ModuleNamespace, req.ModuleName, req.ModuleSystem, authorizationHeader))
 }

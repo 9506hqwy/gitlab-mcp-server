@@ -2,66 +2,81 @@ package gitlab
 
 import (
 	"context"
+	"encoding/json"
 
+	"github.com/invopop/jsonschema"
 	"github.com/mark3labs/mcp-go/mcp"
 	"github.com/mark3labs/mcp-go/server"
 
 	client "github.com/9506hqwy/gitlab-client-go/pkg/gitlab"
 )
 
-func registerGetKeysId(s *server.MCPServer) {
-	tool := mcp.NewTool("get_keys_id",
-		mcp.WithDescription("Get SSH key with user by ID of an SSH key. Note only administrators can lookup SSH key with user by ID of an SSH key"),
-		mcp.WithString("id",
-			mcp.Description("The ID of an SSH key (example: 2)"),
-			mcp.Required(),
-		),
-	)
-
-	s.AddTool(tool, getKeysIdHandler)
+type GetKeysIdRequest struct {
+	Id string `json:"id" jsonschema:"description=The ID of an SSH key"`
 }
 
-func getKeysIdHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+func registerGetKeysId(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&GetKeysIdRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
+	tool := mcp.NewTool("get_keys_id",
+		mcp.WithDescription("Get SSH key with user by ID of an SSH key. Note only administrators can lookup SSH key with user by ID\\ of an SSH key"),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
+	)
+
+	s.AddTool(tool, mcp.NewTypedToolHandler(getKeysIdHandler))
+}
+
+func getKeysIdHandler(ctx context.Context, request mcp.CallToolRequest, req GetKeysIdRequest) (*mcp.CallToolResult, error) {
 	c, err := newClient(ctx)
 	if err != nil {
 		return mcp.NewToolResultError(err.Error()), nil
 	}
 
-	id := request.GetString("id", "")
+	return toResult(c.GetApiV4KeysId(ctx, req.Id, authorizationHeader))
+}
 
-	return toResult(c.GetApiV4KeysId(ctx, id, authorizationHeader))
+type GetKeysRequest struct {
+	Params *client.GetApiV4KeysParams `json:"params,omitempty"`
 }
 
 func registerGetKeys(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&GetKeysRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
 	tool := mcp.NewTool("get_keys",
-		mcp.WithDescription("You can search for a user that owns a specific SSH key. Note only administrators can lookup SSH key with the fingerprint of an SSH key"),
-		mcp.WithString("fingerprint",
-			mcp.Description("The fingerprint of an SSH key (example: ba:81:59:68:d7:6c:cd:02:02:bf:6a:9b:55:4e:af:d1)"),
-			mcp.Required(),
-		),
+		mcp.WithDescription("You can search for a user that owns a specific SSH key. Note only administrators can lookup SSH key\\ with the fingerprint of an SSH key"),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
 	)
 
-	s.AddTool(tool, getKeysHandler)
+	s.AddTool(tool, mcp.NewTypedToolHandler(getKeysHandler))
 }
 
-func getKeysHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+func getKeysHandler(ctx context.Context, request mcp.CallToolRequest, req GetKeysRequest) (*mcp.CallToolResult, error) {
 	c, err := newClient(ctx)
 	if err != nil {
 		return mcp.NewToolResultError(err.Error()), nil
 	}
 
-	params := parseGetKeys(request)
-	return toResult(c.GetApiV4Keys(ctx, &params, authorizationHeader))
-}
-
-func parseGetKeys(request mcp.CallToolRequest) client.GetApiV4KeysParams {
-	params := client.GetApiV4KeysParams{}
-
-	fingerprint := request.GetString("fingerprint", "")
-	if fingerprint != "" {
-
-		params.Fingerprint = fingerprint
-	}
-
-	return params
+	return toResult(c.GetApiV4Keys(ctx, req.Params, authorizationHeader))
 }

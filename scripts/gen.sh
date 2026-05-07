@@ -81,18 +81,84 @@ package gitlab
 
 import (
 	"context"
-	"math"
-	"strconv"
-	"strings"
-	"time"
+	"encoding/json"
 
+	"github.com/invopop/jsonschema"
 	"github.com/mark3labs/mcp-go/mcp"
 	"github.com/mark3labs/mcp-go/server"
 
 	client "github.com/9506hqwy/gitlab-client-go/pkg/gitlab"
-	openapi_types "github.com/oapi-codegen/runtime/types"
 )
 EOF
+}
+
+function write-request-struct(){
+    local METHOD="$1"
+    local OP_PATH="$2"
+    local PATH_INFO="$3"
+
+    TOOL_NAME=$(toolname "${OP_PATH}")
+    API_NAME=$(capitalize "${TOOL_NAME}")
+    NUM_PARAMETER=$(yq -r '[.parameters[] | select(.in == "query")] | length' <<<"${PATH_INFO}")
+
+    QUERY_SMTM_STR=""
+    if [[ ${NUM_PARAMETER} -ne 0 ]]; then
+        QUERY_SMTM_STR="Params *client.${METHOD}ApiV4${API_NAME}Params \`json:\"params,omitempty\"\`"
+    fi
+
+    # parameters
+    PATH_STMT=()
+    PATH_ARG=()
+    while read -r NAME
+    do
+        NAME="${NAME//{/}" # '{' -> ''
+        NAME="${NAME//\}/}" # '}' -> ''
+
+        PARAMETER=$(yq ".parameters[] | select(.name == \"${NAME}\")" <<<"${PATH_INFO}")
+
+        VAR_NAME=${NAME//-/_} # '-' -> '_'
+        VAR_NAME=${VAR_NAME//./}
+        VAR_NAME=${VAR_NAME//[/_} # '[' -> '_'
+        VAR_NAME=${VAR_NAME//]/_} # ']' -> '_'
+        if [[ "${VAR_NAME}" == 'type' ]]; then
+            VAR_NAME='_type'
+        elif [[ "${VAR_NAME}" == 'params' ]]; then
+            VAR_NAME='_params'
+        fi
+
+        PARAM_NAME=$(capitalize "${VAR_NAME}")
+
+        TY=$(yq -r '.schema.type' <<<"${PARAMETER}")
+        DESCRIPTION=$(yq -r '.description' <<<"${PARAMETER}")
+
+        DESCRIPTION=$(normalize "${DESCRIPTION}")
+        DESCRIPTION="${DESCRIPTION//\"/\\\"}"
+        DESCRIPTION="${DESCRIPTION//\`/\'}" # '`' -> '\''
+
+        if [[ "${TY}" == "integer" ]]; then
+            FORMAT=$(yq -r '.schema.format' <<<"${PARAMETER}")
+            if [[ $FORMAT == "int32" ]]; then
+                PATH_STMT+=("${PARAM_NAME} int32 \`json:\"${NAME}\" jsonschema:\"description=${DESCRIPTION}\"\`")
+            else
+                PATH_STMT+=("${PARAM_NAME} int \`json:\"${NAME}\" jsonschema:\"description=${DESCRIPTION}\"\`")
+            fi
+        elif [[ "${TY}" == "boolean" ]]; then
+            PATH_STMT+=("${PARAM_NAME} bool \`json:\"${NAME}\" jsonschema:\"description=${DESCRIPTION}\"\`")
+        else
+            PATH_STMT+=("${PARAM_NAME} string \`json:\"${NAME}\" jsonschema:\"description=${DESCRIPTION}\"\`")
+        fi
+    done < <(echo "${OP_PATH}" | grep -oP '{[^}]+}')
+
+    PATH_STMT_STR="$(IFS=$'\n'; echo "${PATH_STMT[*]}")"
+
+    FILE_PATH=$(filename "${OP_PATH}")
+    cat >> "${FILE_PATH}" <<EOF
+type ${METHOD}${API_NAME}Request struct {
+    ${PATH_STMT_STR}
+    ${QUERY_SMTM_STR}
+}
+EOF
+
 }
 
 function write-register-func() {
@@ -115,90 +181,25 @@ function write-register-func() {
     cat >> "${FILE_PATH}" <<EOF
 
 func register${METHOD}${API_NAME}(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&${METHOD}${API_NAME}Request{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
 	tool := mcp.NewTool("${METHOD,,}_${TOOL_SNAME}",
 		mcp.WithDescription("${DESCRIPTION}"),
-EOF
-
-    # parameters
-    yq '.parameters[] | . style="flow"' <<<"${PATH_INFO}" | while read -r PARAMETER
-    do
-        NAME=$(yq -r '.name' <<<"${PARAMETER}")
-        DESCRIPTION=$(yq -r '.description' <<<"${PARAMETER}")
-        DESCRIPTION=$(normalize "${DESCRIPTION}")
-        DESCRIPTION="${DESCRIPTION//\"/\\\"}"
-
-        EXAMPLE=$(yq -r '.example' <<<"${PARAMETER}")
-        if [[ $EXAMPLE != "null" && $EXAMPLE != "{}" ]]; then
-            DESCRIPTION="${DESCRIPTION} (example: ${EXAMPLE})"
-        fi
-
-        REQUIRED=""
-        if [[ $(yq -r '.required' <<<"${PARAMETER}") == "true" ]]; then
-            REQUIRED="mcp.Required(),"
-        fi
-
-        ENUM=""
-        ENUM_VALUES=$(yq -r '[.schema.enum[] | "\"\(.)\""] | join(",")' <<<"${PARAMETER}")
-        if [[ -n "${ENUM_VALUES}" && "${ENUM_VALUES}" != "\"\"" ]]; then
-            ENUM="mcp.Enum(${ENUM_VALUES}),"
-        fi
-
-        DEFAULT=""
-        DEFAULT_VALUE=$(yq -r '.schema.default' <<<"${PARAMETER}")
-
-        TY=$(yq -r '.schema.type' <<<"${PARAMETER}")
-        if [[ "${TY}" == "integer" ]]; then
-            if [[ "$DEFAULT_VALUE" != "null" && "$DEFAULT_VALUE" != "{}" ]]; then
-                # https://github.com/microsoft/vscode/issues/250599
-                # https://github.com/microsoft/vscode-copilot-release/issues/13588
-                #DEFAULT="mcp.DefaultNumber(float64(${DEFAULT_VALUE})),"
-                DESCRIPTION="${DESCRIPTION} (default: ${DEFAULT_VALUE})"
-            fi
-
-            cat >> "${FILE_PATH}" <<EOF
-		mcp.WithNumber("${NAME}",
-			mcp.Description("${DESCRIPTION}"),
-			${REQUIRED}
-			${ENUM}
-			${DEFAULT}
-		),
-EOF
-        elif [[ "${TY}" == "boolean" ]]; then
-            if [[ "$DEFAULT_VALUE" != "null" && "$DEFAULT_VALUE" != "{}" ]]; then
-                #DEFAULT="mcp.DefaultBool(${DEFAULT_VALUE}),"
-                DESCRIPTION="${DESCRIPTION} (default: ${DEFAULT_VALUE})"
-            fi
-
-            cat >> "${FILE_PATH}" <<EOF
-		mcp.WithBoolean("${NAME}",
-			mcp.Description("${DESCRIPTION}"),
-			${REQUIRED}
-			${ENUM}
-			${DEFAULT}
-		),
-EOF
-        else
-            if [[ "$DEFAULT_VALUE" != "null" && "$DEFAULT_VALUE" != "{}" ]]; then
-                #DEFAULT="mcp.DefaultString(\"${DEFAULT_VALUE}\"),"
-                DESCRIPTION="${DESCRIPTION} (default: ${DEFAULT_VALUE})"
-            fi
-
-            cat >> "${FILE_PATH}" <<EOF
-		mcp.WithString("${NAME}",
-			mcp.Description("${DESCRIPTION}"),
-			${REQUIRED}
-			${ENUM}
-			${DEFAULT}
-		),
-EOF
-        fi
-    done
-
-    # complete
-    cat >> "${FILE_PATH}" <<EOF
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
 	)
 
-	s.AddTool(tool, ${METHOD,}${API_NAME}Handler)
+	s.AddTool(tool, mcp.NewTypedToolHandler(${METHOD,}${API_NAME}Handler))
 }
 EOF
 }
@@ -212,8 +213,12 @@ function write-handler-func() {
     API_NAME=$(capitalize "${TOOL_NAME}")
     NUM_PARAMETER=$(yq -r '[.parameters[] | select(.in == "query")] | length' <<<"${PATH_INFO}")
 
+    QUERY_SMTM_STR=""
+    if [[ ${NUM_PARAMETER} -ne 0 ]]; then
+        QUERY_SMTM_STR=", req.Params"
+    fi
+
     # parameters
-    PATH_STMT=()
     PATH_ARG=()
     while read -r NAME
     do
@@ -232,188 +237,26 @@ function write-handler-func() {
             VAR_NAME='_params'
         fi
 
-        PATH_ARG+=("${VAR_NAME}")
+        PARAM_NAME=$(capitalize "${VAR_NAME}")
 
-        TY=$(yq -r '.schema.type' <<<"${PARAMETER}")
-        FORMAT=$(yq -r '.schema.format' <<<"${PARAMETER}")
-        if [[ "${TY}" == "integer" ]]; then
-            CONV_STMT="request.GetInt(\"${NAME}\", math.MinInt)"
-            if [[ $FORMAT == "int32" ]]; then
-                CONV_STMT="int32(${CONV_STMT})"
-            fi
-
-            PATH_STMT+=("${VAR_NAME} := ${CONV_STMT}")
-        elif [[ "${TY}" == "boolean" ]]; then
-            PATH_STMT+=("${VAR_NAME} := request.GetBool(\"${NAME}\", false)")
-        else
-            PATH_STMT+=("${VAR_NAME} := request.GetString(\"${NAME}\", \"\")")
-        fi
+        PATH_ARG+=("req.${PARAM_NAME}")
     done < <(echo "${OP_PATH}" | grep -oP '{[^}]+}')
 
-    PATH_STMT_STR="$(IFS=$'\n'; echo "${PATH_STMT[*]}")"
     PATH_ARG_STR="$(IFS=,; echo "${PATH_ARG[*]}")"
     if [[ -n "${PATH_ARG_STR}" ]]; then
         PATH_ARG_STR=", ${PATH_ARG_STR}"
     fi
 
-    PARSE_STMT="params := parse${METHOD}${API_NAME}(request)"
-    PARAM_ARG=",&params"
-    if [[ ${NUM_PARAMETER} -eq 0 ]]; then
-        PARSE_STMT=""
-        PARAM_ARG=""
-    fi
-
     FILE_PATH=$(filename "${OP_PATH}")
     cat >> "${FILE_PATH}" <<EOF
 
-func ${METHOD,}${API_NAME}Handler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+func ${METHOD,}${API_NAME}Handler(ctx context.Context, request mcp.CallToolRequest, req ${METHOD}${API_NAME}Request) (*mcp.CallToolResult, error) {
 	c, err := newClient(ctx)
 	if err != nil {
 		return mcp.NewToolResultError(err.Error()), nil
 	}
 
-	${PATH_STMT_STR}
-	${PARSE_STMT}
-	return toResult(c.${METHOD}ApiV4${API_NAME}(ctx ${PATH_ARG_STR} ${PARAM_ARG}, authorizationHeader))
-}
-EOF
-}
-
-function write-parser-func() {
-    local METHOD="$1"
-    local OP_PATH="$2"
-    local PATH_INFO="$3"
-
-    NUM_PARAMETER=$(yq -r '[.parameters[] | select(.in == "query")] | length' <<<"${PATH_INFO}")
-    if [[ ${NUM_PARAMETER} -eq 0 ]]; then
-        return
-    fi
-
-    TOOL_NAME=$(toolname "${OP_PATH}")
-    API_NAME=$(capitalize "${TOOL_NAME}")
-
-    FILE_PATH=$(filename "${OP_PATH}")
-    # signature
-    cat >> "${FILE_PATH}" <<EOF
-
-func parse${METHOD}${API_NAME}(request mcp.CallToolRequest) client.${METHOD}ApiV4${API_NAME}Params {
-	params := client.${METHOD}ApiV4${API_NAME}Params{}
-EOF
-
-    # parameters
-    yq '.parameters[] | select(.in == "query") | . style="flow"' <<<"${PATH_INFO}" | while read -r PARAMETER
-    do
-        NAME=$(yq -r '.name' <<<"${PARAMETER}")
-
-        VAR_NAME=${NAME//-/_} # '-' -> '_'
-        VAR_NAME=${VAR_NAME//./}
-        VAR_NAME=${VAR_NAME//[/_} # '[' -> '_'
-        VAR_NAME=${VAR_NAME//]/_} # ']' -> '_'
-        if [[ "${VAR_NAME}" == 'type' ]]; then
-            VAR_NAME='_type'
-        elif [[ "${VAR_NAME}" == 'params' ]]; then
-            VAR_NAME='_params'
-        fi
-
-        REF_NAME="&${VAR_NAME}"
-        if [[ $(yq -r '.required' <<<"${PARAMETER}") == "true" ]]; then
-            REF_NAME="${VAR_NAME}"
-        fi
-
-        PARAM_NAME=$(capitalize "${VAR_NAME}")
-
-        TY=$(yq -r '.schema.type' <<<"${PARAMETER}")
-        FORMAT=$(yq -r '.schema.format' <<<"${PARAMETER}")
-        if [[ "${TY}" == "integer" ]]; then
-            DEFAULT_VALUE=$(yq -r '.schema.default' <<<"${PARAMETER}")
-            if [[ "$DEFAULT_VALUE" == "null" || "$DEFAULT_VALUE" == "{}" ]]; then
-                unset DEFAULT_VALUE
-            fi
-
-            CONV_STMT=""
-            if [[ $FORMAT == "int32" ]]; then
-                CONV_STMT="${VAR_NAME} := int32(${VAR_NAME})"
-            fi
-
-            cat >> "${FILE_PATH}" <<EOF
-
-	${VAR_NAME} := request.GetInt("${NAME}", ${DEFAULT_VALUE:-math.MinInt})
-	if ${VAR_NAME} != math.MinInt {
-        ${CONV_STMT}
-		params.${PARAM_NAME} = ${REF_NAME}
-	}
-EOF
-        elif [[ "${TY}" == "boolean" ]]; then
-            DEFAULT_VALUE=$(yq -r '.schema.default' <<<"${PARAMETER}")
-            if [[ "$DEFAULT_VALUE" == "null" || "$DEFAULT_VALUE" == "{}" ]]; then
-                unset DEFAULT_VALUE
-            fi
-
-            cat >> "${FILE_PATH}" <<EOF
-
-	${VAR_NAME} := request.GetBool("${NAME}", ${DEFAULT_VALUE:-false})
-	params.${PARAM_NAME} = ${REF_NAME}
-EOF
-        elif [[ "${TY}" == "array" ]]; then
-            FORMAT=$(yq -r '.schema.items.format' <<<"${PARAMETER}")
-            ITEM_TY=$(yq -r '.schema.items.type' <<<"${PARAMETER}")
-            if [[ "${ITEM_TY}" == "integer" ]]; then
-                # TODO: error handling
-                TY_NAME="int"
-                CONV_STMT="intValue"
-                if [[ $FORMAT == "int32" ]]; then
-                    TY_NAME="int32"
-                    CONV_STMT="int32(${CONV_STMT})"
-                fi
-                cat >> "${FILE_PATH}" <<EOF
-
-	${VAR_NAME} := request.GetString("${NAME}", "")
-	if ${VAR_NAME} != "" {
-        ${VAR_NAME} := strings.Split(${VAR_NAME}, ",")
-        var intSlice []${TY_NAME}
-        for _, v := range ${VAR_NAME} {
-            intValue, _ := strconv.Atoi(v)
-            intSlice = append(intSlice, ${CONV_STMT})
-        }
-		params.${PARAM_NAME} = &intSlice
-	}
-EOF
-            else
-                cat >> "${FILE_PATH}" <<EOF
-
-	${VAR_NAME} := request.GetString("${NAME}", "")
-	if ${VAR_NAME} != "" {
-        ${VAR_NAME} := strings.Split(${VAR_NAME}, ",")
-		params.${PARAM_NAME} = ${REF_NAME}
-	}
-EOF
-            fi
-        else
-            CONV_STMT=""
-            if [[ "${FORMAT}" == "date-time" ]]; then
-                # TODO: error handling
-                CONV_STMT="${VAR_NAME}, _ := time.Parse(time.RFC3339, ${VAR_NAME})"
-            elif [[ "${FORMAT}" == "date" ]]; then
-                # TODO: error handling
-                CONV_STMT="${VAR_NAME}, _ := time.Parse(time.DateOnly, ${VAR_NAME})"
-                REF_NAME="&openapi_types.Date{Time: ${VAR_NAME}}"
-            fi
-            cat >> "${FILE_PATH}" <<EOF
-
-	${VAR_NAME} := request.GetString("${NAME}", "")
-	if ${VAR_NAME} != "" {
-        ${CONV_STMT}
-		params.${PARAM_NAME} = ${REF_NAME}
-	}
-EOF
-        fi
-
-    done
-
-    # complete
-    cat >> "${FILE_PATH}" <<EOF
-
-	return params
+	return toResult(c.${METHOD}ApiV4${API_NAME}(ctx ${PATH_ARG_STR} ${QUERY_SMTM_STR}, authorizationHeader))
 }
 EOF
 }
@@ -435,32 +278,32 @@ do
 
     OP_DELETE=$(yq '.value.delete | . style="flow"' <<<"${PATH_INFO}")
     if [[ "$OP_DELETE" != 'null' ]]; then
+        write-request-struct "Delete" "${OP_PATH}" "${OP_DELETE}"
         write-register-func "Delete" "${OP_PATH}" "${OP_DELETE}"
         write-handler-func "Delete" "${OP_PATH}" "${OP_DELETE}"
-        write-parser-func "Delete" "${OP_PATH}" "${OP_DELETE}"
     fi
 
     OP_POST=$(yq '.value.post | . style="flow"' <<<"${PATH_INFO}")
     OP_REQ_BODY=$(yq ".requestBody" <<<"${OP_POST}")
     if [[ "$OP_POST" != 'null' && "$OP_REQ_BODY" == 'null' ]]; then
+        write-request-struct "Post" "${OP_PATH}" "${OP_POST}"
         write-register-func "Post" "${OP_PATH}" "${OP_POST}"
         write-handler-func "Post" "${OP_PATH}" "${OP_POST}"
-        write-parser-func "Post" "${OP_PATH}" "${OP_POST}"
     fi
 
     OP_PUT=$(yq '.value.put | . style="flow"' <<<"${PATH_INFO}")
     OP_REQ_BODY=$(yq ".requestBody" <<<"${OP_PUT}")
     if [[ "$OP_PUT" != 'null' && "$OP_REQ_BODY" == 'null' ]]; then
+        write-request-struct "Put" "${OP_PATH}" "${OP_PUT}"
         write-register-func "Put" "${OP_PATH}" "${OP_PUT}"
         write-handler-func "Put" "${OP_PATH}" "${OP_PUT}"
-        write-parser-func "Put" "${OP_PATH}" "${OP_PUT}"
     fi
 
     OP_GET=$(yq '.value.get | . style="flow"' <<<"${PATH_INFO}")
     if [[ "$OP_GET" != 'null' ]]; then
+        write-request-struct "Get" "${OP_PATH}" "${OP_GET}"
         write-register-func "Get" "${OP_PATH}" "${OP_GET}"
         write-handler-func "Get" "${OP_PATH}" "${OP_GET}"
-        write-parser-func "Get" "${OP_PATH}" "${OP_GET}"
     fi
 done
 

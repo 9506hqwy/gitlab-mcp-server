@@ -96,7 +96,49 @@ TODO
 
 ## Testing
 
-TODO
+Check that this MCP server does correctly using [mcpcurl](https://github.com/github/github-mcp-server/tree/main/cmd/mcpcurl).
+
+List tools in this MCP server.
+
+```sh
+mcpcurl tools --pretty=false --stdio-server-cmd ./bin/gitlab-mcp-server
+```
+
+Show tool's help.
+
+```sh
+mcpcurl tools --pretty=false --stdio-server-cmd ./bin/gitlab-mcp-server <tool> --help
+```
+
+e.g. get version.
+
+```sh
+mcpcurl tools \
+    --pretty=false \
+    --stdio-server-cmd "./bin/gitlab-mcp-server --url=<URL> --token=<TOKEN>" \
+    get_version
+```
+
+e.g. get projects.
+
+```sh
+mcpcurl tools \
+    --pretty=false \
+    --stdio-server-cmd "./bin/gitlab-mcp-server --url=<URL> --token=<TOKEN>" \
+    get_pjs
+```
+
+Check schema.
+
+```sh
+mcpcurl schema --pretty=false --stdio-server-cmd ./bin/gitlab-mcp-server
+```
+
+Check that this MCP server does correctly using [@modelcontextprotocol/inspector](https://github.com/modelcontextprotocol/inspector).
+
+```sh
+npx @modelcontextprotocol/inspector ./bin/gitlab-mcp-server --url=<URL> --token=<TOKEN>
+```
 
 ## Notes
 

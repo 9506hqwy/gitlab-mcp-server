@@ -2,21 +2,39 @@ package gitlab
 
 import (
 	"context"
-	"math"
+	"encoding/json"
 
+	"github.com/invopop/jsonschema"
 	"github.com/mark3labs/mcp-go/mcp"
 	"github.com/mark3labs/mcp-go/server"
 )
 
-func registerGetFeatures(s *server.MCPServer) {
-	tool := mcp.NewTool("get_features",
-		mcp.WithDescription("Get a list of all persisted features, with its gate values."),
-	)
-
-	s.AddTool(tool, getFeaturesHandler)
+type GetFeaturesRequest struct {
 }
 
-func getFeaturesHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+func registerGetFeatures(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&GetFeaturesRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
+	tool := mcp.NewTool("get_features",
+		mcp.WithDescription("Get a list of all persisted features, with its gate values."),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
+	)
+
+	s.AddTool(tool, mcp.NewTypedToolHandler(getFeaturesHandler))
+}
+
+func getFeaturesHandler(ctx context.Context, request mcp.CallToolRequest, req GetFeaturesRequest) (*mcp.CallToolResult, error) {
 	c, err := newClient(ctx)
 	if err != nil {
 		return mcp.NewToolResultError(err.Error()), nil
@@ -25,15 +43,32 @@ func getFeaturesHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.
 	return toResult(c.GetApiV4Features(ctx, authorizationHeader))
 }
 
-func registerGetFeaturesDefinitions(s *server.MCPServer) {
-	tool := mcp.NewTool("get_features_definitions",
-		mcp.WithDescription("Get a list of all feature definitions."),
-	)
-
-	s.AddTool(tool, getFeaturesDefinitionsHandler)
+type GetFeaturesDefinitionsRequest struct {
 }
 
-func getFeaturesDefinitionsHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+func registerGetFeaturesDefinitions(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&GetFeaturesDefinitionsRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
+	tool := mcp.NewTool("get_features_definitions",
+		mcp.WithDescription("Get a list of all feature definitions."),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
+	)
+
+	s.AddTool(tool, mcp.NewTypedToolHandler(getFeaturesDefinitionsHandler))
+}
+
+func getFeaturesDefinitionsHandler(ctx context.Context, request mcp.CallToolRequest, req GetFeaturesDefinitionsRequest) (*mcp.CallToolResult, error) {
 	c, err := newClient(ctx)
 	if err != nil {
 		return mcp.NewToolResultError(err.Error()), nil
@@ -42,25 +77,37 @@ func getFeaturesDefinitionsHandler(ctx context.Context, request mcp.CallToolRequ
 	return toResult(c.GetApiV4FeaturesDefinitions(ctx, authorizationHeader))
 }
 
-func registerDeleteFeaturesName(s *server.MCPServer) {
-	tool := mcp.NewTool("delete_features_name",
-		mcp.WithDescription("Removes a feature gate. Response is equal when the gate exists, or doesn't."),
-		mcp.WithNumber("name",
-			mcp.Description("null"),
-			mcp.Required(),
-		),
-	)
-
-	s.AddTool(tool, deleteFeaturesNameHandler)
+type DeleteFeaturesNameRequest struct {
+	Name int32 `json:"name" jsonschema:"description=null"`
 }
 
-func deleteFeaturesNameHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+func registerDeleteFeaturesName(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&DeleteFeaturesNameRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
+	tool := mcp.NewTool("delete_features_name",
+		mcp.WithDescription("Removes a feature gate. Response is equal when the gate exists, or doesn't."),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
+	)
+
+	s.AddTool(tool, mcp.NewTypedToolHandler(deleteFeaturesNameHandler))
+}
+
+func deleteFeaturesNameHandler(ctx context.Context, request mcp.CallToolRequest, req DeleteFeaturesNameRequest) (*mcp.CallToolResult, error) {
 	c, err := newClient(ctx)
 	if err != nil {
 		return mcp.NewToolResultError(err.Error()), nil
 	}
 
-	name := int32(request.GetInt("name", math.MinInt))
-
-	return toResult(c.DeleteApiV4FeaturesName(ctx, name, authorizationHeader))
+	return toResult(c.DeleteApiV4FeaturesName(ctx, req.Name, authorizationHeader))
 }
