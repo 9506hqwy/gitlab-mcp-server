@@ -290,3 +290,38 @@ func postGeoProxyGitSshReceivePackHandler(ctx context.Context, request mcp.CallT
 
 	return toResult(c.PostApiV4GeoProxyGitSshReceivePack(ctx, req.Body, authorizationHeader))
 }
+
+type PostGeoNodeProxyIdGraphqlRequest struct {
+	Id int32 `json:"id" jsonschema:"description=The ID of the Geo node"`
+}
+
+func registerPostGeoNodeProxyIdGraphql(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&PostGeoNodeProxyIdGraphqlRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
+	tool := mcp.NewTool("post_geo_node_proxy_id_graphql",
+		mcp.WithDescription("Query the GraphQL endpoint of an existing Geo node"),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
+	)
+
+	s.AddTool(tool, mcp.NewTypedToolHandler(postGeoNodeProxyIdGraphqlHandler))
+}
+
+func postGeoNodeProxyIdGraphqlHandler(ctx context.Context, request mcp.CallToolRequest, req PostGeoNodeProxyIdGraphqlRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	return toResult(c.PostApiV4GeoNodeProxyIdGraphql(ctx, req.Id, authorizationHeader))
+}

@@ -11,6 +11,41 @@ import (
 	client "github.com/9506hqwy/gitlab-client-go/pkg/gitlab"
 )
 
+type PostGroupsIdAccessRequestsRequest struct {
+	Id string `json:"id" jsonschema:"description=The ID or URL-encoded path of the group owned by the authenticated user"`
+}
+
+func registerPostGroupsIdAccessRequests(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&PostGroupsIdAccessRequestsRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
+	tool := mcp.NewTool("post_grps_id_access_requests",
+		mcp.WithDescription("This feature was introduced in GitLab 8.11."),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
+	)
+
+	s.AddTool(tool, mcp.NewTypedToolHandler(postGroupsIdAccessRequestsHandler))
+}
+
+func postGroupsIdAccessRequestsHandler(ctx context.Context, request mcp.CallToolRequest, req PostGroupsIdAccessRequestsRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	return toResult(c.PostApiV4GroupsIdAccessRequests(ctx, req.Id, authorizationHeader))
+}
+
 type GetGroupsIdAccessRequestsRequest struct {
 	Id     string                                       `json:"id" jsonschema:"description=The ID or URL-encoded path of the group owned by the authenticated user"`
 	Params *client.GetApiV4GroupsIdAccessRequestsParams `json:"params,omitempty"`
@@ -965,6 +1000,111 @@ func getGroupsIdHandler(ctx context.Context, request mcp.CallToolRequest, req Ge
 	return toResult(c.GetApiV4GroupsId(ctx, req.Id, req.Params, authorizationHeader))
 }
 
+type PostGroupsIdArchiveRequest struct {
+	Id string `json:"id" jsonschema:"description=The ID of a group"`
+}
+
+func registerPostGroupsIdArchive(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&PostGroupsIdArchiveRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
+	tool := mcp.NewTool("post_grps_id_archive",
+		mcp.WithDescription("Archive a group"),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
+	)
+
+	s.AddTool(tool, mcp.NewTypedToolHandler(postGroupsIdArchiveHandler))
+}
+
+func postGroupsIdArchiveHandler(ctx context.Context, request mcp.CallToolRequest, req PostGroupsIdArchiveRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	return toResult(c.PostApiV4GroupsIdArchive(ctx, req.Id, authorizationHeader))
+}
+
+type PostGroupsIdUnarchiveRequest struct {
+	Id string `json:"id" jsonschema:"description=The ID of a group"`
+}
+
+func registerPostGroupsIdUnarchive(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&PostGroupsIdUnarchiveRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
+	tool := mcp.NewTool("post_grps_id_unarchive",
+		mcp.WithDescription("Unarchive a group"),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
+	)
+
+	s.AddTool(tool, mcp.NewTypedToolHandler(postGroupsIdUnarchiveHandler))
+}
+
+func postGroupsIdUnarchiveHandler(ctx context.Context, request mcp.CallToolRequest, req PostGroupsIdUnarchiveRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	return toResult(c.PostApiV4GroupsIdUnarchive(ctx, req.Id, authorizationHeader))
+}
+
+type PostGroupsIdRestoreRequest struct {
+	Id string `json:"id" jsonschema:"description=The ID of a group"`
+}
+
+func registerPostGroupsIdRestore(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&PostGroupsIdRestoreRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
+	tool := mcp.NewTool("post_grps_id_restore",
+		mcp.WithDescription("Restore a group."),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
+	)
+
+	s.AddTool(tool, mcp.NewTypedToolHandler(postGroupsIdRestoreHandler))
+}
+
+func postGroupsIdRestoreHandler(ctx context.Context, request mcp.CallToolRequest, req PostGroupsIdRestoreRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	return toResult(c.PostApiV4GroupsIdRestore(ctx, req.Id, authorizationHeader))
+}
+
 type GetGroupsIdGroupsSharedRequest struct {
 	Id     string                                     `json:"id" jsonschema:"description=The ID of a group"`
 	Params *client.GetApiV4GroupsIdGroupsSharedParams `json:"params,omitempty"`
@@ -1181,6 +1321,42 @@ func getGroupsIdDescendantGroupsHandler(ctx context.Context, request mcp.CallToo
 	return toResult(c.GetApiV4GroupsIdDescendantGroups(ctx, req.Id, req.Params, authorizationHeader))
 }
 
+type PostGroupsIdProjectsProjectIdRequest struct {
+	Id        string `json:"id" jsonschema:"description=The ID of a group"`
+	ProjectId string `json:"project_id" jsonschema:"description=The ID or path of the project"`
+}
+
+func registerPostGroupsIdProjectsProjectId(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&PostGroupsIdProjectsProjectIdRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
+	tool := mcp.NewTool("post_grps_id_pjs_project_id",
+		mcp.WithDescription("Transfer a project to the group namespace. Available only for admin."),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
+	)
+
+	s.AddTool(tool, mcp.NewTypedToolHandler(postGroupsIdProjectsProjectIdHandler))
+}
+
+func postGroupsIdProjectsProjectIdHandler(ctx context.Context, request mcp.CallToolRequest, req PostGroupsIdProjectsProjectIdRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	return toResult(c.PostApiV4GroupsIdProjectsProjectId(ctx, req.Id, req.ProjectId, authorizationHeader))
+}
+
 type GetGroupsIdTransferLocationsRequest struct {
 	Id     string                                          `json:"id" jsonschema:"description=The ID of a group"`
 	Params *client.GetApiV4GroupsIdTransferLocationsParams `json:"params,omitempty"`
@@ -1362,6 +1538,41 @@ func postGroupsIdTokensRevokeHandler(ctx context.Context, request mcp.CallToolRe
 	}
 
 	return toResult(c.PostApiV4GroupsIdTokensRevoke(ctx, req.Id, req.Body, authorizationHeader))
+}
+
+type PostGroupsIdLdapSyncRequest struct {
+	Id int32 `json:"id" jsonschema:"description=null"`
+}
+
+func registerPostGroupsIdLdapSync(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&PostGroupsIdLdapSyncRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
+	tool := mcp.NewTool("post_grps_id_ldap_sync",
+		mcp.WithDescription("Sync a group with LDAP."),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
+	)
+
+	s.AddTool(tool, mcp.NewTypedToolHandler(postGroupsIdLdapSyncHandler))
+}
+
+func postGroupsIdLdapSyncHandler(ctx context.Context, request mcp.CallToolRequest, req PostGroupsIdLdapSyncRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	return toResult(c.PostApiV4GroupsIdLdapSync(ctx, req.Id, authorizationHeader))
 }
 
 type GetGroupsIdAuditEventsRequest struct {
@@ -1687,6 +1898,41 @@ func getGroupsIdRunnersHandler(ctx context.Context, request mcp.CallToolRequest,
 	}
 
 	return toResult(c.GetApiV4GroupsIdRunners(ctx, req.Id, req.Params, authorizationHeader))
+}
+
+type PostGroupsIdRunnersResetRegistrationTokenRequest struct {
+	Id string `json:"id" jsonschema:"description=The ID of a group"`
+}
+
+func registerPostGroupsIdRunnersResetRegistrationToken(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&PostGroupsIdRunnersResetRegistrationTokenRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
+	tool := mcp.NewTool("post_grps_id_runners_reset_registration_token",
+		mcp.WithDescription("Reset runner registration token"),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
+	)
+
+	s.AddTool(tool, mcp.NewTypedToolHandler(postGroupsIdRunnersResetRegistrationTokenHandler))
+}
+
+func postGroupsIdRunnersResetRegistrationTokenHandler(ctx context.Context, request mcp.CallToolRequest, req PostGroupsIdRunnersResetRegistrationTokenRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	return toResult(c.PostApiV4GroupsIdRunnersResetRegistrationToken(ctx, req.Id, authorizationHeader))
 }
 
 type GetGroupsIdPackagesDebianPoolDistributionProjectIdLetterPackageNamePackageVersionFileNameRequest struct {
@@ -2419,6 +2665,41 @@ func getGroupsIdExportDownloadHandler(ctx context.Context, request mcp.CallToolR
 	return toResult(c.GetApiV4GroupsIdExportDownload(ctx, req.Id, authorizationHeader))
 }
 
+type PostGroupsIdExportRequest struct {
+	Id string `json:"id" jsonschema:"description=The ID of a group"`
+}
+
+func registerPostGroupsIdExport(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&PostGroupsIdExportRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
+	tool := mcp.NewTool("post_grps_id_export",
+		mcp.WithDescription("This feature was introduced in GitLab 12.5."),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
+	)
+
+	s.AddTool(tool, mcp.NewTypedToolHandler(postGroupsIdExportHandler))
+}
+
+func postGroupsIdExportHandler(ctx context.Context, request mcp.CallToolRequest, req PostGroupsIdExportRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	return toResult(c.PostApiV4GroupsIdExport(ctx, req.Id, authorizationHeader))
+}
+
 type PostGroupsIdExportRelationsRequest struct {
 	Id string `json:"id" jsonschema:"description=The ID of a group"`
 
@@ -2528,6 +2809,40 @@ func getGroupsIdExportRelationsStatusHandler(ctx context.Context, request mcp.Ca
 	return toResult(c.GetApiV4GroupsIdExportRelationsStatus(ctx, req.Id, req.Params, authorizationHeader))
 }
 
+type PostGroupsImportAuthorizeRequest struct {
+}
+
+func registerPostGroupsImportAuthorize(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&PostGroupsImportAuthorizeRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
+	tool := mcp.NewTool("post_grps_import_authorize",
+		mcp.WithDescription("This feature was introduced in GitLab 12.8"),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
+	)
+
+	s.AddTool(tool, mcp.NewTypedToolHandler(postGroupsImportAuthorizeHandler))
+}
+
+func postGroupsImportAuthorizeHandler(ctx context.Context, request mcp.CallToolRequest, req PostGroupsImportAuthorizeRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	return toResult(c.PostApiV4GroupsImportAuthorize(ctx, authorizationHeader))
+}
+
 type GetGroupsIdPackagesRequest struct {
 	Id     string                                 `json:"id" jsonschema:"description=ID or URL-encoded path of the group"`
 	Params *client.GetApiV4GroupsIdPackagesParams `json:"params,omitempty"`
@@ -2634,6 +2949,41 @@ func getGroupsIdPlaceholderReassignmentsHandler(ctx context.Context, request mcp
 	}
 
 	return toResult(c.GetApiV4GroupsIdPlaceholderReassignments(ctx, req.Id, authorizationHeader))
+}
+
+type PostGroupsIdPlaceholderReassignmentsAuthorizeRequest struct {
+	Id string `json:"id" jsonschema:"description=The ID of a group"`
+}
+
+func registerPostGroupsIdPlaceholderReassignmentsAuthorize(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&PostGroupsIdPlaceholderReassignmentsAuthorizeRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
+	tool := mcp.NewTool("post_grps_id_placeholder_reassignments_authorize",
+		mcp.WithDescription("This feature was introduced in GitLab 17.10"),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
+	)
+
+	s.AddTool(tool, mcp.NewTypedToolHandler(postGroupsIdPlaceholderReassignmentsAuthorizeHandler))
+}
+
+func postGroupsIdPlaceholderReassignmentsAuthorizeHandler(ctx context.Context, request mcp.CallToolRequest, req PostGroupsIdPlaceholderReassignmentsAuthorizeRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	return toResult(c.PostApiV4GroupsIdPlaceholderReassignmentsAuthorize(ctx, req.Id, authorizationHeader))
 }
 
 type PostGroupsIdVariablesRequest struct {
@@ -5434,6 +5784,113 @@ func deleteGroupsIdMembersUserIdOverrideHandler(ctx context.Context, request mcp
 	return toResult(c.DeleteApiV4GroupsIdMembersUserIdOverride(ctx, req.Id, req.UserId, authorizationHeader))
 }
 
+type PostGroupsIdMembersUserIdOverrideRequest struct {
+	Id     string `json:"id" jsonschema:"description=The ID of a group"`
+	UserId int32  `json:"user_id" jsonschema:"description=The user ID of the member"`
+}
+
+func registerPostGroupsIdMembersUserIdOverride(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&PostGroupsIdMembersUserIdOverrideRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
+	tool := mcp.NewTool("post_grps_id_members_user_id_override",
+		mcp.WithDescription("Overrides the access level of an LDAP group member."),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
+	)
+
+	s.AddTool(tool, mcp.NewTypedToolHandler(postGroupsIdMembersUserIdOverrideHandler))
+}
+
+func postGroupsIdMembersUserIdOverrideHandler(ctx context.Context, request mcp.CallToolRequest, req PostGroupsIdMembersUserIdOverrideRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	return toResult(c.PostApiV4GroupsIdMembersUserIdOverride(ctx, req.Id, req.UserId, authorizationHeader))
+}
+
+type PutGroupsIdMembersMemberIdApproveRequest struct {
+	Id       string `json:"id" jsonschema:"description=The ID of a group"`
+	MemberId int32  `json:"member_id" jsonschema:"description=The ID of the member requiring approval"`
+}
+
+func registerPutGroupsIdMembersMemberIdApprove(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&PutGroupsIdMembersMemberIdApproveRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
+	tool := mcp.NewTool("put_grps_id_members_member_id_approve",
+		mcp.WithDescription("Approves a pending member"),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
+	)
+
+	s.AddTool(tool, mcp.NewTypedToolHandler(putGroupsIdMembersMemberIdApproveHandler))
+}
+
+func putGroupsIdMembersMemberIdApproveHandler(ctx context.Context, request mcp.CallToolRequest, req PutGroupsIdMembersMemberIdApproveRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	return toResult(c.PutApiV4GroupsIdMembersMemberIdApprove(ctx, req.Id, req.MemberId, authorizationHeader))
+}
+
+type PostGroupsIdMembersApproveAllRequest struct {
+	Id string `json:"id" jsonschema:"description=The ID of a group"`
+}
+
+func registerPostGroupsIdMembersApproveAll(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&PostGroupsIdMembersApproveAllRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
+	tool := mcp.NewTool("post_grps_id_members_approve_all",
+		mcp.WithDescription("Approves all pending members"),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
+	)
+
+	s.AddTool(tool, mcp.NewTypedToolHandler(postGroupsIdMembersApproveAllHandler))
+}
+
+func postGroupsIdMembersApproveAllHandler(ctx context.Context, request mcp.CallToolRequest, req PostGroupsIdMembersApproveAllRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	return toResult(c.PostApiV4GroupsIdMembersApproveAll(ctx, req.Id, authorizationHeader))
+}
+
 type GetGroupsIdPendingMembersRequest struct {
 	Id     string                                       `json:"id" jsonschema:"description=The ID of a group"`
 	Params *client.GetApiV4GroupsIdPendingMembersParams `json:"params,omitempty"`
@@ -5688,6 +6145,76 @@ func getGroupsIdMergeRequestsHandler(ctx context.Context, request mcp.CallToolRe
 	}
 
 	return toResult(c.GetApiV4GroupsIdMergeRequests(ctx, req.Id, req.Params, authorizationHeader))
+}
+
+type PostGroupsIdPackagesNpmNpmV1SecurityAdvisoriesBulkRequest struct {
+	Id string `json:"id" jsonschema:"description=The ID or URL-encoded path of the group"`
+}
+
+func registerPostGroupsIdPackagesNpmNpmV1SecurityAdvisoriesBulk(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&PostGroupsIdPackagesNpmNpmV1SecurityAdvisoriesBulkRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
+	tool := mcp.NewTool("post_grps_id_pkgs_npm_npm_v1_security_advisories_bulk",
+		mcp.WithDescription("This feature was introduced in GitLab 15.6"),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
+	)
+
+	s.AddTool(tool, mcp.NewTypedToolHandler(postGroupsIdPackagesNpmNpmV1SecurityAdvisoriesBulkHandler))
+}
+
+func postGroupsIdPackagesNpmNpmV1SecurityAdvisoriesBulkHandler(ctx context.Context, request mcp.CallToolRequest, req PostGroupsIdPackagesNpmNpmV1SecurityAdvisoriesBulkRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	return toResult(c.PostApiV4GroupsIdPackagesNpmNpmV1SecurityAdvisoriesBulk(ctx, req.Id, authorizationHeader))
+}
+
+type PostGroupsIdPackagesNpmNpmV1SecurityAuditsQuickRequest struct {
+	Id string `json:"id" jsonschema:"description=The ID or URL-encoded path of the group"`
+}
+
+func registerPostGroupsIdPackagesNpmNpmV1SecurityAuditsQuick(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&PostGroupsIdPackagesNpmNpmV1SecurityAuditsQuickRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
+	tool := mcp.NewTool("post_grps_id_pkgs_npm_npm_v1_security_audits_quick",
+		mcp.WithDescription("This feature was introduced in GitLab 15.6"),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
+	)
+
+	s.AddTool(tool, mcp.NewTypedToolHandler(postGroupsIdPackagesNpmNpmV1SecurityAuditsQuickHandler))
+}
+
+func postGroupsIdPackagesNpmNpmV1SecurityAuditsQuickHandler(ctx context.Context, request mcp.CallToolRequest, req PostGroupsIdPackagesNpmNpmV1SecurityAuditsQuickRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	return toResult(c.PostApiV4GroupsIdPackagesNpmNpmV1SecurityAuditsQuick(ctx, req.Id, authorizationHeader))
 }
 
 type GetGroupsIdPackagesNugetIndexRequest struct {

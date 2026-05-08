@@ -11,6 +11,41 @@ import (
 	client "github.com/9506hqwy/gitlab-client-go/pkg/gitlab"
 )
 
+type PostProjectsIdAccessRequestsRequest struct {
+	Id string `json:"id" jsonschema:"description=The ID or URL-encoded path of the project owned by the authenticated user"`
+}
+
+func registerPostProjectsIdAccessRequests(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&PostProjectsIdAccessRequestsRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
+	tool := mcp.NewTool("post_pjs_id_access_requests",
+		mcp.WithDescription("This feature was introduced in GitLab 8.11."),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
+	)
+
+	s.AddTool(tool, mcp.NewTypedToolHandler(postProjectsIdAccessRequestsHandler))
+}
+
+func postProjectsIdAccessRequestsHandler(ctx context.Context, request mcp.CallToolRequest, req PostProjectsIdAccessRequestsRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	return toResult(c.PostApiV4ProjectsIdAccessRequests(ctx, req.Id, authorizationHeader))
+}
+
 type GetProjectsIdAccessRequestsRequest struct {
 	Id     string                                         `json:"id" jsonschema:"description=The ID or URL-encoded path of the project owned by the authenticated user"`
 	Params *client.GetApiV4ProjectsIdAccessRequestsParams `json:"params,omitempty"`
@@ -119,6 +154,42 @@ func deleteProjectsIdAccessRequestsUserIdHandler(ctx context.Context, request mc
 	}
 
 	return toResult(c.DeleteApiV4ProjectsIdAccessRequestsUserId(ctx, req.Id, req.UserId, authorizationHeader))
+}
+
+type PostProjectsIdAlertManagementAlertsAlertIidMetricImagesAuthorizeRequest struct {
+	Id       string `json:"id" jsonschema:"description=The ID or URL-encoded path of the project"`
+	AlertIid int32  `json:"alert_iid" jsonschema:"description=The IID of the Alert"`
+}
+
+func registerPostProjectsIdAlertManagementAlertsAlertIidMetricImagesAuthorize(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&PostProjectsIdAlertManagementAlertsAlertIidMetricImagesAuthorizeRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
+	tool := mcp.NewTool("post_pjs_id_alert_management_alerts_alert_iid_metric_images_authorize",
+		mcp.WithDescription("Workhorse authorize metric image file upload"),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
+	)
+
+	s.AddTool(tool, mcp.NewTypedToolHandler(postProjectsIdAlertManagementAlertsAlertIidMetricImagesAuthorizeHandler))
+}
+
+func postProjectsIdAlertManagementAlertsAlertIidMetricImagesAuthorizeHandler(ctx context.Context, request mcp.CallToolRequest, req PostProjectsIdAlertManagementAlertsAlertIidMetricImagesAuthorizeRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	return toResult(c.PostApiV4ProjectsIdAlertManagementAlertsAlertIidMetricImagesAuthorize(ctx, req.Id, req.AlertIid, authorizationHeader))
 }
 
 type GetProjectsIdAlertManagementAlertsAlertIidMetricImagesRequest struct {
@@ -1502,6 +1573,42 @@ func putProjectsIdRepositoryBranchesBranchProtectHandler(ctx context.Context, re
 	return toResult(c.PutApiV4ProjectsIdRepositoryBranchesBranchProtect(ctx, req.Id, req.Branch, req.Body, authorizationHeader))
 }
 
+type PutProjectsIdRepositoryBranchesBranchUnprotectRequest struct {
+	Id     string `json:"id" jsonschema:"description=The ID or URL-encoded path of the project"`
+	Branch string `json:"branch" jsonschema:"description=The name of the branch"`
+}
+
+func registerPutProjectsIdRepositoryBranchesBranchUnprotect(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&PutProjectsIdRepositoryBranchesBranchUnprotectRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
+	tool := mcp.NewTool("put_pjs_id_repo_branches_branch_unprotect",
+		mcp.WithDescription("Unprotect a single branch"),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
+	)
+
+	s.AddTool(tool, mcp.NewTypedToolHandler(putProjectsIdRepositoryBranchesBranchUnprotectHandler))
+}
+
+func putProjectsIdRepositoryBranchesBranchUnprotectHandler(ctx context.Context, request mcp.CallToolRequest, req PutProjectsIdRepositoryBranchesBranchUnprotectRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	return toResult(c.PutApiV4ProjectsIdRepositoryBranchesBranchUnprotect(ctx, req.Id, req.Branch, authorizationHeader))
+}
+
 type DeleteProjectsIdRepositoryMergedBranchesRequest struct {
 	Id string `json:"id" jsonschema:"description=The ID or URL-encoded path of the project"`
 }
@@ -1684,6 +1791,42 @@ func getProjectsIdJobsJobIdArtifactsHandler(ctx context.Context, request mcp.Cal
 	return toResult(c.GetApiV4ProjectsIdJobsJobIdArtifacts(ctx, req.Id, req.JobId, req.Params, authorizationHeader))
 }
 
+type PostProjectsIdJobsJobIdArtifactsKeepRequest struct {
+	Id    string `json:"id" jsonschema:"description=The ID or URL-encoded path of the project"`
+	JobId int32  `json:"job_id" jsonschema:"description=The ID of a job"`
+}
+
+func registerPostProjectsIdJobsJobIdArtifactsKeep(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&PostProjectsIdJobsJobIdArtifactsKeepRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
+	tool := mcp.NewTool("post_pjs_id_jobs_job_id_artifacts_keep",
+		mcp.WithDescription("Keep the artifacts to prevent them from being deleted"),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
+	)
+
+	s.AddTool(tool, mcp.NewTypedToolHandler(postProjectsIdJobsJobIdArtifactsKeepHandler))
+}
+
+func postProjectsIdJobsJobIdArtifactsKeepHandler(ctx context.Context, request mcp.CallToolRequest, req PostProjectsIdJobsJobIdArtifactsKeepRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	return toResult(c.PostApiV4ProjectsIdJobsJobIdArtifactsKeep(ctx, req.Id, req.JobId, authorizationHeader))
+}
+
 type DeleteProjectsIdArtifactsRequest struct {
 	Id string `json:"id" jsonschema:"description=The ID or URL-encoded path of the project"`
 }
@@ -1863,6 +2006,78 @@ func postProjectsIdJobsJobIdCancelHandler(ctx context.Context, request mcp.CallT
 	}
 
 	return toResult(c.PostApiV4ProjectsIdJobsJobIdCancel(ctx, req.Id, req.JobId, req.Body, authorizationHeader))
+}
+
+type PostProjectsIdJobsJobIdRetryRequest struct {
+	Id    int32 `json:"id" jsonschema:"description=null"`
+	JobId int32 `json:"job_id" jsonschema:"description=The ID of a job"`
+}
+
+func registerPostProjectsIdJobsJobIdRetry(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&PostProjectsIdJobsJobIdRetryRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
+	tool := mcp.NewTool("post_pjs_id_jobs_job_id_retry",
+		mcp.WithDescription("Retry a specific job of a project"),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
+	)
+
+	s.AddTool(tool, mcp.NewTypedToolHandler(postProjectsIdJobsJobIdRetryHandler))
+}
+
+func postProjectsIdJobsJobIdRetryHandler(ctx context.Context, request mcp.CallToolRequest, req PostProjectsIdJobsJobIdRetryRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	return toResult(c.PostApiV4ProjectsIdJobsJobIdRetry(ctx, req.Id, req.JobId, authorizationHeader))
+}
+
+type PostProjectsIdJobsJobIdEraseRequest struct {
+	Id    int32 `json:"id" jsonschema:"description=null"`
+	JobId int32 `json:"job_id" jsonschema:"description=The ID of a build"`
+}
+
+func registerPostProjectsIdJobsJobIdErase(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&PostProjectsIdJobsJobIdEraseRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
+	tool := mcp.NewTool("post_pjs_id_jobs_job_id_erase",
+		mcp.WithDescription("Erase job (remove artifacts and the trace)"),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
+	)
+
+	s.AddTool(tool, mcp.NewTypedToolHandler(postProjectsIdJobsJobIdEraseHandler))
+}
+
+func postProjectsIdJobsJobIdEraseHandler(ctx context.Context, request mcp.CallToolRequest, req PostProjectsIdJobsJobIdEraseRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	return toResult(c.PostApiV4ProjectsIdJobsJobIdErase(ctx, req.Id, req.JobId, authorizationHeader))
 }
 
 type PostProjectsIdJobsJobIdPlayRequest struct {
@@ -2157,6 +2372,41 @@ func deleteProjectsIdRunnersRunnerIdHandler(ctx context.Context, request mcp.Cal
 	}
 
 	return toResult(c.DeleteApiV4ProjectsIdRunnersRunnerId(ctx, req.Id, req.RunnerId, authorizationHeader))
+}
+
+type PostProjectsIdRunnersResetRegistrationTokenRequest struct {
+	Id string `json:"id" jsonschema:"description=The ID of a project"`
+}
+
+func registerPostProjectsIdRunnersResetRegistrationToken(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&PostProjectsIdRunnersResetRegistrationTokenRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
+	tool := mcp.NewTool("post_pjs_id_runners_reset_registration_token",
+		mcp.WithDescription("Reset runner registration token"),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
+	)
+
+	s.AddTool(tool, mcp.NewTypedToolHandler(postProjectsIdRunnersResetRegistrationTokenHandler))
+}
+
+func postProjectsIdRunnersResetRegistrationTokenHandler(ctx context.Context, request mcp.CallToolRequest, req PostProjectsIdRunnersResetRegistrationTokenRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	return toResult(c.PostApiV4ProjectsIdRunnersResetRegistrationToken(ctx, req.Id, authorizationHeader))
 }
 
 type PostProjectsIdSecureFilesRequest struct {
@@ -2741,6 +2991,78 @@ func putProjectsIdPipelinesPipelineIdMetadataHandler(ctx context.Context, reques
 	return toResult(c.PutApiV4ProjectsIdPipelinesPipelineIdMetadata(ctx, req.Id, req.PipelineId, req.Body, authorizationHeader))
 }
 
+type PostProjectsIdPipelinesPipelineIdRetryRequest struct {
+	Id         string `json:"id" jsonschema:"description=The project ID or URL-encoded path"`
+	PipelineId int32  `json:"pipeline_id" jsonschema:"description=The pipeline ID"`
+}
+
+func registerPostProjectsIdPipelinesPipelineIdRetry(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&PostProjectsIdPipelinesPipelineIdRetryRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
+	tool := mcp.NewTool("post_pjs_id_pls_pipeline_id_retry",
+		mcp.WithDescription("This feature was introduced in GitLab 8.11."),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
+	)
+
+	s.AddTool(tool, mcp.NewTypedToolHandler(postProjectsIdPipelinesPipelineIdRetryHandler))
+}
+
+func postProjectsIdPipelinesPipelineIdRetryHandler(ctx context.Context, request mcp.CallToolRequest, req PostProjectsIdPipelinesPipelineIdRetryRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	return toResult(c.PostApiV4ProjectsIdPipelinesPipelineIdRetry(ctx, req.Id, req.PipelineId, authorizationHeader))
+}
+
+type PostProjectsIdPipelinesPipelineIdCancelRequest struct {
+	Id         string `json:"id" jsonschema:"description=The project ID or URL-encoded path"`
+	PipelineId int32  `json:"pipeline_id" jsonschema:"description=The pipeline ID"`
+}
+
+func registerPostProjectsIdPipelinesPipelineIdCancel(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&PostProjectsIdPipelinesPipelineIdCancelRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
+	tool := mcp.NewTool("post_pjs_id_pls_pipeline_id_cancel",
+		mcp.WithDescription("This feature was introduced in GitLab 8.11."),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
+	)
+
+	s.AddTool(tool, mcp.NewTypedToolHandler(postProjectsIdPipelinesPipelineIdCancelHandler))
+}
+
+func postProjectsIdPipelinesPipelineIdCancelHandler(ctx context.Context, request mcp.CallToolRequest, req PostProjectsIdPipelinesPipelineIdCancelRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	return toResult(c.PostApiV4ProjectsIdPipelinesPipelineIdCancel(ctx, req.Id, req.PipelineId, authorizationHeader))
+}
+
 type PostProjectsIdPipelineSchedulesRequest struct {
 	Id string `json:"id" jsonschema:"description=The ID or URL-encoded path of the project"`
 
@@ -2958,6 +3280,78 @@ func getProjectsIdPipelineSchedulesPipelineScheduleIdPipelinesHandler(ctx contex
 	}
 
 	return toResult(c.GetApiV4ProjectsIdPipelineSchedulesPipelineScheduleIdPipelines(ctx, req.Id, req.PipelineScheduleId, authorizationHeader))
+}
+
+type PostProjectsIdPipelineSchedulesPipelineScheduleIdTakeOwnershipRequest struct {
+	Id                 string `json:"id" jsonschema:"description=The ID or URL-encoded path of the project"`
+	PipelineScheduleId int32  `json:"pipeline_schedule_id" jsonschema:"description=The pipeline schedule id"`
+}
+
+func registerPostProjectsIdPipelineSchedulesPipelineScheduleIdTakeOwnership(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&PostProjectsIdPipelineSchedulesPipelineScheduleIdTakeOwnershipRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
+	tool := mcp.NewTool("post_pjs_id_pipeline_schedules_pipeline_schedule_id_take_ownership",
+		mcp.WithDescription("Take ownership of a pipeline schedule"),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
+	)
+
+	s.AddTool(tool, mcp.NewTypedToolHandler(postProjectsIdPipelineSchedulesPipelineScheduleIdTakeOwnershipHandler))
+}
+
+func postProjectsIdPipelineSchedulesPipelineScheduleIdTakeOwnershipHandler(ctx context.Context, request mcp.CallToolRequest, req PostProjectsIdPipelineSchedulesPipelineScheduleIdTakeOwnershipRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	return toResult(c.PostApiV4ProjectsIdPipelineSchedulesPipelineScheduleIdTakeOwnership(ctx, req.Id, req.PipelineScheduleId, authorizationHeader))
+}
+
+type PostProjectsIdPipelineSchedulesPipelineScheduleIdPlayRequest struct {
+	Id                 string `json:"id" jsonschema:"description=The ID or URL-encoded path of the project"`
+	PipelineScheduleId int32  `json:"pipeline_schedule_id" jsonschema:"description=The pipeline schedule id"`
+}
+
+func registerPostProjectsIdPipelineSchedulesPipelineScheduleIdPlay(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&PostProjectsIdPipelineSchedulesPipelineScheduleIdPlayRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
+	tool := mcp.NewTool("post_pjs_id_pipeline_schedules_pipeline_schedule_id_play",
+		mcp.WithDescription("This feature was added in GitLab 12.8"),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
+	)
+
+	s.AddTool(tool, mcp.NewTypedToolHandler(postProjectsIdPipelineSchedulesPipelineScheduleIdPlayHandler))
+}
+
+func postProjectsIdPipelineSchedulesPipelineScheduleIdPlayHandler(ctx context.Context, request mcp.CallToolRequest, req PostProjectsIdPipelineSchedulesPipelineScheduleIdPlayRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	return toResult(c.PostApiV4ProjectsIdPipelineSchedulesPipelineScheduleIdPlay(ctx, req.Id, req.PipelineScheduleId, authorizationHeader))
 }
 
 type PostProjectsIdPipelineSchedulesPipelineScheduleIdVariablesRequest struct {
@@ -4822,6 +5216,85 @@ func getProjectsIdPackagesConanV1ConansPackageNamePackageVersionPackageUsernameP
 	return toResult(c.GetApiV4ProjectsIdPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelDownloadUrls(ctx, req.Id, req.PackageName, req.PackageVersion, req.PackageUsername, req.PackageChannel, authorizationHeader))
 }
 
+type PostProjectsIdPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelPackagesConanPackageReferenceUploadUrlsRequest struct {
+	Id                    string `json:"id" jsonschema:"description=The ID or URL-encoded path of the project"`
+	PackageName           string `json:"package_name" jsonschema:"description=Package name"`
+	PackageVersion        string `json:"package_version" jsonschema:"description=Package version"`
+	PackageUsername       string `json:"package_username" jsonschema:"description=Package username"`
+	PackageChannel        string `json:"package_channel" jsonschema:"description=Package channel"`
+	ConanPackageReference string `json:"conan_package_reference" jsonschema:"description=Conan package ID"`
+}
+
+func registerPostProjectsIdPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelPackagesConanPackageReferenceUploadUrls(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&PostProjectsIdPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelPackagesConanPackageReferenceUploadUrlsRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
+	tool := mcp.NewTool("post_pjs_id_pkgs_conan_v1_conans_package_name_package_version_package_username_package_channel_packages_conan_package_reference_upload_urls",
+		mcp.WithDescription("This feature was introduced in GitLab 12.4"),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
+	)
+
+	s.AddTool(tool, mcp.NewTypedToolHandler(postProjectsIdPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelPackagesConanPackageReferenceUploadUrlsHandler))
+}
+
+func postProjectsIdPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelPackagesConanPackageReferenceUploadUrlsHandler(ctx context.Context, request mcp.CallToolRequest, req PostProjectsIdPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelPackagesConanPackageReferenceUploadUrlsRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	return toResult(c.PostApiV4ProjectsIdPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelPackagesConanPackageReferenceUploadUrls(ctx, req.Id, req.PackageName, req.PackageVersion, req.PackageUsername, req.PackageChannel, req.ConanPackageReference, authorizationHeader))
+}
+
+type PostProjectsIdPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelUploadUrlsRequest struct {
+	Id              string `json:"id" jsonschema:"description=The ID or URL-encoded path of the project"`
+	PackageName     string `json:"package_name" jsonschema:"description=Package name"`
+	PackageVersion  string `json:"package_version" jsonschema:"description=Package version"`
+	PackageUsername string `json:"package_username" jsonschema:"description=Package username"`
+	PackageChannel  string `json:"package_channel" jsonschema:"description=Package channel"`
+}
+
+func registerPostProjectsIdPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelUploadUrls(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&PostProjectsIdPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelUploadUrlsRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
+	tool := mcp.NewTool("post_pjs_id_pkgs_conan_v1_conans_package_name_package_version_package_username_package_channel_upload_urls",
+		mcp.WithDescription("This feature was introduced in GitLab 12.4"),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
+	)
+
+	s.AddTool(tool, mcp.NewTypedToolHandler(postProjectsIdPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelUploadUrlsHandler))
+}
+
+func postProjectsIdPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelUploadUrlsHandler(ctx context.Context, request mcp.CallToolRequest, req PostProjectsIdPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelUploadUrlsRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	return toResult(c.PostApiV4ProjectsIdPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelUploadUrls(ctx, req.Id, req.PackageName, req.PackageVersion, req.PackageUsername, req.PackageChannel, authorizationHeader))
+}
+
 type PutProjectsIdPackagesConanV1FilesPackageNamePackageVersionPackageUsernamePackageChannelRecipeRevisionExportFileNameRequest struct {
 	Id              string `json:"id" jsonschema:"description=The ID or URL-encoded path of the project"`
 	PackageName     string `json:"package_name" jsonschema:"description=Package name"`
@@ -4904,6 +5377,47 @@ func getProjectsIdPackagesConanV1FilesPackageNamePackageVersionPackageUsernamePa
 	}
 
 	return toResult(c.GetApiV4ProjectsIdPackagesConanV1FilesPackageNamePackageVersionPackageUsernamePackageChannelRecipeRevisionExportFileName(ctx, req.Id, req.PackageName, req.PackageVersion, req.PackageUsername, req.PackageChannel, req.RecipeRevision, req.FileName, authorizationHeader))
+}
+
+type PutProjectsIdPackagesConanV1FilesPackageNamePackageVersionPackageUsernamePackageChannelRecipeRevisionExportFileNameAuthorizeRequest struct {
+	Id              string `json:"id" jsonschema:"description=The ID or URL-encoded path of the project"`
+	PackageName     string `json:"package_name" jsonschema:"description=Package name"`
+	PackageVersion  string `json:"package_version" jsonschema:"description=Package version"`
+	PackageUsername string `json:"package_username" jsonschema:"description=Package username"`
+	PackageChannel  string `json:"package_channel" jsonschema:"description=Package channel"`
+	RecipeRevision  string `json:"recipe_revision" jsonschema:"description=Conan Recipe Revision"`
+	FileName        string `json:"file_name" jsonschema:"description=Package file name"`
+}
+
+func registerPutProjectsIdPackagesConanV1FilesPackageNamePackageVersionPackageUsernamePackageChannelRecipeRevisionExportFileNameAuthorize(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&PutProjectsIdPackagesConanV1FilesPackageNamePackageVersionPackageUsernamePackageChannelRecipeRevisionExportFileNameAuthorizeRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
+	tool := mcp.NewTool("put_pjs_id_pkgs_conan_v1_files_package_name_package_version_package_username_package_channel_recipe_revision_export_file_name_authorize",
+		mcp.WithDescription("This feature was introduced in GitLab 12.6"),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
+	)
+
+	s.AddTool(tool, mcp.NewTypedToolHandler(putProjectsIdPackagesConanV1FilesPackageNamePackageVersionPackageUsernamePackageChannelRecipeRevisionExportFileNameAuthorizeHandler))
+}
+
+func putProjectsIdPackagesConanV1FilesPackageNamePackageVersionPackageUsernamePackageChannelRecipeRevisionExportFileNameAuthorizeHandler(ctx context.Context, request mcp.CallToolRequest, req PutProjectsIdPackagesConanV1FilesPackageNamePackageVersionPackageUsernamePackageChannelRecipeRevisionExportFileNameAuthorizeRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	return toResult(c.PutApiV4ProjectsIdPackagesConanV1FilesPackageNamePackageVersionPackageUsernamePackageChannelRecipeRevisionExportFileNameAuthorize(ctx, req.Id, req.PackageName, req.PackageVersion, req.PackageUsername, req.PackageChannel, req.RecipeRevision, req.FileName, authorizationHeader))
 }
 
 type PutProjectsIdPackagesConanV1FilesPackageNamePackageVersionPackageUsernamePackageChannelRecipeRevisionPackageConanPackageReferencePackageRevisionFileNameRequest struct {
@@ -4992,6 +5506,49 @@ func getProjectsIdPackagesConanV1FilesPackageNamePackageVersionPackageUsernamePa
 	}
 
 	return toResult(c.GetApiV4ProjectsIdPackagesConanV1FilesPackageNamePackageVersionPackageUsernamePackageChannelRecipeRevisionPackageConanPackageReferencePackageRevisionFileName(ctx, req.Id, req.PackageName, req.PackageVersion, req.PackageUsername, req.PackageChannel, req.RecipeRevision, req.ConanPackageReference, req.PackageRevision, req.FileName, authorizationHeader))
+}
+
+type PutProjectsIdPackagesConanV1FilesPackageNamePackageVersionPackageUsernamePackageChannelRecipeRevisionPackageConanPackageReferencePackageRevisionFileNameAuthorizeRequest struct {
+	Id                    string `json:"id" jsonschema:"description=The ID or URL-encoded path of the project"`
+	PackageName           string `json:"package_name" jsonschema:"description=Package name"`
+	PackageVersion        string `json:"package_version" jsonschema:"description=Package version"`
+	PackageUsername       string `json:"package_username" jsonschema:"description=Package username"`
+	PackageChannel        string `json:"package_channel" jsonschema:"description=Package channel"`
+	RecipeRevision        string `json:"recipe_revision" jsonschema:"description=Conan Recipe Revision"`
+	ConanPackageReference string `json:"conan_package_reference" jsonschema:"description=Conan Package ID"`
+	PackageRevision       string `json:"package_revision" jsonschema:"description=Conan Package Revision"`
+	FileName              string `json:"file_name" jsonschema:"description=Package file name"`
+}
+
+func registerPutProjectsIdPackagesConanV1FilesPackageNamePackageVersionPackageUsernamePackageChannelRecipeRevisionPackageConanPackageReferencePackageRevisionFileNameAuthorize(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&PutProjectsIdPackagesConanV1FilesPackageNamePackageVersionPackageUsernamePackageChannelRecipeRevisionPackageConanPackageReferencePackageRevisionFileNameAuthorizeRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
+	tool := mcp.NewTool("put_pjs_id_pkgs_conan_v1_files_package_name_package_version_package_username_package_channel_recipe_revision_package_conan_package_reference_package_revision_file_name_authorize",
+		mcp.WithDescription("This feature was introduced in GitLab 12.6"),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
+	)
+
+	s.AddTool(tool, mcp.NewTypedToolHandler(putProjectsIdPackagesConanV1FilesPackageNamePackageVersionPackageUsernamePackageChannelRecipeRevisionPackageConanPackageReferencePackageRevisionFileNameAuthorizeHandler))
+}
+
+func putProjectsIdPackagesConanV1FilesPackageNamePackageVersionPackageUsernamePackageChannelRecipeRevisionPackageConanPackageReferencePackageRevisionFileNameAuthorizeHandler(ctx context.Context, request mcp.CallToolRequest, req PutProjectsIdPackagesConanV1FilesPackageNamePackageVersionPackageUsernamePackageChannelRecipeRevisionPackageConanPackageReferencePackageRevisionFileNameAuthorizeRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	return toResult(c.PutApiV4ProjectsIdPackagesConanV1FilesPackageNamePackageVersionPackageUsernamePackageChannelRecipeRevisionPackageConanPackageReferencePackageRevisionFileNameAuthorize(ctx, req.Id, req.PackageName, req.PackageVersion, req.PackageUsername, req.PackageChannel, req.RecipeRevision, req.ConanPackageReference, req.PackageRevision, req.FileName, authorizationHeader))
 }
 
 type GetProjectsIdPackagesConanV2UsersAuthenticateRequest struct {
@@ -5381,6 +5938,47 @@ func getProjectsIdPackagesConanV2ConansPackageNamePackageVersionPackageUsernameP
 	return toResult(c.GetApiV4ProjectsIdPackagesConanV2ConansPackageNamePackageVersionPackageUsernamePackageChannelRevisionsRecipeRevisionFilesFileName(ctx, req.Id, req.PackageName, req.PackageVersion, req.PackageUsername, req.PackageChannel, req.RecipeRevision, req.FileName, authorizationHeader))
 }
 
+type PutProjectsIdPackagesConanV2ConansPackageNamePackageVersionPackageUsernamePackageChannelRevisionsRecipeRevisionFilesFileNameAuthorizeRequest struct {
+	Id              string `json:"id" jsonschema:"description=The ID or URL-encoded path of the project"`
+	PackageName     string `json:"package_name" jsonschema:"description=Package name"`
+	PackageVersion  string `json:"package_version" jsonschema:"description=Package version"`
+	PackageUsername string `json:"package_username" jsonschema:"description=Package username"`
+	PackageChannel  string `json:"package_channel" jsonschema:"description=Package channel"`
+	RecipeRevision  string `json:"recipe_revision" jsonschema:"description=Recipe revision"`
+	FileName        string `json:"file_name" jsonschema:"description=Package file name"`
+}
+
+func registerPutProjectsIdPackagesConanV2ConansPackageNamePackageVersionPackageUsernamePackageChannelRevisionsRecipeRevisionFilesFileNameAuthorize(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&PutProjectsIdPackagesConanV2ConansPackageNamePackageVersionPackageUsernamePackageChannelRevisionsRecipeRevisionFilesFileNameAuthorizeRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
+	tool := mcp.NewTool("put_pjs_id_pkgs_conan_v2_conans_package_name_package_version_package_username_package_channel_revisions_recipe_revision_files_file_name_authorize",
+		mcp.WithDescription("This feature was introduced in GitLab 17.10"),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
+	)
+
+	s.AddTool(tool, mcp.NewTypedToolHandler(putProjectsIdPackagesConanV2ConansPackageNamePackageVersionPackageUsernamePackageChannelRevisionsRecipeRevisionFilesFileNameAuthorizeHandler))
+}
+
+func putProjectsIdPackagesConanV2ConansPackageNamePackageVersionPackageUsernamePackageChannelRevisionsRecipeRevisionFilesFileNameAuthorizeHandler(ctx context.Context, request mcp.CallToolRequest, req PutProjectsIdPackagesConanV2ConansPackageNamePackageVersionPackageUsernamePackageChannelRevisionsRecipeRevisionFilesFileNameAuthorizeRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	return toResult(c.PutApiV4ProjectsIdPackagesConanV2ConansPackageNamePackageVersionPackageUsernamePackageChannelRevisionsRecipeRevisionFilesFileNameAuthorize(ctx, req.Id, req.PackageName, req.PackageVersion, req.PackageUsername, req.PackageChannel, req.RecipeRevision, req.FileName, authorizationHeader))
+}
+
 type GetProjectsIdPackagesConanV2ConansPackageNamePackageVersionPackageUsernamePackageChannelRevisionsRecipeRevisionSearchRequest struct {
 	Id              string `json:"id" jsonschema:"description=The ID or URL-encoded path of the project"`
 	PackageName     string `json:"package_name" jsonschema:"description=Package name"`
@@ -5673,6 +6271,49 @@ func getProjectsIdPackagesConanV2ConansPackageNamePackageVersionPackageUsernameP
 	}
 
 	return toResult(c.GetApiV4ProjectsIdPackagesConanV2ConansPackageNamePackageVersionPackageUsernamePackageChannelRevisionsRecipeRevisionPackagesConanPackageReferenceRevisionsPackageRevisionFilesFileName(ctx, req.Id, req.PackageName, req.PackageVersion, req.PackageUsername, req.PackageChannel, req.RecipeRevision, req.ConanPackageReference, req.PackageRevision, req.FileName, authorizationHeader))
+}
+
+type PutProjectsIdPackagesConanV2ConansPackageNamePackageVersionPackageUsernamePackageChannelRevisionsRecipeRevisionPackagesConanPackageReferenceRevisionsPackageRevisionFilesFileNameAuthorizeRequest struct {
+	Id                    string `json:"id" jsonschema:"description=The ID or URL-encoded path of the project"`
+	PackageName           string `json:"package_name" jsonschema:"description=Package name"`
+	PackageVersion        string `json:"package_version" jsonschema:"description=Package version"`
+	PackageUsername       string `json:"package_username" jsonschema:"description=Package username"`
+	PackageChannel        string `json:"package_channel" jsonschema:"description=Package channel"`
+	RecipeRevision        string `json:"recipe_revision" jsonschema:"description=Recipe revision"`
+	ConanPackageReference string `json:"conan_package_reference" jsonschema:"description=Package reference"`
+	PackageRevision       string `json:"package_revision" jsonschema:"description=Package revision"`
+	FileName              string `json:"file_name" jsonschema:"description=Package file name"`
+}
+
+func registerPutProjectsIdPackagesConanV2ConansPackageNamePackageVersionPackageUsernamePackageChannelRevisionsRecipeRevisionPackagesConanPackageReferenceRevisionsPackageRevisionFilesFileNameAuthorize(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&PutProjectsIdPackagesConanV2ConansPackageNamePackageVersionPackageUsernamePackageChannelRevisionsRecipeRevisionPackagesConanPackageReferenceRevisionsPackageRevisionFilesFileNameAuthorizeRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
+	tool := mcp.NewTool("put_pjs_id_pkgs_conan_v2_conans_package_name_package_version_package_username_package_channel_revisions_recipe_revision_packages_conan_package_reference_revisions_package_revision_files_file_name_authorize",
+		mcp.WithDescription("This feature was introduced in GitLab 17.11"),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
+	)
+
+	s.AddTool(tool, mcp.NewTypedToolHandler(putProjectsIdPackagesConanV2ConansPackageNamePackageVersionPackageUsernamePackageChannelRevisionsRecipeRevisionPackagesConanPackageReferenceRevisionsPackageRevisionFilesFileNameAuthorizeHandler))
+}
+
+func putProjectsIdPackagesConanV2ConansPackageNamePackageVersionPackageUsernamePackageChannelRevisionsRecipeRevisionPackagesConanPackageReferenceRevisionsPackageRevisionFilesFileNameAuthorizeHandler(ctx context.Context, request mcp.CallToolRequest, req PutProjectsIdPackagesConanV2ConansPackageNamePackageVersionPackageUsernamePackageChannelRevisionsRecipeRevisionPackagesConanPackageReferenceRevisionsPackageRevisionFilesFileNameAuthorizeRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	return toResult(c.PutApiV4ProjectsIdPackagesConanV2ConansPackageNamePackageVersionPackageUsernamePackageChannelRevisionsRecipeRevisionPackagesConanPackageReferenceRevisionsPackageRevisionFilesFileNameAuthorize(ctx, req.Id, req.PackageName, req.PackageVersion, req.PackageUsername, req.PackageChannel, req.RecipeRevision, req.ConanPackageReference, req.PackageRevision, req.FileName, authorizationHeader))
 }
 
 type GetProjectsIdPackagesDebianPoolDistributionLetterPackageNamePackageVersionFileNameRequest struct {
@@ -5972,6 +6613,42 @@ func getProjectsIdDeployKeysKeyIdHandler(ctx context.Context, request mcp.CallTo
 	}
 
 	return toResult(c.GetApiV4ProjectsIdDeployKeysKeyId(ctx, req.Id, req.KeyId, authorizationHeader))
+}
+
+type PostProjectsIdDeployKeysKeyIdEnableRequest struct {
+	Id    string `json:"id" jsonschema:"description=The ID or URL-encoded path of the project owned by the authenticated user"`
+	KeyId int32  `json:"key_id" jsonschema:"description=The ID of the deploy key"`
+}
+
+func registerPostProjectsIdDeployKeysKeyIdEnable(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&PostProjectsIdDeployKeysKeyIdEnableRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
+	tool := mcp.NewTool("post_pjs_id_deploy_keys_key_id_enable",
+		mcp.WithDescription("Enables a deploy key for a project so this can be used. Returns the enabled key, with a status code 201 when successful. This feature was added in GitLab 8.11."),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
+	)
+
+	s.AddTool(tool, mcp.NewTypedToolHandler(postProjectsIdDeployKeysKeyIdEnableHandler))
+}
+
+func postProjectsIdDeployKeysKeyIdEnableHandler(ctx context.Context, request mcp.CallToolRequest, req PostProjectsIdDeployKeysKeyIdEnableRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	return toResult(c.PostApiV4ProjectsIdDeployKeysKeyIdEnable(ctx, req.Id, req.KeyId, authorizationHeader))
 }
 
 type PostProjectsIdDeployTokensRequest struct {
@@ -6564,6 +7241,79 @@ func getProjectsIdMergeRequestsMergeRequestIidDraftNotesDraftNoteIdHandler(ctx c
 	return toResult(c.GetApiV4ProjectsIdMergeRequestsMergeRequestIidDraftNotesDraftNoteId(ctx, req.Id, req.MergeRequestIid, req.DraftNoteId, authorizationHeader))
 }
 
+type PutProjectsIdMergeRequestsMergeRequestIidDraftNotesDraftNoteIdPublishRequest struct {
+	Id              string `json:"id" jsonschema:"description=The ID of a project"`
+	MergeRequestIid int32  `json:"merge_request_iid" jsonschema:"description=The ID of a merge request"`
+	DraftNoteId     int32  `json:"draft_note_id" jsonschema:"description=The ID of a draft note"`
+}
+
+func registerPutProjectsIdMergeRequestsMergeRequestIidDraftNotesDraftNoteIdPublish(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&PutProjectsIdMergeRequestsMergeRequestIidDraftNotesDraftNoteIdPublishRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
+	tool := mcp.NewTool("put_pjs_id_mrs_merge_request_iid_draft_notes_draft_note_id_publish",
+		mcp.WithDescription("Publish a pending draft note"),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
+	)
+
+	s.AddTool(tool, mcp.NewTypedToolHandler(putProjectsIdMergeRequestsMergeRequestIidDraftNotesDraftNoteIdPublishHandler))
+}
+
+func putProjectsIdMergeRequestsMergeRequestIidDraftNotesDraftNoteIdPublishHandler(ctx context.Context, request mcp.CallToolRequest, req PutProjectsIdMergeRequestsMergeRequestIidDraftNotesDraftNoteIdPublishRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	return toResult(c.PutApiV4ProjectsIdMergeRequestsMergeRequestIidDraftNotesDraftNoteIdPublish(ctx, req.Id, req.MergeRequestIid, req.DraftNoteId, authorizationHeader))
+}
+
+type PostProjectsIdMergeRequestsMergeRequestIidDraftNotesBulkPublishRequest struct {
+	Id              string `json:"id" jsonschema:"description=The ID of a project"`
+	MergeRequestIid int32  `json:"merge_request_iid" jsonschema:"description=The ID of a merge request"`
+}
+
+func registerPostProjectsIdMergeRequestsMergeRequestIidDraftNotesBulkPublish(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&PostProjectsIdMergeRequestsMergeRequestIidDraftNotesBulkPublishRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
+	tool := mcp.NewTool("post_pjs_id_mrs_merge_request_iid_draft_notes_bulk_publish",
+		mcp.WithDescription("Bulk publish all pending draft notes"),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
+	)
+
+	s.AddTool(tool, mcp.NewTypedToolHandler(postProjectsIdMergeRequestsMergeRequestIidDraftNotesBulkPublishHandler))
+}
+
+func postProjectsIdMergeRequestsMergeRequestIidDraftNotesBulkPublishHandler(ctx context.Context, request mcp.CallToolRequest, req PostProjectsIdMergeRequestsMergeRequestIidDraftNotesBulkPublishRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	return toResult(c.PostApiV4ProjectsIdMergeRequestsMergeRequestIidDraftNotesBulkPublish(ctx, req.Id, req.MergeRequestIid, authorizationHeader))
+}
+
 type PostProjectsIdEnvironmentsRequest struct {
 	Id string `json:"id" jsonschema:"description=The ID or URL-encoded path of the project owned by the authenticated user"`
 
@@ -6856,6 +7606,41 @@ func postProjectsIdEnvironmentsStopStaleHandler(ctx context.Context, request mcp
 	}
 
 	return toResult(c.PostApiV4ProjectsIdEnvironmentsStopStale(ctx, req.Id, req.Body, authorizationHeader))
+}
+
+type PostProjectsIdErrorTrackingClientKeysRequest struct {
+	Id string `json:"id" jsonschema:"description=The ID or URL-encoded path of the project owned by the authenticated user"`
+}
+
+func registerPostProjectsIdErrorTrackingClientKeys(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&PostProjectsIdErrorTrackingClientKeysRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
+	tool := mcp.NewTool("post_pjs_id_error_tracking_client_keys",
+		mcp.WithDescription("Creates a new client key for a project. The public key attribute is generated automatically.This feature was introduced in GitLab 14.3."),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
+	)
+
+	s.AddTool(tool, mcp.NewTypedToolHandler(postProjectsIdErrorTrackingClientKeysHandler))
+}
+
+func postProjectsIdErrorTrackingClientKeysHandler(ctx context.Context, request mcp.CallToolRequest, req PostProjectsIdErrorTrackingClientKeysRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	return toResult(c.PostApiV4ProjectsIdErrorTrackingClientKeys(ctx, req.Id, authorizationHeader))
 }
 
 type GetProjectsIdErrorTrackingClientKeysRequest struct {
@@ -7845,6 +8630,42 @@ func getProjectsIdPackagesHelmChannelChartsFileNameTgzHandler(ctx context.Contex
 	}
 
 	return toResult(c.GetApiV4ProjectsIdPackagesHelmChannelChartsFileNameTgz(ctx, req.Id, req.Channel, req.FileName, authorizationHeader))
+}
+
+type PostProjectsIdPackagesHelmApiChannelChartsAuthorizeRequest struct {
+	Id      int32  `json:"id" jsonschema:"description=The ID or full path of a project"`
+	Channel string `json:"channel" jsonschema:"description=Helm channel"`
+}
+
+func registerPostProjectsIdPackagesHelmApiChannelChartsAuthorize(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&PostProjectsIdPackagesHelmApiChannelChartsAuthorizeRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
+	tool := mcp.NewTool("post_pjs_id_pkgs_helm_api_channel_charts_authorize",
+		mcp.WithDescription("This feature was introduced in GitLab 14.0"),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
+	)
+
+	s.AddTool(tool, mcp.NewTypedToolHandler(postProjectsIdPackagesHelmApiChannelChartsAuthorizeHandler))
+}
+
+func postProjectsIdPackagesHelmApiChannelChartsAuthorizeHandler(ctx context.Context, request mcp.CallToolRequest, req PostProjectsIdPackagesHelmApiChannelChartsAuthorizeRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	return toResult(c.PostApiV4ProjectsIdPackagesHelmApiChannelChartsAuthorize(ctx, req.Id, req.Channel, authorizationHeader))
 }
 
 type PostProjectsIdPackagesHelmApiChannelChartsRequest struct {
@@ -12389,6 +13210,41 @@ func getProjectsIdCiLintHandler(ctx context.Context, request mcp.CallToolRequest
 	return toResult(c.GetApiV4ProjectsIdCiLint(ctx, req.Id, req.Params, authorizationHeader))
 }
 
+type PostProjectsIdUploadsAuthorizeRequest struct {
+	Id int32 `json:"id" jsonschema:"description=null"`
+}
+
+func registerPostProjectsIdUploadsAuthorize(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&PostProjectsIdUploadsAuthorizeRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
+	tool := mcp.NewTool("post_pjs_id_uploads_authorize",
+		mcp.WithDescription("This feature was introduced in GitLab 13.11"),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
+	)
+
+	s.AddTool(tool, mcp.NewTypedToolHandler(postProjectsIdUploadsAuthorizeHandler))
+}
+
+func postProjectsIdUploadsAuthorizeHandler(ctx context.Context, request mcp.CallToolRequest, req PostProjectsIdUploadsAuthorizeRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	return toResult(c.PostApiV4ProjectsIdUploadsAuthorize(ctx, req.Id, authorizationHeader))
+}
+
 type PostProjectsIdUploadsRequest struct {
 	Id int32 `json:"id" jsonschema:"description=null"`
 
@@ -12976,6 +13832,78 @@ func postProjectsIdMergeRequestsMergeRequestIidApproveHandler(ctx context.Contex
 	return toResult(c.PostApiV4ProjectsIdMergeRequestsMergeRequestIidApprove(ctx, req.Id, req.MergeRequestIid, req.Body, authorizationHeader))
 }
 
+type PostProjectsIdMergeRequestsMergeRequestIidUnapproveRequest struct {
+	Id              int32 `json:"id" jsonschema:"description=null"`
+	MergeRequestIid int32 `json:"merge_request_iid" jsonschema:"description=null"`
+}
+
+func registerPostProjectsIdMergeRequestsMergeRequestIidUnapprove(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&PostProjectsIdMergeRequestsMergeRequestIidUnapproveRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
+	tool := mcp.NewTool("post_pjs_id_mrs_merge_request_iid_unapprove",
+		mcp.WithDescription("Remove an approval from a merge request"),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
+	)
+
+	s.AddTool(tool, mcp.NewTypedToolHandler(postProjectsIdMergeRequestsMergeRequestIidUnapproveHandler))
+}
+
+func postProjectsIdMergeRequestsMergeRequestIidUnapproveHandler(ctx context.Context, request mcp.CallToolRequest, req PostProjectsIdMergeRequestsMergeRequestIidUnapproveRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	return toResult(c.PostApiV4ProjectsIdMergeRequestsMergeRequestIidUnapprove(ctx, req.Id, req.MergeRequestIid, authorizationHeader))
+}
+
+type PutProjectsIdMergeRequestsMergeRequestIidResetApprovalsRequest struct {
+	Id              int32 `json:"id" jsonschema:"description=null"`
+	MergeRequestIid int32 `json:"merge_request_iid" jsonschema:"description=null"`
+}
+
+func registerPutProjectsIdMergeRequestsMergeRequestIidResetApprovals(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&PutProjectsIdMergeRequestsMergeRequestIidResetApprovalsRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
+	tool := mcp.NewTool("put_pjs_id_mrs_merge_request_iid_reset_approvals",
+		mcp.WithDescription("Clear all approvals of merge request. This feature was added in GitLab 15.4"),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
+	)
+
+	s.AddTool(tool, mcp.NewTypedToolHandler(putProjectsIdMergeRequestsMergeRequestIidResetApprovalsHandler))
+}
+
+func putProjectsIdMergeRequestsMergeRequestIidResetApprovalsHandler(ctx context.Context, request mcp.CallToolRequest, req PutProjectsIdMergeRequestsMergeRequestIidResetApprovalsRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	return toResult(c.PutApiV4ProjectsIdMergeRequestsMergeRequestIidResetApprovals(ctx, req.Id, req.MergeRequestIid, authorizationHeader))
+}
+
 type GetProjectsIdMergeRequestsMergeRequestIidApprovalStateRequest struct {
 	Id              string `json:"id" jsonschema:"description=The ID or URL-encoded path of the project"`
 	MergeRequestIid int32  `json:"merge_request_iid" jsonschema:"description=The IID of a merge request"`
@@ -13010,6 +13938,41 @@ func getProjectsIdMergeRequestsMergeRequestIidApprovalStateHandler(ctx context.C
 	}
 
 	return toResult(c.GetApiV4ProjectsIdMergeRequestsMergeRequestIidApprovalState(ctx, req.Id, req.MergeRequestIid, authorizationHeader))
+}
+
+type PostProjectsIdCreateCiConfigRequest struct {
+	Id int32 `json:"id" jsonschema:"description=null"`
+}
+
+func registerPostProjectsIdCreateCiConfig(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&PostProjectsIdCreateCiConfigRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
+	tool := mcp.NewTool("post_pjs_id_create_ci_config",
+		mcp.WithDescription("Creates merge request for missing ci config in project"),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
+	)
+
+	s.AddTool(tool, mcp.NewTypedToolHandler(postProjectsIdCreateCiConfigHandler))
+}
+
+func postProjectsIdCreateCiConfigHandler(ctx context.Context, request mcp.CallToolRequest, req PostProjectsIdCreateCiConfigRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	return toResult(c.PostApiV4ProjectsIdCreateCiConfig(ctx, req.Id, authorizationHeader))
 }
 
 type PostProjectsIdMergeRequestsMergeRequestIidTimeEstimateRequest struct {
@@ -13050,6 +14013,42 @@ func postProjectsIdMergeRequestsMergeRequestIidTimeEstimateHandler(ctx context.C
 	return toResult(c.PostApiV4ProjectsIdMergeRequestsMergeRequestIidTimeEstimate(ctx, req.Id, req.MergeRequestIid, req.Body, authorizationHeader))
 }
 
+type PostProjectsIdMergeRequestsMergeRequestIidResetTimeEstimateRequest struct {
+	Id              string `json:"id" jsonschema:"description=The ID or URL-encoded path of the project."`
+	MergeRequestIid int32  `json:"merge_request_iid" jsonschema:"description=The internal ID of the merge_request."`
+}
+
+func registerPostProjectsIdMergeRequestsMergeRequestIidResetTimeEstimate(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&PostProjectsIdMergeRequestsMergeRequestIidResetTimeEstimateRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
+	tool := mcp.NewTool("post_pjs_id_mrs_merge_request_iid_reset_time_estimate",
+		mcp.WithDescription("Resets the estimated time for this merge_request to 0 seconds."),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
+	)
+
+	s.AddTool(tool, mcp.NewTypedToolHandler(postProjectsIdMergeRequestsMergeRequestIidResetTimeEstimateHandler))
+}
+
+func postProjectsIdMergeRequestsMergeRequestIidResetTimeEstimateHandler(ctx context.Context, request mcp.CallToolRequest, req PostProjectsIdMergeRequestsMergeRequestIidResetTimeEstimateRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	return toResult(c.PostApiV4ProjectsIdMergeRequestsMergeRequestIidResetTimeEstimate(ctx, req.Id, req.MergeRequestIid, authorizationHeader))
+}
+
 type PostProjectsIdMergeRequestsMergeRequestIidAddSpentTimeRequest struct {
 	Id              string `json:"id" jsonschema:"description=The ID or URL-encoded path of the project."`
 	MergeRequestIid int32  `json:"merge_request_iid" jsonschema:"description=The internal ID of the merge_request."`
@@ -13086,6 +14085,42 @@ func postProjectsIdMergeRequestsMergeRequestIidAddSpentTimeHandler(ctx context.C
 	}
 
 	return toResult(c.PostApiV4ProjectsIdMergeRequestsMergeRequestIidAddSpentTime(ctx, req.Id, req.MergeRequestIid, req.Body, authorizationHeader))
+}
+
+type PostProjectsIdMergeRequestsMergeRequestIidResetSpentTimeRequest struct {
+	Id              string `json:"id" jsonschema:"description=The ID or URL-encoded path of the project."`
+	MergeRequestIid int32  `json:"merge_request_iid" jsonschema:"description=The internal ID of the merge_request"`
+}
+
+func registerPostProjectsIdMergeRequestsMergeRequestIidResetSpentTime(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&PostProjectsIdMergeRequestsMergeRequestIidResetSpentTimeRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
+	tool := mcp.NewTool("post_pjs_id_mrs_merge_request_iid_reset_spent_time",
+		mcp.WithDescription("Resets the total spent time for this merge_request to 0 seconds."),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
+	)
+
+	s.AddTool(tool, mcp.NewTypedToolHandler(postProjectsIdMergeRequestsMergeRequestIidResetSpentTimeHandler))
+}
+
+func postProjectsIdMergeRequestsMergeRequestIidResetSpentTimeHandler(ctx context.Context, request mcp.CallToolRequest, req PostProjectsIdMergeRequestsMergeRequestIidResetSpentTimeRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	return toResult(c.PostApiV4ProjectsIdMergeRequestsMergeRequestIidResetSpentTime(ctx, req.Id, req.MergeRequestIid, authorizationHeader))
 }
 
 type GetProjectsIdMergeRequestsMergeRequestIidTimeStatsRequest struct {
@@ -13786,6 +14821,42 @@ func getProjectsIdMergeRequestsMergeRequestIidMergeRefHandler(ctx context.Contex
 	return toResult(c.GetApiV4ProjectsIdMergeRequestsMergeRequestIidMergeRef(ctx, req.Id, req.MergeRequestIid, authorizationHeader))
 }
 
+type PostProjectsIdMergeRequestsMergeRequestIidCancelMergeWhenPipelineSucceedsRequest struct {
+	Id              string `json:"id" jsonschema:"description=The ID or URL-encoded path of the project."`
+	MergeRequestIid int32  `json:"merge_request_iid" jsonschema:"description=null"`
+}
+
+func registerPostProjectsIdMergeRequestsMergeRequestIidCancelMergeWhenPipelineSucceeds(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&PostProjectsIdMergeRequestsMergeRequestIidCancelMergeWhenPipelineSucceedsRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
+	tool := mcp.NewTool("post_pjs_id_mrs_merge_request_iid_cancel_merge_when_pipeline_succeeds",
+		mcp.WithDescription("Cancel merge if \"Merge When Pipeline Succeeds\" is enabled"),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
+	)
+
+	s.AddTool(tool, mcp.NewTypedToolHandler(postProjectsIdMergeRequestsMergeRequestIidCancelMergeWhenPipelineSucceedsHandler))
+}
+
+func postProjectsIdMergeRequestsMergeRequestIidCancelMergeWhenPipelineSucceedsHandler(ctx context.Context, request mcp.CallToolRequest, req PostProjectsIdMergeRequestsMergeRequestIidCancelMergeWhenPipelineSucceedsRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	return toResult(c.PostApiV4ProjectsIdMergeRequestsMergeRequestIidCancelMergeWhenPipelineSucceeds(ctx, req.Id, req.MergeRequestIid, authorizationHeader))
+}
+
 type PutProjectsIdMergeRequestsMergeRequestIidRebaseRequest struct {
 	Id              string `json:"id" jsonschema:"description=The ID or URL-encoded path of the project."`
 	MergeRequestIid int32  `json:"merge_request_iid" jsonschema:"description=null"`
@@ -13971,6 +15042,76 @@ func getProjectsIdMergeRequestsMergeRequestIidVersionsVersionIdHandler(ctx conte
 	}
 
 	return toResult(c.GetApiV4ProjectsIdMergeRequestsMergeRequestIidVersionsVersionId(ctx, req.Id, req.MergeRequestIid, req.VersionId, req.Params, authorizationHeader))
+}
+
+type PostProjectsIdPackagesNpmNpmV1SecurityAdvisoriesBulkRequest struct {
+	Id string `json:"id" jsonschema:"description=The ID or URL-encoded path of the project"`
+}
+
+func registerPostProjectsIdPackagesNpmNpmV1SecurityAdvisoriesBulk(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&PostProjectsIdPackagesNpmNpmV1SecurityAdvisoriesBulkRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
+	tool := mcp.NewTool("post_pjs_id_pkgs_npm_npm_v1_security_advisories_bulk",
+		mcp.WithDescription("This feature was introduced in GitLab 15.6"),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
+	)
+
+	s.AddTool(tool, mcp.NewTypedToolHandler(postProjectsIdPackagesNpmNpmV1SecurityAdvisoriesBulkHandler))
+}
+
+func postProjectsIdPackagesNpmNpmV1SecurityAdvisoriesBulkHandler(ctx context.Context, request mcp.CallToolRequest, req PostProjectsIdPackagesNpmNpmV1SecurityAdvisoriesBulkRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	return toResult(c.PostApiV4ProjectsIdPackagesNpmNpmV1SecurityAdvisoriesBulk(ctx, req.Id, authorizationHeader))
+}
+
+type PostProjectsIdPackagesNpmNpmV1SecurityAuditsQuickRequest struct {
+	Id string `json:"id" jsonschema:"description=The ID or URL-encoded path of the project"`
+}
+
+func registerPostProjectsIdPackagesNpmNpmV1SecurityAuditsQuick(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&PostProjectsIdPackagesNpmNpmV1SecurityAuditsQuickRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
+	tool := mcp.NewTool("post_pjs_id_pkgs_npm_npm_v1_security_audits_quick",
+		mcp.WithDescription("This feature was introduced in GitLab 15.6"),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
+	)
+
+	s.AddTool(tool, mcp.NewTypedToolHandler(postProjectsIdPackagesNpmNpmV1SecurityAuditsQuickHandler))
+}
+
+func postProjectsIdPackagesNpmNpmV1SecurityAuditsQuickHandler(ctx context.Context, request mcp.CallToolRequest, req PostProjectsIdPackagesNpmNpmV1SecurityAuditsQuickRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	return toResult(c.PostApiV4ProjectsIdPackagesNpmNpmV1SecurityAuditsQuick(ctx, req.Id, authorizationHeader))
 }
 
 type PutProjectsIdPackagesNpmPackageNameRequest struct {
@@ -14226,6 +15367,41 @@ func putProjectsIdPackagesNugetHandler(ctx context.Context, request mcp.CallTool
 	return toResult(c.PutApiV4ProjectsIdPackagesNuget(ctx, req.Id, req.Body, authorizationHeader))
 }
 
+type PutProjectsIdPackagesNugetAuthorizeRequest struct {
+	Id string `json:"id" jsonschema:"description=The ID or URL-encoded path of the project"`
+}
+
+func registerPutProjectsIdPackagesNugetAuthorize(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&PutProjectsIdPackagesNugetAuthorizeRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
+	tool := mcp.NewTool("put_pjs_id_pkgs_nuget_authorize",
+		mcp.WithDescription("This feature was introduced in GitLab 14.1"),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
+	)
+
+	s.AddTool(tool, mcp.NewTypedToolHandler(putProjectsIdPackagesNugetAuthorizeHandler))
+}
+
+func putProjectsIdPackagesNugetAuthorizeHandler(ctx context.Context, request mcp.CallToolRequest, req PutProjectsIdPackagesNugetAuthorizeRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	return toResult(c.PutApiV4ProjectsIdPackagesNugetAuthorize(ctx, req.Id, authorizationHeader))
+}
+
 type PutProjectsIdPackagesNugetSymbolpackageRequest struct {
 	Id string `json:"id" jsonschema:"description=The ID or URL-encoded path of the project"`
 
@@ -14261,6 +15437,76 @@ func putProjectsIdPackagesNugetSymbolpackageHandler(ctx context.Context, request
 	}
 
 	return toResult(c.PutApiV4ProjectsIdPackagesNugetSymbolpackage(ctx, req.Id, req.Body, authorizationHeader))
+}
+
+type PutProjectsIdPackagesNugetSymbolpackageAuthorizeRequest struct {
+	Id string `json:"id" jsonschema:"description=The ID or URL-encoded path of the project"`
+}
+
+func registerPutProjectsIdPackagesNugetSymbolpackageAuthorize(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&PutProjectsIdPackagesNugetSymbolpackageAuthorizeRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
+	tool := mcp.NewTool("put_pjs_id_pkgs_nuget_symbolpackage_authorize",
+		mcp.WithDescription("This feature was introduced in GitLab 14.1"),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
+	)
+
+	s.AddTool(tool, mcp.NewTypedToolHandler(putProjectsIdPackagesNugetSymbolpackageAuthorizeHandler))
+}
+
+func putProjectsIdPackagesNugetSymbolpackageAuthorizeHandler(ctx context.Context, request mcp.CallToolRequest, req PutProjectsIdPackagesNugetSymbolpackageAuthorizeRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	return toResult(c.PutApiV4ProjectsIdPackagesNugetSymbolpackageAuthorize(ctx, req.Id, authorizationHeader))
+}
+
+type PutProjectsIdPackagesNugetV2AuthorizeRequest struct {
+	Id string `json:"id" jsonschema:"description=The ID or URL-encoded path of the project"`
+}
+
+func registerPutProjectsIdPackagesNugetV2Authorize(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&PutProjectsIdPackagesNugetV2AuthorizeRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
+	tool := mcp.NewTool("put_pjs_id_pkgs_nuget_v2_authorize",
+		mcp.WithDescription("This feature was introduced in GitLab 16.2"),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
+	)
+
+	s.AddTool(tool, mcp.NewTypedToolHandler(putProjectsIdPackagesNugetV2AuthorizeHandler))
+}
+
+func putProjectsIdPackagesNugetV2AuthorizeHandler(ctx context.Context, request mcp.CallToolRequest, req PutProjectsIdPackagesNugetV2AuthorizeRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	return toResult(c.PutApiV4ProjectsIdPackagesNugetV2Authorize(ctx, req.Id, authorizationHeader))
 }
 
 type GetProjectsIdPackagesPackageIdPackageFilesRequest struct {
@@ -14588,6 +15834,42 @@ func getProjectsIdPagesDomainsDomainHandler(ctx context.Context, request mcp.Cal
 	}
 
 	return toResult(c.GetApiV4ProjectsIdPagesDomainsDomain(ctx, req.Id, req.Domain, authorizationHeader))
+}
+
+type PutProjectsIdPagesDomainsDomainVerifyRequest struct {
+	Id     string `json:"id" jsonschema:"description=The ID or URL-encoded path of the project owned by the authenticated user"`
+	Domain string `json:"domain" jsonschema:"description=The domain to verify"`
+}
+
+func registerPutProjectsIdPagesDomainsDomainVerify(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&PutProjectsIdPagesDomainsDomainVerifyRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
+	tool := mcp.NewTool("put_pjs_id_pages_domains_domain_verify",
+		mcp.WithDescription("Verify a pages domain"),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
+	)
+
+	s.AddTool(tool, mcp.NewTypedToolHandler(putProjectsIdPagesDomainsDomainVerifyHandler))
+}
+
+func putProjectsIdPagesDomainsDomainVerifyHandler(ctx context.Context, request mcp.CallToolRequest, req PutProjectsIdPagesDomainsDomainVerifyRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	return toResult(c.PutApiV4ProjectsIdPagesDomainsDomainVerify(ctx, req.Id, req.Domain, authorizationHeader))
 }
 
 type GetProjectsIdAvatarRequest struct {
@@ -15980,6 +17262,114 @@ func getProjectsIdHooksHookIdEventsHandler(ctx context.Context, request mcp.Call
 	return toResult(c.GetApiV4ProjectsIdHooksHookIdEvents(ctx, req.Id, req.HookId, req.Params, authorizationHeader))
 }
 
+type PostProjectsIdHooksHookIdTestTriggerRequest struct {
+	Id      int32  `json:"id" jsonschema:"description=null"`
+	HookId  int32  `json:"hook_id" jsonschema:"description=The ID of the hook"`
+	Trigger string `json:"trigger" jsonschema:"description=The type of trigger hook"`
+}
+
+func registerPostProjectsIdHooksHookIdTestTrigger(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&PostProjectsIdHooksHookIdTestTriggerRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
+	tool := mcp.NewTool("post_pjs_id_hooks_hook_id_test_trigger",
+		mcp.WithDescription("Triggers a hook test"),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
+	)
+
+	s.AddTool(tool, mcp.NewTypedToolHandler(postProjectsIdHooksHookIdTestTriggerHandler))
+}
+
+func postProjectsIdHooksHookIdTestTriggerHandler(ctx context.Context, request mcp.CallToolRequest, req PostProjectsIdHooksHookIdTestTriggerRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	return toResult(c.PostApiV4ProjectsIdHooksHookIdTestTrigger(ctx, req.Id, req.HookId, req.Trigger, authorizationHeader))
+}
+
+type PostProjectsIdHooksHookIdEventsHookLogIdResendRequest struct {
+	Id        int32 `json:"id" jsonschema:"description=null"`
+	HookId    int32 `json:"hook_id" jsonschema:"description=null"`
+	HookLogId int32 `json:"hook_log_id" jsonschema:"description=null"`
+}
+
+func registerPostProjectsIdHooksHookIdEventsHookLogIdResend(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&PostProjectsIdHooksHookIdEventsHookLogIdResendRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
+	tool := mcp.NewTool("post_pjs_id_hooks_hook_id_events_hook_log_id_resend",
+		mcp.WithDescription("Resend a webhook event"),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
+	)
+
+	s.AddTool(tool, mcp.NewTypedToolHandler(postProjectsIdHooksHookIdEventsHookLogIdResendHandler))
+}
+
+func postProjectsIdHooksHookIdEventsHookLogIdResendHandler(ctx context.Context, request mcp.CallToolRequest, req PostProjectsIdHooksHookIdEventsHookLogIdResendRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	return toResult(c.PostApiV4ProjectsIdHooksHookIdEventsHookLogIdResend(ctx, req.Id, req.HookId, req.HookLogId, authorizationHeader))
+}
+
+type PostProjectsImportAuthorizeRequest struct {
+}
+
+func registerPostProjectsImportAuthorize(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&PostProjectsImportAuthorizeRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
+	tool := mcp.NewTool("post_pjs_import_authorize",
+		mcp.WithDescription("This feature was introduced in GitLab 12.9"),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
+	)
+
+	s.AddTool(tool, mcp.NewTypedToolHandler(postProjectsImportAuthorizeHandler))
+}
+
+func postProjectsImportAuthorizeHandler(ctx context.Context, request mcp.CallToolRequest, req PostProjectsImportAuthorizeRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	return toResult(c.PostApiV4ProjectsImportAuthorize(ctx, authorizationHeader))
+}
+
 type GetProjectsIdImportRequest struct {
 	Id string `json:"id" jsonschema:"description=The ID or URL-encoded path of the project"`
 }
@@ -16013,6 +17403,40 @@ func getProjectsIdImportHandler(ctx context.Context, request mcp.CallToolRequest
 	}
 
 	return toResult(c.GetApiV4ProjectsIdImport(ctx, req.Id, authorizationHeader))
+}
+
+type PostProjectsImportRelationAuthorizeRequest struct {
+}
+
+func registerPostProjectsImportRelationAuthorize(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&PostProjectsImportRelationAuthorizeRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
+	tool := mcp.NewTool("post_pjs_import_relation_authorize",
+		mcp.WithDescription("This feature was introduced in GitLab 16.11"),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
+	)
+
+	s.AddTool(tool, mcp.NewTypedToolHandler(postProjectsImportRelationAuthorizeHandler))
+}
+
+func postProjectsImportRelationAuthorizeHandler(ctx context.Context, request mcp.CallToolRequest, req PostProjectsImportRelationAuthorizeRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	return toResult(c.PostApiV4ProjectsImportRelationAuthorize(ctx, authorizationHeader))
 }
 
 type GetProjectsIdRelationImportsRequest struct {
@@ -17140,6 +18564,41 @@ func getProjectsIdCustomAttributesKeyHandler(ctx context.Context, request mcp.Ca
 	return toResult(c.GetApiV4ProjectsIdCustomAttributesKey(ctx, req.Id, req.Key, authorizationHeader))
 }
 
+type PostProjectsIdRestoreRequest struct {
+	Id int32 `json:"id" jsonschema:"description=null"`
+}
+
+func registerPostProjectsIdRestore(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&PostProjectsIdRestoreRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
+	tool := mcp.NewTool("post_pjs_id_restore",
+		mcp.WithDescription("Restore a project"),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
+	)
+
+	s.AddTool(tool, mcp.NewTypedToolHandler(postProjectsIdRestoreHandler))
+}
+
+func postProjectsIdRestoreHandler(ctx context.Context, request mcp.CallToolRequest, req PostProjectsIdRestoreRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	return toResult(c.PostApiV4ProjectsIdRestore(ctx, req.Id, authorizationHeader))
+}
+
 type PostProjectsRequest struct {
 	Body client.PostApiV4ProjectsJSONRequestBody `json:"body"`
 }
@@ -17534,6 +18993,146 @@ func getProjectsIdPagesAccessHandler(ctx context.Context, request mcp.CallToolRe
 	return toResult(c.GetApiV4ProjectsIdPagesAccess(ctx, req.Id, authorizationHeader))
 }
 
+type PostProjectsIdArchiveRequest struct {
+	Id string `json:"id" jsonschema:"description=The ID or URL-encoded path of the project"`
+}
+
+func registerPostProjectsIdArchive(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&PostProjectsIdArchiveRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
+	tool := mcp.NewTool("post_pjs_id_archive",
+		mcp.WithDescription("Archive a project"),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
+	)
+
+	s.AddTool(tool, mcp.NewTypedToolHandler(postProjectsIdArchiveHandler))
+}
+
+func postProjectsIdArchiveHandler(ctx context.Context, request mcp.CallToolRequest, req PostProjectsIdArchiveRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	return toResult(c.PostApiV4ProjectsIdArchive(ctx, req.Id, authorizationHeader))
+}
+
+type PostProjectsIdUnarchiveRequest struct {
+	Id string `json:"id" jsonschema:"description=The ID or URL-encoded path of the project"`
+}
+
+func registerPostProjectsIdUnarchive(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&PostProjectsIdUnarchiveRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
+	tool := mcp.NewTool("post_pjs_id_unarchive",
+		mcp.WithDescription("Unarchive a project"),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
+	)
+
+	s.AddTool(tool, mcp.NewTypedToolHandler(postProjectsIdUnarchiveHandler))
+}
+
+func postProjectsIdUnarchiveHandler(ctx context.Context, request mcp.CallToolRequest, req PostProjectsIdUnarchiveRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	return toResult(c.PostApiV4ProjectsIdUnarchive(ctx, req.Id, authorizationHeader))
+}
+
+type PostProjectsIdStarRequest struct {
+	Id string `json:"id" jsonschema:"description=The ID or URL-encoded path of the project"`
+}
+
+func registerPostProjectsIdStar(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&PostProjectsIdStarRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
+	tool := mcp.NewTool("post_pjs_id_star",
+		mcp.WithDescription("Star a project"),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
+	)
+
+	s.AddTool(tool, mcp.NewTypedToolHandler(postProjectsIdStarHandler))
+}
+
+func postProjectsIdStarHandler(ctx context.Context, request mcp.CallToolRequest, req PostProjectsIdStarRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	return toResult(c.PostApiV4ProjectsIdStar(ctx, req.Id, authorizationHeader))
+}
+
+type PostProjectsIdUnstarRequest struct {
+	Id string `json:"id" jsonschema:"description=The ID or URL-encoded path of the project"`
+}
+
+func registerPostProjectsIdUnstar(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&PostProjectsIdUnstarRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
+	tool := mcp.NewTool("post_pjs_id_unstar",
+		mcp.WithDescription("Unstar a project"),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
+	)
+
+	s.AddTool(tool, mcp.NewTypedToolHandler(postProjectsIdUnstarHandler))
+}
+
+func postProjectsIdUnstarHandler(ctx context.Context, request mcp.CallToolRequest, req PostProjectsIdUnstarRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	return toResult(c.PostApiV4ProjectsIdUnstar(ctx, req.Id, authorizationHeader))
+}
+
 type GetProjectsIdStarrersRequest struct {
 	Id     string                                   `json:"id" jsonschema:"description=The ID or URL-encoded path of the project"`
 	Params *client.GetApiV4ProjectsIdStarrersParams `json:"params,omitempty"`
@@ -17603,6 +19202,42 @@ func getProjectsIdLanguagesHandler(ctx context.Context, request mcp.CallToolRequ
 	}
 
 	return toResult(c.GetApiV4ProjectsIdLanguages(ctx, req.Id, authorizationHeader))
+}
+
+type PostProjectsIdForkForkedFromIdRequest struct {
+	Id           string `json:"id" jsonschema:"description=The ID or URL-encoded path of the project"`
+	ForkedFromId string `json:"forked_from_id" jsonschema:"description=The ID of the project it was forked from"`
+}
+
+func registerPostProjectsIdForkForkedFromId(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&PostProjectsIdForkForkedFromIdRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
+	tool := mcp.NewTool("post_pjs_id_fork_forked_from_id",
+		mcp.WithDescription("Mark this project as forked from another"),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
+	)
+
+	s.AddTool(tool, mcp.NewTypedToolHandler(postProjectsIdForkForkedFromIdHandler))
+}
+
+func postProjectsIdForkForkedFromIdHandler(ctx context.Context, request mcp.CallToolRequest, req PostProjectsIdForkForkedFromIdRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	return toResult(c.PostApiV4ProjectsIdForkForkedFromId(ctx, req.Id, req.ForkedFromId, authorizationHeader))
 }
 
 type PostProjectsIdShareRequest struct {
@@ -17676,6 +19311,42 @@ func deleteProjectsIdShareGroupIdHandler(ctx context.Context, request mcp.CallTo
 	}
 
 	return toResult(c.DeleteApiV4ProjectsIdShareGroupId(ctx, req.Id, req.GroupId, authorizationHeader))
+}
+
+type PostProjectsIdImportProjectMembersProjectIdRequest struct {
+	Id        string `json:"id" jsonschema:"description=The ID or URL-encoded path of the project"`
+	ProjectId int32  `json:"project_id" jsonschema:"description=The ID of the source project to import the members from."`
+}
+
+func registerPostProjectsIdImportProjectMembersProjectId(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&PostProjectsIdImportProjectMembersProjectIdRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
+	tool := mcp.NewTool("post_pjs_id_import_project_members_project_id",
+		mcp.WithDescription("This feature was introduced in GitLab 14.2"),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
+	)
+
+	s.AddTool(tool, mcp.NewTypedToolHandler(postProjectsIdImportProjectMembersProjectIdHandler))
+}
+
+func postProjectsIdImportProjectMembersProjectIdHandler(ctx context.Context, request mcp.CallToolRequest, req PostProjectsIdImportProjectMembersProjectIdRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	return toResult(c.PostApiV4ProjectsIdImportProjectMembersProjectId(ctx, req.Id, req.ProjectId, authorizationHeader))
 }
 
 type GetProjectsIdUsersRequest struct {
@@ -17821,6 +19492,41 @@ func postProjectsIdHousekeepingHandler(ctx context.Context, request mcp.CallTool
 	}
 
 	return toResult(c.PostApiV4ProjectsIdHousekeeping(ctx, req.Id, req.Body, authorizationHeader))
+}
+
+type PostProjectsIdRepositorySizeRequest struct {
+	Id string `json:"id" jsonschema:"description=The ID or URL-encoded path of the project"`
+}
+
+func registerPostProjectsIdRepositorySize(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&PostProjectsIdRepositorySizeRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
+	tool := mcp.NewTool("post_pjs_id_repo_size",
+		mcp.WithDescription("This feature was introduced in GitLab 15.0."),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
+	)
+
+	s.AddTool(tool, mcp.NewTypedToolHandler(postProjectsIdRepositorySizeHandler))
+}
+
+func postProjectsIdRepositorySizeHandler(ctx context.Context, request mcp.CallToolRequest, req PostProjectsIdRepositorySizeRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	return toResult(c.PostApiV4ProjectsIdRepositorySize(ctx, req.Id, authorizationHeader))
 }
 
 type PutProjectsIdTransferRequest struct {
@@ -18365,6 +20071,41 @@ func postProjectsIdPackagesPypiHandler(ctx context.Context, request mcp.CallTool
 	return toResult(c.PostApiV4ProjectsIdPackagesPypi(ctx, req.Id, req.Body, authorizationHeader))
 }
 
+type PostProjectsIdPackagesPypiAuthorizeRequest struct {
+	Id string `json:"id" jsonschema:"description=The ID or URL-encoded path of the project"`
+}
+
+func registerPostProjectsIdPackagesPypiAuthorize(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&PostProjectsIdPackagesPypiAuthorizeRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
+	tool := mcp.NewTool("post_pjs_id_pkgs_pypi_authorize",
+		mcp.WithDescription("This feature was introduced in GitLab 12.10"),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
+	)
+
+	s.AddTool(tool, mcp.NewTypedToolHandler(postProjectsIdPackagesPypiAuthorizeHandler))
+}
+
+func postProjectsIdPackagesPypiAuthorizeHandler(ctx context.Context, request mcp.CallToolRequest, req PostProjectsIdPackagesPypiAuthorizeRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	return toResult(c.PostApiV4ProjectsIdPackagesPypiAuthorize(ctx, req.Id, authorizationHeader))
+}
+
 type PostProjectsIdReleasesRequest struct {
 	Id string `json:"id" jsonschema:"description=The ID or URL-encoded path of the project"`
 
@@ -18547,6 +20288,42 @@ func getProjectsIdReleasesTagNameHandler(ctx context.Context, request mcp.CallTo
 	}
 
 	return toResult(c.GetApiV4ProjectsIdReleasesTagName(ctx, req.Id, req.TagName, req.Params, authorizationHeader))
+}
+
+type PostProjectsIdReleasesTagNameEvidenceRequest struct {
+	Id      int32  `json:"id" jsonschema:"description=null"`
+	TagName string `json:"tag_name" jsonschema:"description=The Git tag the release is associated with"`
+}
+
+func registerPostProjectsIdReleasesTagNameEvidence(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&PostProjectsIdReleasesTagNameEvidenceRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
+	tool := mcp.NewTool("post_pjs_id_releases_tag_name_evidence",
+		mcp.WithDescription("Creates an evidence for an existing Release. This feature was introduced in GitLab 12.10."),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
+	)
+
+	s.AddTool(tool, mcp.NewTypedToolHandler(postProjectsIdReleasesTagNameEvidenceHandler))
+}
+
+func postProjectsIdReleasesTagNameEvidenceHandler(ctx context.Context, request mcp.CallToolRequest, req PostProjectsIdReleasesTagNameEvidenceRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	return toResult(c.PostApiV4ProjectsIdReleasesTagNameEvidence(ctx, req.Id, req.TagName, authorizationHeader))
 }
 
 type PostProjectsIdReleasesTagNameAssetsLinksRequest struct {
@@ -18918,6 +20695,42 @@ func getProjectsIdRemoteMirrorsMirrorIdHandler(ctx context.Context, request mcp.
 	}
 
 	return toResult(c.GetApiV4ProjectsIdRemoteMirrorsMirrorId(ctx, req.Id, req.MirrorId, authorizationHeader))
+}
+
+type PostProjectsIdRemoteMirrorsMirrorIdSyncRequest struct {
+	Id       string `json:"id" jsonschema:"description=The ID or URL-encoded path of the project"`
+	MirrorId string `json:"mirror_id" jsonschema:"description=The ID of a remote mirror"`
+}
+
+func registerPostProjectsIdRemoteMirrorsMirrorIdSync(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&PostProjectsIdRemoteMirrorsMirrorIdSyncRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
+	tool := mcp.NewTool("post_pjs_id_remote_mirrors_mirror_id_sync",
+		mcp.WithDescription("Triggers a push mirror operation"),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
+	)
+
+	s.AddTool(tool, mcp.NewTypedToolHandler(postProjectsIdRemoteMirrorsMirrorIdSyncHandler))
+}
+
+func postProjectsIdRemoteMirrorsMirrorIdSyncHandler(ctx context.Context, request mcp.CallToolRequest, req PostProjectsIdRemoteMirrorsMirrorIdSyncRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	return toResult(c.PostApiV4ProjectsIdRemoteMirrorsMirrorIdSync(ctx, req.Id, req.MirrorId, authorizationHeader))
 }
 
 type GetProjectsIdRemoteMirrorsMirrorIdPublicKeyRequest struct {
@@ -19502,6 +21315,76 @@ func getProjectsIdMergeRequestsEventableIdResourceMilestoneEventsEventIdHandler(
 	return toResult(c.GetApiV4ProjectsIdMergeRequestsEventableIdResourceMilestoneEventsEventId(ctx, req.Id, req.EventableId, req.EventId, authorizationHeader))
 }
 
+type PostProjectsIdPackagesRpmRequest struct {
+	Id string `json:"id" jsonschema:"description=The ID or URL-encoded path of the project"`
+}
+
+func registerPostProjectsIdPackagesRpm(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&PostProjectsIdPackagesRpmRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
+	tool := mcp.NewTool("post_pjs_id_pkgs_rpm",
+		mcp.WithDescription("This feature was introduced in GitLab 15.7"),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
+	)
+
+	s.AddTool(tool, mcp.NewTypedToolHandler(postProjectsIdPackagesRpmHandler))
+}
+
+func postProjectsIdPackagesRpmHandler(ctx context.Context, request mcp.CallToolRequest, req PostProjectsIdPackagesRpmRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	return toResult(c.PostApiV4ProjectsIdPackagesRpm(ctx, req.Id, authorizationHeader))
+}
+
+type PostProjectsIdPackagesRpmAuthorizeRequest struct {
+	Id string `json:"id" jsonschema:"description=The ID or URL-encoded path of the project"`
+}
+
+func registerPostProjectsIdPackagesRpmAuthorize(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&PostProjectsIdPackagesRpmAuthorizeRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
+	tool := mcp.NewTool("post_pjs_id_pkgs_rpm_authorize",
+		mcp.WithDescription("This feature was introduced in GitLab 15.7"),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
+	)
+
+	s.AddTool(tool, mcp.NewTypedToolHandler(postProjectsIdPackagesRpmAuthorizeHandler))
+}
+
+func postProjectsIdPackagesRpmAuthorizeHandler(ctx context.Context, request mcp.CallToolRequest, req PostProjectsIdPackagesRpmAuthorizeRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	return toResult(c.PostApiV4ProjectsIdPackagesRpmAuthorize(ctx, req.Id, authorizationHeader))
+}
+
 type GetProjectsIdPackagesRubygemsFileNameRequest struct {
 	Id       int32  `json:"id" jsonschema:"description=The ID or URL-encoded path of the project"`
 	FileName string `json:"file_name" jsonschema:"description=Spec file name"`
@@ -19608,6 +21491,41 @@ func getProjectsIdPackagesRubygemsGemsFileNameHandler(ctx context.Context, reque
 	}
 
 	return toResult(c.GetApiV4ProjectsIdPackagesRubygemsGemsFileName(ctx, req.Id, req.FileName, authorizationHeader))
+}
+
+type PostProjectsIdPackagesRubygemsApiV1GemsAuthorizeRequest struct {
+	Id int32 `json:"id" jsonschema:"description=The ID or URL-encoded path of the project"`
+}
+
+func registerPostProjectsIdPackagesRubygemsApiV1GemsAuthorize(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&PostProjectsIdPackagesRubygemsApiV1GemsAuthorizeRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
+	tool := mcp.NewTool("post_pjs_id_pkgs_rubygems_api_v1_gems_authorize",
+		mcp.WithDescription("This feature was introduced in GitLab 13.9"),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
+	)
+
+	s.AddTool(tool, mcp.NewTypedToolHandler(postProjectsIdPackagesRubygemsApiV1GemsAuthorizeHandler))
+}
+
+func postProjectsIdPackagesRubygemsApiV1GemsAuthorizeHandler(ctx context.Context, request mcp.CallToolRequest, req PostProjectsIdPackagesRubygemsApiV1GemsAuthorizeRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	return toResult(c.PostApiV4ProjectsIdPackagesRubygemsApiV1GemsAuthorize(ctx, req.Id, authorizationHeader))
 }
 
 type PostProjectsIdPackagesRubygemsApiV1GemsRequest struct {
@@ -19974,6 +21892,42 @@ func deleteProjectsIdTerraformStateNameHandler(ctx context.Context, request mcp.
 	}
 
 	return toResult(c.DeleteApiV4ProjectsIdTerraformStateName(ctx, req.Id, req.Name, authorizationHeader))
+}
+
+type PostProjectsIdTerraformStateNameRequest struct {
+	Id   string `json:"id" jsonschema:"description=The ID or URL-encoded path of the project"`
+	Name int32  `json:"name" jsonschema:"description=null"`
+}
+
+func registerPostProjectsIdTerraformStateName(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&PostProjectsIdTerraformStateNameRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
+	tool := mcp.NewTool("post_pjs_id_terraform_state_name",
+		mcp.WithDescription("Add a new Terraform state or update an existing one"),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
+	)
+
+	s.AddTool(tool, mcp.NewTypedToolHandler(postProjectsIdTerraformStateNameHandler))
+}
+
+func postProjectsIdTerraformStateNameHandler(ctx context.Context, request mcp.CallToolRequest, req PostProjectsIdTerraformStateNameRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	return toResult(c.PostApiV4ProjectsIdTerraformStateName(ctx, req.Id, req.Name, authorizationHeader))
 }
 
 type GetProjectsIdTerraformStateNameRequest struct {
@@ -20383,6 +22337,42 @@ func postProjectsIdWikisAttachmentsHandler(ctx context.Context, request mcp.Call
 	return toResult(c.PostApiV4ProjectsIdWikisAttachments(ctx, req.Id, req.Body, authorizationHeader))
 }
 
+type PostProjectsIdIssuesRequest struct {
+	Id     string                                  `json:"id" jsonschema:"description=The global ID or URL-encoded path of the project."`
+	Params *client.PostApiV4ProjectsIdIssuesParams `json:"params,omitempty"`
+}
+
+func registerPostProjectsIdIssues(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&PostProjectsIdIssuesRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
+	tool := mcp.NewTool("post_pjs_id_issues",
+		mcp.WithDescription("New issue"),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
+	)
+
+	s.AddTool(tool, mcp.NewTypedToolHandler(postProjectsIdIssuesHandler))
+}
+
+func postProjectsIdIssuesHandler(ctx context.Context, request mcp.CallToolRequest, req PostProjectsIdIssuesRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	return toResult(c.PostApiV4ProjectsIdIssues(ctx, req.Id, req.Params, authorizationHeader))
+}
+
 type GetProjectsIdIssuesRequest struct {
 	Id     string                                 `json:"id" jsonschema:"description=The global ID or URL-encoded path of the project."`
 	Params *client.GetApiV4ProjectsIdIssuesParams `json:"params,omitempty"`
@@ -20455,6 +22445,43 @@ func deleteProjectsIdIssuesIssueIidHandler(ctx context.Context, request mcp.Call
 	return toResult(c.DeleteApiV4ProjectsIdIssuesIssueIid(ctx, req.Id, req.IssueIid, authorizationHeader))
 }
 
+type PutProjectsIdIssuesIssueIidRequest struct {
+	Id       string                                         `json:"id" jsonschema:"description=The global ID or URL-encoded path of the project."`
+	IssueIid int                                            `json:"issue_iid" jsonschema:"description=The internal ID of a project's issue."`
+	Params   *client.PutApiV4ProjectsIdIssuesIssueIidParams `json:"params,omitempty"`
+}
+
+func registerPutProjectsIdIssuesIssueIid(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&PutProjectsIdIssuesIssueIidRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
+	tool := mcp.NewTool("put_pjs_id_issues_issue_iid",
+		mcp.WithDescription("Edit an issue"),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
+	)
+
+	s.AddTool(tool, mcp.NewTypedToolHandler(putProjectsIdIssuesIssueIidHandler))
+}
+
+func putProjectsIdIssuesIssueIidHandler(ctx context.Context, request mcp.CallToolRequest, req PutProjectsIdIssuesIssueIidRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	return toResult(c.PutApiV4ProjectsIdIssuesIssueIid(ctx, req.Id, req.IssueIid, req.Params, authorizationHeader))
+}
+
 type GetProjectsIdIssuesIssueIidRequest struct {
 	Id       string `json:"id" jsonschema:"description=The global ID or URL-encoded path of the project."`
 	IssueIid int    `json:"issue_iid" jsonschema:"description=The internal ID of a project's issue."`
@@ -20489,6 +22516,371 @@ func getProjectsIdIssuesIssueIidHandler(ctx context.Context, request mcp.CallToo
 	}
 
 	return toResult(c.GetApiV4ProjectsIdIssuesIssueIid(ctx, req.Id, req.IssueIid, authorizationHeader))
+}
+
+type PutProjectsIdIssuesIssueIidReorderRequest struct {
+	Id       string                                                `json:"id" jsonschema:"description=The global ID or URL-encoded path of the project."`
+	IssueIid int                                                   `json:"issue_iid" jsonschema:"description=The internal ID of the project's issue."`
+	Params   *client.PutApiV4ProjectsIdIssuesIssueIidReorderParams `json:"params,omitempty"`
+}
+
+func registerPutProjectsIdIssuesIssueIidReorder(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&PutProjectsIdIssuesIssueIidReorderRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
+	tool := mcp.NewTool("put_pjs_id_issues_issue_iid_reorder",
+		mcp.WithDescription("Reorder an issue"),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
+	)
+
+	s.AddTool(tool, mcp.NewTypedToolHandler(putProjectsIdIssuesIssueIidReorderHandler))
+}
+
+func putProjectsIdIssuesIssueIidReorderHandler(ctx context.Context, request mcp.CallToolRequest, req PutProjectsIdIssuesIssueIidReorderRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	return toResult(c.PutApiV4ProjectsIdIssuesIssueIidReorder(ctx, req.Id, req.IssueIid, req.Params, authorizationHeader))
+}
+
+type PostProjectsIdIssuesIssueIidCloneRequest struct {
+	Id       string                                               `json:"id" jsonschema:"description=ID or URL-encoded path of the project."`
+	IssueIid int                                                  `json:"issue_iid" jsonschema:"description=Internal ID of a project's issue."`
+	Params   *client.PostApiV4ProjectsIdIssuesIssueIidCloneParams `json:"params,omitempty"`
+}
+
+func registerPostProjectsIdIssuesIssueIidClone(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&PostProjectsIdIssuesIssueIidCloneRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
+	tool := mcp.NewTool("post_pjs_id_issues_issue_iid_clone",
+		mcp.WithDescription("Clone an issue"),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
+	)
+
+	s.AddTool(tool, mcp.NewTypedToolHandler(postProjectsIdIssuesIssueIidCloneHandler))
+}
+
+func postProjectsIdIssuesIssueIidCloneHandler(ctx context.Context, request mcp.CallToolRequest, req PostProjectsIdIssuesIssueIidCloneRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	return toResult(c.PostApiV4ProjectsIdIssuesIssueIidClone(ctx, req.Id, req.IssueIid, req.Params, authorizationHeader))
+}
+
+type PostProjectsIdIssuesIssueIidSubscribeRequest struct {
+	Id       string `json:"id" jsonschema:"description=The global ID or URL-encoded path of the project."`
+	IssueIid int    `json:"issue_iid" jsonschema:"description=The internal ID of a project's issue."`
+}
+
+func registerPostProjectsIdIssuesIssueIidSubscribe(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&PostProjectsIdIssuesIssueIidSubscribeRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
+	tool := mcp.NewTool("post_pjs_id_issues_issue_iid_subscribe",
+		mcp.WithDescription("Subscribe to an issue"),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
+	)
+
+	s.AddTool(tool, mcp.NewTypedToolHandler(postProjectsIdIssuesIssueIidSubscribeHandler))
+}
+
+func postProjectsIdIssuesIssueIidSubscribeHandler(ctx context.Context, request mcp.CallToolRequest, req PostProjectsIdIssuesIssueIidSubscribeRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	return toResult(c.PostApiV4ProjectsIdIssuesIssueIidSubscribe(ctx, req.Id, req.IssueIid, authorizationHeader))
+}
+
+type PostProjectsIdIssuesIssueIidUnsubscribeRequest struct {
+	Id       string `json:"id" jsonschema:"description=The global ID or URL-encoded path of the project."`
+	IssueIid int    `json:"issue_iid" jsonschema:"description=The internal ID of a project's issue."`
+}
+
+func registerPostProjectsIdIssuesIssueIidUnsubscribe(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&PostProjectsIdIssuesIssueIidUnsubscribeRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
+	tool := mcp.NewTool("post_pjs_id_issues_issue_iid_unsubscribe",
+		mcp.WithDescription("Unsubscribe from an issue"),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
+	)
+
+	s.AddTool(tool, mcp.NewTypedToolHandler(postProjectsIdIssuesIssueIidUnsubscribeHandler))
+}
+
+func postProjectsIdIssuesIssueIidUnsubscribeHandler(ctx context.Context, request mcp.CallToolRequest, req PostProjectsIdIssuesIssueIidUnsubscribeRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	return toResult(c.PostApiV4ProjectsIdIssuesIssueIidUnsubscribe(ctx, req.Id, req.IssueIid, authorizationHeader))
+}
+
+type PostProjectsIdIssuesIssueIidTodoRequest struct {
+	Id       string `json:"id" jsonschema:"description=The global ID or URL-encoded path of the project."`
+	IssueIid int    `json:"issue_iid" jsonschema:"description=The internal ID of a project's issue."`
+}
+
+func registerPostProjectsIdIssuesIssueIidTodo(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&PostProjectsIdIssuesIssueIidTodoRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
+	tool := mcp.NewTool("post_pjs_id_issues_issue_iid_todo",
+		mcp.WithDescription("Create a to-do item"),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
+	)
+
+	s.AddTool(tool, mcp.NewTypedToolHandler(postProjectsIdIssuesIssueIidTodoHandler))
+}
+
+func postProjectsIdIssuesIssueIidTodoHandler(ctx context.Context, request mcp.CallToolRequest, req PostProjectsIdIssuesIssueIidTodoRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	return toResult(c.PostApiV4ProjectsIdIssuesIssueIidTodo(ctx, req.Id, req.IssueIid, authorizationHeader))
+}
+
+type PostProjectsIdIssuesIssueIidNotesRequest struct {
+	Id       string                                               `json:"id" jsonschema:"description=The global ID or URL-encoded path of the project."`
+	IssueIid int                                                  `json:"issue_iid" jsonschema:"description=The internal ID of a project's issue."`
+	Params   *client.PostApiV4ProjectsIdIssuesIssueIidNotesParams `json:"params,omitempty"`
+}
+
+func registerPostProjectsIdIssuesIssueIidNotes(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&PostProjectsIdIssuesIssueIidNotesRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
+	tool := mcp.NewTool("post_pjs_id_issues_issue_iid_notes",
+		mcp.WithDescription("Promote an issue to an epic"),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
+	)
+
+	s.AddTool(tool, mcp.NewTypedToolHandler(postProjectsIdIssuesIssueIidNotesHandler))
+}
+
+func postProjectsIdIssuesIssueIidNotesHandler(ctx context.Context, request mcp.CallToolRequest, req PostProjectsIdIssuesIssueIidNotesRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	return toResult(c.PostApiV4ProjectsIdIssuesIssueIidNotes(ctx, req.Id, req.IssueIid, req.Params, authorizationHeader))
+}
+
+type PostProjectsIdIssuesIssueIidTimeEstimateRequest struct {
+	Id       string                                                      `json:"id" jsonschema:"description=The global ID or URL-encoded path of the project."`
+	IssueIid int                                                         `json:"issue_iid" jsonschema:"description=The internal ID of a project's issue."`
+	Params   *client.PostApiV4ProjectsIdIssuesIssueIidTimeEstimateParams `json:"params,omitempty"`
+}
+
+func registerPostProjectsIdIssuesIssueIidTimeEstimate(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&PostProjectsIdIssuesIssueIidTimeEstimateRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
+	tool := mcp.NewTool("post_pjs_id_issues_issue_iid_time_estimate",
+		mcp.WithDescription("Set a time estimate for an issue"),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
+	)
+
+	s.AddTool(tool, mcp.NewTypedToolHandler(postProjectsIdIssuesIssueIidTimeEstimateHandler))
+}
+
+func postProjectsIdIssuesIssueIidTimeEstimateHandler(ctx context.Context, request mcp.CallToolRequest, req PostProjectsIdIssuesIssueIidTimeEstimateRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	return toResult(c.PostApiV4ProjectsIdIssuesIssueIidTimeEstimate(ctx, req.Id, req.IssueIid, req.Params, authorizationHeader))
+}
+
+type PostProjectsIdIssuesIssueIidResetTimeEstimateRequest struct {
+	Id       string `json:"id" jsonschema:"description=The global ID or URL-encoded path of the project."`
+	IssueIid int    `json:"issue_iid" jsonschema:"description=The internal ID of a project's issue."`
+}
+
+func registerPostProjectsIdIssuesIssueIidResetTimeEstimate(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&PostProjectsIdIssuesIssueIidResetTimeEstimateRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
+	tool := mcp.NewTool("post_pjs_id_issues_issue_iid_reset_time_estimate",
+		mcp.WithDescription("Reset the time estimate for an issue"),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
+	)
+
+	s.AddTool(tool, mcp.NewTypedToolHandler(postProjectsIdIssuesIssueIidResetTimeEstimateHandler))
+}
+
+func postProjectsIdIssuesIssueIidResetTimeEstimateHandler(ctx context.Context, request mcp.CallToolRequest, req PostProjectsIdIssuesIssueIidResetTimeEstimateRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	return toResult(c.PostApiV4ProjectsIdIssuesIssueIidResetTimeEstimate(ctx, req.Id, req.IssueIid, authorizationHeader))
+}
+
+type PostProjectsIdIssuesIssueIidAddSpentTimeRequest struct {
+	Id       string                                                      `json:"id" jsonschema:"description=The global ID or URL-encoded path of the project."`
+	IssueIid int                                                         `json:"issue_iid" jsonschema:"description=The internal ID of a project's issue."`
+	Params   *client.PostApiV4ProjectsIdIssuesIssueIidAddSpentTimeParams `json:"params,omitempty"`
+}
+
+func registerPostProjectsIdIssuesIssueIidAddSpentTime(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&PostProjectsIdIssuesIssueIidAddSpentTimeRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
+	tool := mcp.NewTool("post_pjs_id_issues_issue_iid_add_spent_time",
+		mcp.WithDescription("Add spent time for an issue"),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
+	)
+
+	s.AddTool(tool, mcp.NewTypedToolHandler(postProjectsIdIssuesIssueIidAddSpentTimeHandler))
+}
+
+func postProjectsIdIssuesIssueIidAddSpentTimeHandler(ctx context.Context, request mcp.CallToolRequest, req PostProjectsIdIssuesIssueIidAddSpentTimeRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	return toResult(c.PostApiV4ProjectsIdIssuesIssueIidAddSpentTime(ctx, req.Id, req.IssueIid, req.Params, authorizationHeader))
+}
+
+type PostProjectsIdIssuesIssueIidResetSpentTimeRequest struct {
+	Id       string `json:"id" jsonschema:"description=The global ID or URL-encoded path of the project."`
+	IssueIid int    `json:"issue_iid" jsonschema:"description=The internal ID of a project's issue."`
+}
+
+func registerPostProjectsIdIssuesIssueIidResetSpentTime(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&PostProjectsIdIssuesIssueIidResetSpentTimeRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
+	tool := mcp.NewTool("post_pjs_id_issues_issue_iid_reset_spent_time",
+		mcp.WithDescription("Reset spent time for an issue"),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
+	)
+
+	s.AddTool(tool, mcp.NewTypedToolHandler(postProjectsIdIssuesIssueIidResetSpentTimeHandler))
+}
+
+func postProjectsIdIssuesIssueIidResetSpentTimeHandler(ctx context.Context, request mcp.CallToolRequest, req PostProjectsIdIssuesIssueIidResetSpentTimeRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	return toResult(c.PostApiV4ProjectsIdIssuesIssueIidResetSpentTime(ctx, req.Id, req.IssueIid, authorizationHeader))
 }
 
 type GetProjectsIdIssuesIssueIidTimeStatsRequest struct {

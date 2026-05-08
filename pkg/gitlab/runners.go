@@ -433,3 +433,72 @@ func getRunnersIdJobsHandler(ctx context.Context, request mcp.CallToolRequest, r
 
 	return toResult(c.GetApiV4RunnersIdJobs(ctx, req.Id, req.Params, authorizationHeader))
 }
+
+type PostRunnersIdResetAuthenticationTokenRequest struct {
+	Id int32 `json:"id" jsonschema:"description=The ID of the runner"`
+}
+
+func registerPostRunnersIdResetAuthenticationToken(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&PostRunnersIdResetAuthenticationTokenRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
+	tool := mcp.NewTool("post_runners_id_reset_authentication_token",
+		mcp.WithDescription("Reset runner authentication token"),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
+	)
+
+	s.AddTool(tool, mcp.NewTypedToolHandler(postRunnersIdResetAuthenticationTokenHandler))
+}
+
+func postRunnersIdResetAuthenticationTokenHandler(ctx context.Context, request mcp.CallToolRequest, req PostRunnersIdResetAuthenticationTokenRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	return toResult(c.PostApiV4RunnersIdResetAuthenticationToken(ctx, req.Id, authorizationHeader))
+}
+
+type PostRunnersResetRegistrationTokenRequest struct {
+}
+
+func registerPostRunnersResetRegistrationToken(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&PostRunnersResetRegistrationTokenRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
+	tool := mcp.NewTool("post_runners_reset_registration_token",
+		mcp.WithDescription("Reset runner registration token"),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
+	)
+
+	s.AddTool(tool, mcp.NewTypedToolHandler(postRunnersResetRegistrationTokenHandler))
+}
+
+func postRunnersResetRegistrationTokenHandler(ctx context.Context, request mcp.CallToolRequest, req PostRunnersResetRegistrationTokenRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	return toResult(c.PostApiV4RunnersResetRegistrationToken(ctx, authorizationHeader))
+}

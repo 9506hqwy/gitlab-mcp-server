@@ -264,6 +264,41 @@ func deleteHooksHookIdHandler(ctx context.Context, request mcp.CallToolRequest, 
 	return toResult(c.DeleteApiV4HooksHookId(ctx, req.HookId, authorizationHeader))
 }
 
+type PostHooksHookIdRequest struct {
+	HookId int32 `json:"hook_id" jsonschema:"description=The ID of the hook"`
+}
+
+func registerPostHooksHookId(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&PostHooksHookIdRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
+	tool := mcp.NewTool("post_hooks_hook_id",
+		mcp.WithDescription("null"),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
+	)
+
+	s.AddTool(tool, mcp.NewTypedToolHandler(postHooksHookIdHandler))
+}
+
+func postHooksHookIdHandler(ctx context.Context, request mcp.CallToolRequest, req PostHooksHookIdRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	return toResult(c.PostApiV4HooksHookId(ctx, req.HookId, authorizationHeader))
+}
+
 type PutHooksHookIdRequest struct {
 	HookId int32 `json:"hook_id" jsonschema:"description=The ID of the system hook"`
 

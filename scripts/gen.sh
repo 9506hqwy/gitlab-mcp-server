@@ -305,7 +305,7 @@ do
     OP_POST=$(yq '.value.post | . style="flow"' <<<"${PATH_INFO}")
     OP_REQ_BODY=$(yq '.requestBody | . style="flow"' <<<"${OP_POST}")
     IS_JSON=$(yq -r '.content | ."application/json"' <<<"${OP_REQ_BODY}")
-    if [[ "$OP_POST" != 'null' && "${IS_JSON}" != "null" ]]; then
+    if [[ "$OP_POST" != 'null' && ("${OP_REQ_BODY}" == 'null' || "${IS_JSON}" != "null") ]]; then
         write-request-struct "Post" "${OP_PATH}" "${OP_POST}" "${OP_REQ_BODY}"
         write-register-func "Post" "${OP_PATH}" "${OP_POST}"
         write-handler-func "Post" "${OP_PATH}" "${OP_POST}" "${OP_REQ_BODY}"
@@ -314,7 +314,7 @@ do
     OP_PUT=$(yq '.value.put | . style="flow"' <<<"${PATH_INFO}")
     OP_REQ_BODY=$(yq '.requestBody | . style="flow"' <<<"${OP_PUT}")
     IS_JSON=$(yq -r '.content | ."application/json"' <<<"${OP_REQ_BODY}")
-    if [[ "$OP_PUT" != 'null' && "${IS_JSON}" != "null" ]]; then
+    if [[ "$OP_PUT" != 'null' && ("${OP_REQ_BODY}" == 'null' || "${IS_JSON}" != "null") ]]; then
         write-request-struct "Put" "${OP_PATH}" "${OP_PUT}" "${OP_REQ_BODY}"
         write-register-func "Put" "${OP_PATH}" "${OP_PUT}"
         write-handler-func "Put" "${OP_PATH}" "${OP_PUT}" "${OP_REQ_BODY}"
@@ -369,7 +369,7 @@ do
         METHOD="Post"
         if [[ ${#TOOL_SNAME} -gt 41 ]]; then # post_XXX
             echo "//if !readonly { register${METHOD}${API_NAME}(s) }" >> "${TOOLS_PATH}"
-        elif [[ "${IS_JSON}" == "null" ]]; then
+        elif [[ "${OP_REQ_BODY}" != 'null' && "${IS_JSON}" == "null" ]]; then
             echo "//if !readonly { register${METHOD}${API_NAME}(s) }" >> "${TOOLS_PATH}"
         else
             echo "if !readonly { register${METHOD}${API_NAME}(s) }" >> "${TOOLS_PATH}"
@@ -383,7 +383,7 @@ do
         METHOD="Put"
         if [[ ${#TOOL_SNAME} -gt 42 ]]; then # put_XXX
             echo "//if !readonly { register${METHOD}${API_NAME}(s) }" >> "${TOOLS_PATH}"
-        elif [[ "${IS_JSON}" == "null" ]]; then
+        elif [[ "${OP_REQ_BODY}" != 'null' && "${IS_JSON}" == "null" ]]; then
             echo "//if !readonly { register${METHOD}${API_NAME}(s) }" >> "${TOOLS_PATH}"
         else
             echo "if !readonly { register${METHOD}${API_NAME}(s) }" >> "${TOOLS_PATH}"

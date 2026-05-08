@@ -114,3 +114,38 @@ func deleteApplicationsIdHandler(ctx context.Context, request mcp.CallToolReques
 
 	return toResult(c.DeleteApiV4ApplicationsId(ctx, req.Id, authorizationHeader))
 }
+
+type PostApplicationsIdRenewSecretRequest struct {
+	Id int32 `json:"id" jsonschema:"description=The ID of the application (not the application_id)"`
+}
+
+func registerPostApplicationsIdRenewSecret(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&PostApplicationsIdRenewSecretRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
+	tool := mcp.NewTool("post_applications_id_renew_secret",
+		mcp.WithDescription("Renew the secret of a specific application"),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
+	)
+
+	s.AddTool(tool, mcp.NewTypedToolHandler(postApplicationsIdRenewSecretHandler))
+}
+
+func postApplicationsIdRenewSecretHandler(ctx context.Context, request mcp.CallToolRequest, req PostApplicationsIdRenewSecretRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	return toResult(c.PostApiV4ApplicationsIdRenewSecret(ctx, req.Id, authorizationHeader))
+}
