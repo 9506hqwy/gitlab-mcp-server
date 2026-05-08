@@ -46,6 +46,41 @@ func deleteRunnersHandler(ctx context.Context, request mcp.CallToolRequest, req 
 	return toResult(c.DeleteApiV4Runners(ctx, req.Params, authorizationHeader))
 }
 
+type PostRunnersRequest struct {
+	Body client.PostApiV4RunnersJSONRequestBody `json:"body"`
+}
+
+func registerPostRunners(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&PostRunnersRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
+	tool := mcp.NewTool("post_runners",
+		mcp.WithDescription("Register a new runner for the instance"),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
+	)
+
+	s.AddTool(tool, mcp.NewTypedToolHandler(postRunnersHandler))
+}
+
+func postRunnersHandler(ctx context.Context, request mcp.CallToolRequest, req PostRunnersRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	return toResult(c.PostApiV4Runners(ctx, req.Body, authorizationHeader))
+}
+
 type GetRunnersRequest struct {
 	Params *client.GetApiV4RunnersParams `json:"params,omitempty"`
 }
@@ -116,6 +151,76 @@ func deleteRunnersManagersHandler(ctx context.Context, request mcp.CallToolReque
 	return toResult(c.DeleteApiV4RunnersManagers(ctx, req.Params, authorizationHeader))
 }
 
+type PostRunnersVerifyRequest struct {
+	Body client.PostApiV4RunnersVerifyJSONRequestBody `json:"body"`
+}
+
+func registerPostRunnersVerify(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&PostRunnersVerifyRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
+	tool := mcp.NewTool("post_runners_verify",
+		mcp.WithDescription("Validate authentication credentials"),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
+	)
+
+	s.AddTool(tool, mcp.NewTypedToolHandler(postRunnersVerifyHandler))
+}
+
+func postRunnersVerifyHandler(ctx context.Context, request mcp.CallToolRequest, req PostRunnersVerifyRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	return toResult(c.PostApiV4RunnersVerify(ctx, req.Body, authorizationHeader))
+}
+
+type PostRunnersResetAuthenticationTokenRequest struct {
+	Body client.PostApiV4RunnersResetAuthenticationTokenJSONRequestBody `json:"body"`
+}
+
+func registerPostRunnersResetAuthenticationToken(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&PostRunnersResetAuthenticationTokenRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
+	tool := mcp.NewTool("post_runners_reset_authentication_token",
+		mcp.WithDescription("Reset runner authentication token with current token"),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
+	)
+
+	s.AddTool(tool, mcp.NewTypedToolHandler(postRunnersResetAuthenticationTokenHandler))
+}
+
+func postRunnersResetAuthenticationTokenHandler(ctx context.Context, request mcp.CallToolRequest, req PostRunnersResetAuthenticationTokenRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	return toResult(c.PostApiV4RunnersResetAuthenticationToken(ctx, req.Body, authorizationHeader))
+}
+
 type GetRunnersAllRequest struct {
 	Params *client.GetApiV4RunnersAllParams `json:"params,omitempty"`
 }
@@ -184,6 +289,43 @@ func deleteRunnersIdHandler(ctx context.Context, request mcp.CallToolRequest, re
 	}
 
 	return toResult(c.DeleteApiV4RunnersId(ctx, req.Id, authorizationHeader))
+}
+
+type PutRunnersIdRequest struct {
+	Id int32 `json:"id" jsonschema:"description=The ID of a runner"`
+
+	Body client.PutApiV4RunnersIdJSONRequestBody `json:"body"`
+}
+
+func registerPutRunnersId(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&PutRunnersIdRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
+	tool := mcp.NewTool("put_runners_id",
+		mcp.WithDescription("Update runner's details"),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
+	)
+
+	s.AddTool(tool, mcp.NewTypedToolHandler(putRunnersIdHandler))
+}
+
+func putRunnersIdHandler(ctx context.Context, request mcp.CallToolRequest, req PutRunnersIdRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	return toResult(c.PutApiV4RunnersId(ctx, req.Id, req.Body, authorizationHeader))
 }
 
 type GetRunnersIdRequest struct {
@@ -290,73 +432,4 @@ func getRunnersIdJobsHandler(ctx context.Context, request mcp.CallToolRequest, r
 	}
 
 	return toResult(c.GetApiV4RunnersIdJobs(ctx, req.Id, req.Params, authorizationHeader))
-}
-
-type PostRunnersIdResetAuthenticationTokenRequest struct {
-	Id int32 `json:"id" jsonschema:"description=The ID of the runner"`
-}
-
-func registerPostRunnersIdResetAuthenticationToken(s *server.MCPServer) {
-	r := &jsonschema.Reflector{}
-	r.DoNotReference = true
-	schemaObj := r.Reflect(&PostRunnersIdResetAuthenticationTokenRequest{})
-	mcpSchema, err := json.Marshal(schemaObj)
-	if err != nil {
-		return
-	}
-
-	rawSchema := json.RawMessage(mcpSchema)
-
-	tool := mcp.NewTool("post_runners_id_reset_authentication_token",
-		mcp.WithDescription("Reset runner authentication token"),
-		mcp.WithRawInputSchema(rawSchema),
-		func(tool *mcp.Tool) {
-			tool.InputSchema.Type = ""
-		},
-	)
-
-	s.AddTool(tool, mcp.NewTypedToolHandler(postRunnersIdResetAuthenticationTokenHandler))
-}
-
-func postRunnersIdResetAuthenticationTokenHandler(ctx context.Context, request mcp.CallToolRequest, req PostRunnersIdResetAuthenticationTokenRequest) (*mcp.CallToolResult, error) {
-	c, err := newClient(ctx)
-	if err != nil {
-		return mcp.NewToolResultError(err.Error()), nil
-	}
-
-	return toResult(c.PostApiV4RunnersIdResetAuthenticationToken(ctx, req.Id, authorizationHeader))
-}
-
-type PostRunnersResetRegistrationTokenRequest struct {
-}
-
-func registerPostRunnersResetRegistrationToken(s *server.MCPServer) {
-	r := &jsonschema.Reflector{}
-	r.DoNotReference = true
-	schemaObj := r.Reflect(&PostRunnersResetRegistrationTokenRequest{})
-	mcpSchema, err := json.Marshal(schemaObj)
-	if err != nil {
-		return
-	}
-
-	rawSchema := json.RawMessage(mcpSchema)
-
-	tool := mcp.NewTool("post_runners_reset_registration_token",
-		mcp.WithDescription("Reset runner registration token"),
-		mcp.WithRawInputSchema(rawSchema),
-		func(tool *mcp.Tool) {
-			tool.InputSchema.Type = ""
-		},
-	)
-
-	s.AddTool(tool, mcp.NewTypedToolHandler(postRunnersResetRegistrationTokenHandler))
-}
-
-func postRunnersResetRegistrationTokenHandler(ctx context.Context, request mcp.CallToolRequest, req PostRunnersResetRegistrationTokenRequest) (*mcp.CallToolResult, error) {
-	c, err := newClient(ctx)
-	if err != nil {
-		return mcp.NewToolResultError(err.Error()), nil
-	}
-
-	return toResult(c.PostApiV4RunnersResetRegistrationToken(ctx, authorizationHeader))
 }

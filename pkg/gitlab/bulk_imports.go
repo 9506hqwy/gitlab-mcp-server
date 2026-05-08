@@ -223,38 +223,3 @@ func getBulkImportsImportIdEntitiesEntityIdFailuresHandler(ctx context.Context, 
 
 	return toResult(c.GetApiV4BulkImportsImportIdEntitiesEntityIdFailures(ctx, req.ImportId, req.EntityId, authorizationHeader))
 }
-
-type PostBulkImportsImportIdCancelRequest struct {
-	ImportId int32 `json:"import_id" jsonschema:"description=The ID of user's GitLab Migration"`
-}
-
-func registerPostBulkImportsImportIdCancel(s *server.MCPServer) {
-	r := &jsonschema.Reflector{}
-	r.DoNotReference = true
-	schemaObj := r.Reflect(&PostBulkImportsImportIdCancelRequest{})
-	mcpSchema, err := json.Marshal(schemaObj)
-	if err != nil {
-		return
-	}
-
-	rawSchema := json.RawMessage(mcpSchema)
-
-	tool := mcp.NewTool("post_bulk_imports_import_id_cancel",
-		mcp.WithDescription("This feature was introduced in GitLab 17.1"),
-		mcp.WithRawInputSchema(rawSchema),
-		func(tool *mcp.Tool) {
-			tool.InputSchema.Type = ""
-		},
-	)
-
-	s.AddTool(tool, mcp.NewTypedToolHandler(postBulkImportsImportIdCancelHandler))
-}
-
-func postBulkImportsImportIdCancelHandler(ctx context.Context, request mcp.CallToolRequest, req PostBulkImportsImportIdCancelRequest) (*mcp.CallToolResult, error) {
-	c, err := newClient(ctx)
-	if err != nil {
-		return mcp.NewToolResultError(err.Error()), nil
-	}
-
-	return toResult(c.PostApiV4BulkImportsImportIdCancel(ctx, req.ImportId, authorizationHeader))
-}

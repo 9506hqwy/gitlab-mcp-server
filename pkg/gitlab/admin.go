@@ -47,6 +47,80 @@ func getAdminBatchedBackgroundMigrationsIdHandler(ctx context.Context, request m
 	return toResult(c.GetApiV4AdminBatchedBackgroundMigrationsId(ctx, req.Id, req.Params, authorizationHeader))
 }
 
+type PutAdminBatchedBackgroundMigrationsIdResumeRequest struct {
+	Id int32 `json:"id" jsonschema:"description=The batched background migration id"`
+
+	Body client.PutApiV4AdminBatchedBackgroundMigrationsIdResumeJSONRequestBody `json:"body"`
+}
+
+func registerPutAdminBatchedBackgroundMigrationsIdResume(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&PutAdminBatchedBackgroundMigrationsIdResumeRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
+	tool := mcp.NewTool("put_admin_batched_background_migrations_id_resume",
+		mcp.WithDescription("Resume a batched background migration"),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
+	)
+
+	s.AddTool(tool, mcp.NewTypedToolHandler(putAdminBatchedBackgroundMigrationsIdResumeHandler))
+}
+
+func putAdminBatchedBackgroundMigrationsIdResumeHandler(ctx context.Context, request mcp.CallToolRequest, req PutAdminBatchedBackgroundMigrationsIdResumeRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	return toResult(c.PutApiV4AdminBatchedBackgroundMigrationsIdResume(ctx, req.Id, req.Body, authorizationHeader))
+}
+
+type PutAdminBatchedBackgroundMigrationsIdPauseRequest struct {
+	Id int32 `json:"id" jsonschema:"description=The batched background migration id"`
+
+	Body client.PutApiV4AdminBatchedBackgroundMigrationsIdPauseJSONRequestBody `json:"body"`
+}
+
+func registerPutAdminBatchedBackgroundMigrationsIdPause(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&PutAdminBatchedBackgroundMigrationsIdPauseRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
+	tool := mcp.NewTool("put_admin_batched_background_migrations_id_pause",
+		mcp.WithDescription("Pause a batched background migration"),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
+	)
+
+	s.AddTool(tool, mcp.NewTypedToolHandler(putAdminBatchedBackgroundMigrationsIdPauseHandler))
+}
+
+func putAdminBatchedBackgroundMigrationsIdPauseHandler(ctx context.Context, request mcp.CallToolRequest, req PutAdminBatchedBackgroundMigrationsIdPauseRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	return toResult(c.PutApiV4AdminBatchedBackgroundMigrationsIdPause(ctx, req.Id, req.Body, authorizationHeader))
+}
+
 type GetAdminBatchedBackgroundMigrationsRequest struct {
 	Params *client.GetApiV4AdminBatchedBackgroundMigrationsParams `json:"params,omitempty"`
 }
@@ -80,6 +154,41 @@ func getAdminBatchedBackgroundMigrationsHandler(ctx context.Context, request mcp
 	}
 
 	return toResult(c.GetApiV4AdminBatchedBackgroundMigrations(ctx, req.Params, authorizationHeader))
+}
+
+type PostAdminCiVariablesRequest struct {
+	Body client.PostApiV4AdminCiVariablesJSONRequestBody `json:"body"`
+}
+
+func registerPostAdminCiVariables(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&PostAdminCiVariablesRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
+	tool := mcp.NewTool("post_admin_ci_variables",
+		mcp.WithDescription("Create a new instance-level variable"),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
+	)
+
+	s.AddTool(tool, mcp.NewTypedToolHandler(postAdminCiVariablesHandler))
+}
+
+func postAdminCiVariablesHandler(ctx context.Context, request mcp.CallToolRequest, req PostAdminCiVariablesRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	return toResult(c.PostApiV4AdminCiVariables(ctx, req.Body, authorizationHeader))
 }
 
 type GetAdminCiVariablesRequest struct {
@@ -150,6 +259,43 @@ func deleteAdminCiVariablesKeyHandler(ctx context.Context, request mcp.CallToolR
 	}
 
 	return toResult(c.DeleteApiV4AdminCiVariablesKey(ctx, req.Key, authorizationHeader))
+}
+
+type PutAdminCiVariablesKeyRequest struct {
+	Key string `json:"key" jsonschema:"description=The key of a variable"`
+
+	Body client.PutApiV4AdminCiVariablesKeyJSONRequestBody `json:"body"`
+}
+
+func registerPutAdminCiVariablesKey(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&PutAdminCiVariablesKeyRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
+	tool := mcp.NewTool("put_admin_ci_variables_key",
+		mcp.WithDescription("Update an instance-level variable"),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
+	)
+
+	s.AddTool(tool, mcp.NewTypedToolHandler(putAdminCiVariablesKeyHandler))
+}
+
+func putAdminCiVariablesKeyHandler(ctx context.Context, request mcp.CallToolRequest, req PutAdminCiVariablesKeyRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	return toResult(c.PutApiV4AdminCiVariablesKey(ctx, req.Key, req.Body, authorizationHeader))
 }
 
 type GetAdminCiVariablesKeyRequest struct {
@@ -292,6 +438,43 @@ func deleteAdminClustersClusterIdHandler(ctx context.Context, request mcp.CallTo
 	return toResult(c.DeleteApiV4AdminClustersClusterId(ctx, req.ClusterId, authorizationHeader))
 }
 
+type PutAdminClustersClusterIdRequest struct {
+	ClusterId int32 `json:"cluster_id" jsonschema:"description=The cluster ID"`
+
+	Body client.PutApiV4AdminClustersClusterIdJSONRequestBody `json:"body"`
+}
+
+func registerPutAdminClustersClusterId(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&PutAdminClustersClusterIdRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
+	tool := mcp.NewTool("put_admin_clusters_cluster_id",
+		mcp.WithDescription("This feature was introduced in GitLab 13.2. Updates an existing instance cluster."),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
+	)
+
+	s.AddTool(tool, mcp.NewTypedToolHandler(putAdminClustersClusterIdHandler))
+}
+
+func putAdminClustersClusterIdHandler(ctx context.Context, request mcp.CallToolRequest, req PutAdminClustersClusterIdRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	return toResult(c.PutApiV4AdminClustersClusterId(ctx, req.ClusterId, req.Body, authorizationHeader))
+}
+
 type GetAdminClustersClusterIdRequest struct {
 	ClusterId int32 `json:"cluster_id" jsonschema:"description=The cluster ID"`
 }
@@ -325,4 +508,76 @@ func getAdminClustersClusterIdHandler(ctx context.Context, request mcp.CallToolR
 	}
 
 	return toResult(c.GetApiV4AdminClustersClusterId(ctx, req.ClusterId, authorizationHeader))
+}
+
+type PostAdminClustersAddRequest struct {
+	Body client.PostApiV4AdminClustersAddJSONRequestBody `json:"body"`
+}
+
+func registerPostAdminClustersAdd(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&PostAdminClustersAddRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
+	tool := mcp.NewTool("post_admin_clusters_add",
+		mcp.WithDescription("This feature was introduced in GitLab 13.2. Adds an existing Kubernetes instance cluster."),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
+	)
+
+	s.AddTool(tool, mcp.NewTypedToolHandler(postAdminClustersAddHandler))
+}
+
+func postAdminClustersAddHandler(ctx context.Context, request mcp.CallToolRequest, req PostAdminClustersAddRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	return toResult(c.PostApiV4AdminClustersAdd(ctx, req.Body, authorizationHeader))
+}
+
+type PostAdminMigrationsTimestampMarkRequest struct {
+	Timestamp int32 `json:"timestamp" jsonschema:"description=The migration version timestamp"`
+
+	Body client.PostApiV4AdminMigrationsTimestampMarkJSONRequestBody `json:"body"`
+}
+
+func registerPostAdminMigrationsTimestampMark(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&PostAdminMigrationsTimestampMarkRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
+	tool := mcp.NewTool("post_admin_migrations_timestamp_mark",
+		mcp.WithDescription("Mark the migration as successfully executed"),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
+	)
+
+	s.AddTool(tool, mcp.NewTypedToolHandler(postAdminMigrationsTimestampMarkHandler))
+}
+
+func postAdminMigrationsTimestampMarkHandler(ctx context.Context, request mcp.CallToolRequest, req PostAdminMigrationsTimestampMarkRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	return toResult(c.PostApiV4AdminMigrationsTimestampMark(ctx, req.Timestamp, req.Body, authorizationHeader))
 }

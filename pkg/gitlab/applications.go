@@ -7,7 +7,44 @@ import (
 	"github.com/invopop/jsonschema"
 	"github.com/mark3labs/mcp-go/mcp"
 	"github.com/mark3labs/mcp-go/server"
+
+	client "github.com/9506hqwy/gitlab-client-go/pkg/gitlab"
 )
+
+type PostApplicationsRequest struct {
+	Body client.PostApiV4ApplicationsJSONRequestBody `json:"body"`
+}
+
+func registerPostApplications(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&PostApplicationsRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
+	tool := mcp.NewTool("post_applications",
+		mcp.WithDescription("This feature was introduced in GitLab 10.5"),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
+	)
+
+	s.AddTool(tool, mcp.NewTypedToolHandler(postApplicationsHandler))
+}
+
+func postApplicationsHandler(ctx context.Context, request mcp.CallToolRequest, req PostApplicationsRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	return toResult(c.PostApiV4Applications(ctx, req.Body, authorizationHeader))
+}
 
 type GetApplicationsRequest struct {
 }
@@ -76,39 +113,4 @@ func deleteApplicationsIdHandler(ctx context.Context, request mcp.CallToolReques
 	}
 
 	return toResult(c.DeleteApiV4ApplicationsId(ctx, req.Id, authorizationHeader))
-}
-
-type PostApplicationsIdRenewSecretRequest struct {
-	Id int32 `json:"id" jsonschema:"description=The ID of the application (not the application_id)"`
-}
-
-func registerPostApplicationsIdRenewSecret(s *server.MCPServer) {
-	r := &jsonschema.Reflector{}
-	r.DoNotReference = true
-	schemaObj := r.Reflect(&PostApplicationsIdRenewSecretRequest{})
-	mcpSchema, err := json.Marshal(schemaObj)
-	if err != nil {
-		return
-	}
-
-	rawSchema := json.RawMessage(mcpSchema)
-
-	tool := mcp.NewTool("post_applications_id_renew_secret",
-		mcp.WithDescription("Renew the secret of a specific application"),
-		mcp.WithRawInputSchema(rawSchema),
-		func(tool *mcp.Tool) {
-			tool.InputSchema.Type = ""
-		},
-	)
-
-	s.AddTool(tool, mcp.NewTypedToolHandler(postApplicationsIdRenewSecretHandler))
-}
-
-func postApplicationsIdRenewSecretHandler(ctx context.Context, request mcp.CallToolRequest, req PostApplicationsIdRenewSecretRequest) (*mcp.CallToolResult, error) {
-	c, err := newClient(ctx)
-	if err != nil {
-		return mcp.NewToolResultError(err.Error()), nil
-	}
-
-	return toResult(c.PostApiV4ApplicationsIdRenewSecret(ctx, req.Id, authorizationHeader))
 }

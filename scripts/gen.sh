@@ -48,6 +48,8 @@ function toolname() {
     TOO_NAME=${TOO_NAME//$/_} # '$' -> '_'
     TOO_NAME=${TOO_NAME//{/} # '{' -> ''
     TOO_NAME=${TOO_NAME//\}/} # '}' -> ''
+    TOO_NAME=${TOO_NAME//\(/} # '(' -> ''
+    TOO_NAME=${TOO_NAME//\)/} # ')' -> ''
     echo "${TOO_NAME}"
 }
 
@@ -96,6 +98,7 @@ function write-request-struct(){
     local METHOD="$1"
     local OP_PATH="$2"
     local PATH_INFO="$3"
+    local REQ_BODY="${4:-}"
 
     TOOL_NAME=$(toolname "${OP_PATH}")
     API_NAME=$(capitalize "${TOOL_NAME}")
@@ -132,6 +135,7 @@ function write-request-struct(){
         DESCRIPTION=$(yq -r '.description' <<<"${PARAMETER}")
 
         DESCRIPTION=$(normalize "${DESCRIPTION}")
+        DESCRIPTION="${DESCRIPTION//\\/\\\\}" # '\' -> '\\'
         DESCRIPTION="${DESCRIPTION//\"/\\\"}"
         DESCRIPTION="${DESCRIPTION//\`/\'}" # '`' -> '\''
 
@@ -151,11 +155,18 @@ function write-request-struct(){
 
     PATH_STMT_STR="$(IFS=$'\n'; echo "${PATH_STMT[*]}")"
 
+    # body
+    BODY_SMTM_STR=""
+    if [[ -n "${REQ_BODY}" && "${REQ_BODY}" != 'null' ]]; then
+        BODY_SMTM_STR="Body client.${METHOD}ApiV4${API_NAME}JSONRequestBody \`json:\"body\"\`"
+    fi
+
     FILE_PATH=$(filename "${OP_PATH}")
     cat >> "${FILE_PATH}" <<EOF
 type ${METHOD}${API_NAME}Request struct {
     ${PATH_STMT_STR}
     ${QUERY_SMTM_STR}
+    ${BODY_SMTM_STR}
 }
 EOF
 
@@ -168,7 +179,9 @@ function write-register-func() {
 
     DESCRIPTION=$(yq -r ".description" <<<"${PATH_INFO}")
     DESCRIPTION=$(normalize "${DESCRIPTION}")
+    DESCRIPTION="${DESCRIPTION//\\/\\\\}" # '\' -> '\\'
     DESCRIPTION="${DESCRIPTION//\"/\\\"}"
+    DESCRIPTION="${DESCRIPTION//\`/\'}" # '`' -> '\''
 
     TOOL_NAME=$(toolname "${OP_PATH}")
     TOOL_SNAME=$(shortname "${TOOL_NAME}")
@@ -208,6 +221,7 @@ function write-handler-func() {
     local METHOD="$1"
     local OP_PATH="$2"
     local PATH_INFO="$3"
+    local REQ_BODY="${4:-}"
 
     TOOL_NAME=$(toolname "${OP_PATH}")
     API_NAME=$(capitalize "${TOOL_NAME}")
@@ -247,6 +261,11 @@ function write-handler-func() {
         PATH_ARG_STR=", ${PATH_ARG_STR}"
     fi
 
+    BODY_ARG_STR=""
+    if [[ -n "${REQ_BODY}" && "${REQ_BODY}" != 'null' ]]; then
+        BODY_ARG_STR=", req.Body"
+    fi
+
     FILE_PATH=$(filename "${OP_PATH}")
     cat >> "${FILE_PATH}" <<EOF
 
@@ -256,7 +275,7 @@ func ${METHOD,}${API_NAME}Handler(ctx context.Context, request mcp.CallToolReque
 		return mcp.NewToolResultError(err.Error()), nil
 	}
 
-	return toResult(c.${METHOD}ApiV4${API_NAME}(ctx ${PATH_ARG_STR} ${QUERY_SMTM_STR}, authorizationHeader))
+	return toResult(c.${METHOD}ApiV4${API_NAME}(ctx ${PATH_ARG_STR} ${QUERY_SMTM_STR} ${BODY_ARG_STR}, authorizationHeader))
 }
 EOF
 }
@@ -284,19 +303,21 @@ do
     fi
 
     OP_POST=$(yq '.value.post | . style="flow"' <<<"${PATH_INFO}")
-    OP_REQ_BODY=$(yq ".requestBody" <<<"${OP_POST}")
-    if [[ "$OP_POST" != 'null' && "$OP_REQ_BODY" == 'null' ]]; then
-        write-request-struct "Post" "${OP_PATH}" "${OP_POST}"
+    OP_REQ_BODY=$(yq '.requestBody | . style="flow"' <<<"${OP_POST}")
+    IS_JSON=$(yq -r '.content | ."application/json"' <<<"${OP_REQ_BODY}")
+    if [[ "$OP_POST" != 'null' && "${IS_JSON}" != "null" ]]; then
+        write-request-struct "Post" "${OP_PATH}" "${OP_POST}" "${OP_REQ_BODY}"
         write-register-func "Post" "${OP_PATH}" "${OP_POST}"
-        write-handler-func "Post" "${OP_PATH}" "${OP_POST}"
+        write-handler-func "Post" "${OP_PATH}" "${OP_POST}" "${OP_REQ_BODY}"
     fi
 
     OP_PUT=$(yq '.value.put | . style="flow"' <<<"${PATH_INFO}")
-    OP_REQ_BODY=$(yq ".requestBody" <<<"${OP_PUT}")
-    if [[ "$OP_PUT" != 'null' && "$OP_REQ_BODY" == 'null' ]]; then
-        write-request-struct "Put" "${OP_PATH}" "${OP_PUT}"
+    OP_REQ_BODY=$(yq '.requestBody | . style="flow"' <<<"${OP_PUT}")
+    IS_JSON=$(yq -r '.content | ."application/json"' <<<"${OP_REQ_BODY}")
+    if [[ "$OP_PUT" != 'null' && "${IS_JSON}" != "null" ]]; then
+        write-request-struct "Put" "${OP_PATH}" "${OP_PUT}" "${OP_REQ_BODY}"
         write-register-func "Put" "${OP_PATH}" "${OP_PUT}"
-        write-handler-func "Put" "${OP_PATH}" "${OP_PUT}"
+        write-handler-func "Put" "${OP_PATH}" "${OP_PUT}" "${OP_REQ_BODY}"
     fi
 
     OP_GET=$(yq '.value.get | . style="flow"' <<<"${PATH_INFO}")
@@ -342,10 +363,13 @@ do
     fi
 
     OP_POST=$(yq '.value.post' <<<"${PATH_INFO}")
-    OP_REQ_BODY=$(yq ".value.post.requestBody" <<<"${PATH_INFO}")
-    if [[ "$OP_POST" != 'null' && "$OP_REQ_BODY" == 'null' ]]; then
+    OP_REQ_BODY=$(yq '.requestBody | . style="flow"' <<<"${OP_POST}")
+    IS_JSON=$(yq -r '.content | ."application/json"' <<<"${OP_REQ_BODY}")
+    if [[ "$OP_POST" != 'null' ]]; then
         METHOD="Post"
         if [[ ${#TOOL_SNAME} -gt 41 ]]; then # post_XXX
+            echo "//if !readonly { register${METHOD}${API_NAME}(s) }" >> "${TOOLS_PATH}"
+        elif [[ "${IS_JSON}" == "null" ]]; then
             echo "//if !readonly { register${METHOD}${API_NAME}(s) }" >> "${TOOLS_PATH}"
         else
             echo "if !readonly { register${METHOD}${API_NAME}(s) }" >> "${TOOLS_PATH}"
@@ -353,10 +377,13 @@ do
     fi
 
     OP_PUT=$(yq '.value.put' <<<"${PATH_INFO}")
-    OP_REQ_BODY=$(yq ".value.put.requestBody" <<<"${PATH_INFO}")
-    if [[ "$OP_PUT" != 'null' && "$OP_REQ_BODY" == 'null' ]]; then
+    OP_REQ_BODY=$(yq '.requestBody | . style="flow"' <<<"${OP_PUT}")
+    IS_JSON=$(yq -r '.content | ."application/json"' <<<"${OP_REQ_BODY}")
+    if [[ "$OP_PUT" != 'null' ]]; then
         METHOD="Put"
         if [[ ${#TOOL_SNAME} -gt 42 ]]; then # put_XXX
+            echo "//if !readonly { register${METHOD}${API_NAME}(s) }" >> "${TOOLS_PATH}"
+        elif [[ "${IS_JSON}" == "null" ]]; then
             echo "//if !readonly { register${METHOD}${API_NAME}(s) }" >> "${TOOLS_PATH}"
         else
             echo "if !readonly { register${METHOD}${API_NAME}(s) }" >> "${TOOLS_PATH}"

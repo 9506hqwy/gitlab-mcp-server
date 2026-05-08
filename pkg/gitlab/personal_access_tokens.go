@@ -114,6 +114,41 @@ func getPersonalAccessTokensSelfAssociationsHandler(ctx context.Context, request
 	return toResult(c.GetApiV4PersonalAccessTokensSelfAssociations(ctx, req.Params, authorizationHeader))
 }
 
+type PostPersonalAccessTokensSelfRotateRequest struct {
+	Body client.PostApiV4PersonalAccessTokensSelfRotateJSONRequestBody `json:"body"`
+}
+
+func registerPostPersonalAccessTokensSelfRotate(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&PostPersonalAccessTokensSelfRotateRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
+	tool := mcp.NewTool("post_personal_access_tokens_self_rotate",
+		mcp.WithDescription("Rotates a personal access token by passing it to the API in a header"),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
+	)
+
+	s.AddTool(tool, mcp.NewTypedToolHandler(postPersonalAccessTokensSelfRotateHandler))
+}
+
+func postPersonalAccessTokensSelfRotateHandler(ctx context.Context, request mcp.CallToolRequest, req PostPersonalAccessTokensSelfRotateRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	return toResult(c.PostApiV4PersonalAccessTokensSelfRotate(ctx, req.Body, authorizationHeader))
+}
+
 type GetPersonalAccessTokensRequest struct {
 	Params *client.GetApiV4PersonalAccessTokensParams `json:"params,omitempty"`
 }
@@ -217,4 +252,41 @@ func getPersonalAccessTokensIdHandler(ctx context.Context, request mcp.CallToolR
 	}
 
 	return toResult(c.GetApiV4PersonalAccessTokensId(ctx, req.Id, authorizationHeader))
+}
+
+type PostPersonalAccessTokensIdRotateRequest struct {
+	Id int32 `json:"id" jsonschema:"description=null"`
+
+	Body client.PostApiV4PersonalAccessTokensIdRotateJSONRequestBody `json:"body"`
+}
+
+func registerPostPersonalAccessTokensIdRotate(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&PostPersonalAccessTokensIdRotateRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
+	tool := mcp.NewTool("post_personal_access_tokens_id_rotate",
+		mcp.WithDescription("Rotates a personal access token."),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
+	)
+
+	s.AddTool(tool, mcp.NewTypedToolHandler(postPersonalAccessTokensIdRotateHandler))
+}
+
+func postPersonalAccessTokensIdRotateHandler(ctx context.Context, request mcp.CallToolRequest, req PostPersonalAccessTokensIdRotateRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	return toResult(c.PostApiV4PersonalAccessTokensIdRotate(ctx, req.Id, req.Body, authorizationHeader))
 }

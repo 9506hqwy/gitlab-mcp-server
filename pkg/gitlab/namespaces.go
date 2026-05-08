@@ -11,6 +11,43 @@ import (
 	client "github.com/9506hqwy/gitlab-client-go/pkg/gitlab"
 )
 
+type PutNamespacesIdRequest struct {
+	Id int32 `json:"id" jsonschema:"description=null"`
+
+	Body client.PutApiV4NamespacesIdJSONRequestBody `json:"body"`
+}
+
+func registerPutNamespacesId(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&PutNamespacesIdRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
+	tool := mcp.NewTool("put_namespaces_id",
+		mcp.WithDescription("[DEPRECATED] Update a namespace"),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
+	)
+
+	s.AddTool(tool, mcp.NewTypedToolHandler(putNamespacesIdHandler))
+}
+
+func putNamespacesIdHandler(ctx context.Context, request mcp.CallToolRequest, req PutNamespacesIdRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	return toResult(c.PutApiV4NamespacesId(ctx, req.Id, req.Body, authorizationHeader))
+}
+
 type GetNamespacesIdRequest struct {
 	Id string `json:"id" jsonschema:"description=ID or URL-encoded path of the namespace"`
 }
@@ -114,6 +151,43 @@ func deleteNamespacesIdStorageLimitExclusionHandler(ctx context.Context, request
 	}
 
 	return toResult(c.DeleteApiV4NamespacesIdStorageLimitExclusion(ctx, req.Id, authorizationHeader))
+}
+
+type PostNamespacesIdStorageLimitExclusionRequest struct {
+	Id int32 `json:"id" jsonschema:"description=null"`
+
+	Body client.PostApiV4NamespacesIdStorageLimitExclusionJSONRequestBody `json:"body"`
+}
+
+func registerPostNamespacesIdStorageLimitExclusion(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&PostNamespacesIdStorageLimitExclusionRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
+	tool := mcp.NewTool("post_namespaces_id_storage_limit_exclusion",
+		mcp.WithDescription("Creates a Namespaces::Storage::LimitExclusion"),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
+	)
+
+	s.AddTool(tool, mcp.NewTypedToolHandler(postNamespacesIdStorageLimitExclusionHandler))
+}
+
+func postNamespacesIdStorageLimitExclusionHandler(ctx context.Context, request mcp.CallToolRequest, req PostNamespacesIdStorageLimitExclusionRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	return toResult(c.PostApiV4NamespacesIdStorageLimitExclusion(ctx, req.Id, req.Body, authorizationHeader))
 }
 
 type GetNamespacesStorageLimitExclusionsRequest struct {

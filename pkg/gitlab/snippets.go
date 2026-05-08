@@ -11,6 +11,41 @@ import (
 	client "github.com/9506hqwy/gitlab-client-go/pkg/gitlab"
 )
 
+type PostSnippetsRequest struct {
+	Body client.PostApiV4SnippetsJSONRequestBody `json:"body"`
+}
+
+func registerPostSnippets(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&PostSnippetsRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
+	tool := mcp.NewTool("post_snippets",
+		mcp.WithDescription("This feature was introduced in GitLab 8.15."),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
+	)
+
+	s.AddTool(tool, mcp.NewTypedToolHandler(postSnippetsHandler))
+}
+
+func postSnippetsHandler(ctx context.Context, request mcp.CallToolRequest, req PostSnippetsRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	return toResult(c.PostApiV4Snippets(ctx, req.Body, authorizationHeader))
+}
+
 type GetSnippetsRequest struct {
 	Params *client.GetApiV4SnippetsParams `json:"params,omitempty"`
 }
@@ -149,6 +184,43 @@ func deleteSnippetsIdHandler(ctx context.Context, request mcp.CallToolRequest, r
 	}
 
 	return toResult(c.DeleteApiV4SnippetsId(ctx, req.Id, authorizationHeader))
+}
+
+type PutSnippetsIdRequest struct {
+	Id int32 `json:"id" jsonschema:"description=The ID of a snippet"`
+
+	Body client.PutApiV4SnippetsIdJSONRequestBody `json:"body"`
+}
+
+func registerPutSnippetsId(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&PutSnippetsIdRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
+	tool := mcp.NewTool("put_snippets_id",
+		mcp.WithDescription("This feature was introduced in GitLab 8.15."),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
+	)
+
+	s.AddTool(tool, mcp.NewTypedToolHandler(putSnippetsIdHandler))
+}
+
+func putSnippetsIdHandler(ctx context.Context, request mcp.CallToolRequest, req PutSnippetsIdRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	return toResult(c.PutApiV4SnippetsId(ctx, req.Id, req.Body, authorizationHeader))
 }
 
 type GetSnippetsIdRequest struct {

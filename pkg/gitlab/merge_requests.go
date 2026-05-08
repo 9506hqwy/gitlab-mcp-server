@@ -27,7 +27,7 @@ func registerGetMergeRequests(s *server.MCPServer) {
 	rawSchema := json.RawMessage(mcpSchema)
 
 	tool := mcp.NewTool("get_mrs",
-		mcp.WithDescription("Get all merge requests the authenticated user has access to. By default it returns only merge requests created by the current user. To get all merge requests, use parameter `scope=all`."),
+		mcp.WithDescription("Get all merge requests the authenticated user has access to. By default it returns only merge requests created by the current user. To get all merge requests, use parameter 'scope=all'."),
 		mcp.WithRawInputSchema(rawSchema),
 		func(tool *mcp.Tool) {
 			tool.InputSchema.Type = ""

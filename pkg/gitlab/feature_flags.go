@@ -118,3 +118,77 @@ func getFeatureFlagsUnleashProjectIdClientFeaturesHandler(ctx context.Context, r
 
 	return toResult(c.GetApiV4FeatureFlagsUnleashProjectIdClientFeatures(ctx, req.ProjectId, req.Params, authorizationHeader))
 }
+
+type PostFeatureFlagsUnleashProjectIdClientRegisterRequest struct {
+	ProjectId string `json:"project_id" jsonschema:"description=The ID of a project"`
+
+	Body client.PostApiV4FeatureFlagsUnleashProjectIdClientRegisterJSONRequestBody `json:"body"`
+}
+
+func registerPostFeatureFlagsUnleashProjectIdClientRegister(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&PostFeatureFlagsUnleashProjectIdClientRegisterRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
+	tool := mcp.NewTool("post_feature_flags_unleash_project_id_client_register",
+		mcp.WithDescription("null"),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
+	)
+
+	s.AddTool(tool, mcp.NewTypedToolHandler(postFeatureFlagsUnleashProjectIdClientRegisterHandler))
+}
+
+func postFeatureFlagsUnleashProjectIdClientRegisterHandler(ctx context.Context, request mcp.CallToolRequest, req PostFeatureFlagsUnleashProjectIdClientRegisterRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	return toResult(c.PostApiV4FeatureFlagsUnleashProjectIdClientRegister(ctx, req.ProjectId, req.Body, authorizationHeader))
+}
+
+type PostFeatureFlagsUnleashProjectIdClientMetricsRequest struct {
+	ProjectId string `json:"project_id" jsonschema:"description=The ID of a project"`
+
+	Body client.PostApiV4FeatureFlagsUnleashProjectIdClientMetricsJSONRequestBody `json:"body"`
+}
+
+func registerPostFeatureFlagsUnleashProjectIdClientMetrics(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&PostFeatureFlagsUnleashProjectIdClientMetricsRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
+	tool := mcp.NewTool("post_feature_flags_unleash_project_id_client_metrics",
+		mcp.WithDescription("null"),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
+	)
+
+	s.AddTool(tool, mcp.NewTypedToolHandler(postFeatureFlagsUnleashProjectIdClientMetricsHandler))
+}
+
+func postFeatureFlagsUnleashProjectIdClientMetricsHandler(ctx context.Context, request mcp.CallToolRequest, req PostFeatureFlagsUnleashProjectIdClientMetricsRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	return toResult(c.PostApiV4FeatureFlagsUnleashProjectIdClientMetrics(ctx, req.ProjectId, req.Body, authorizationHeader))
+}

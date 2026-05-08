@@ -11,6 +11,41 @@ import (
 	client "github.com/9506hqwy/gitlab-client-go/pkg/gitlab"
 )
 
+type PutApplicationPlanLimitsRequest struct {
+	Body client.PutApiV4ApplicationPlanLimitsJSONRequestBody `json:"body"`
+}
+
+func registerPutApplicationPlanLimits(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&PutApplicationPlanLimitsRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
+	tool := mcp.NewTool("put_application_plan_limits",
+		mcp.WithDescription("Modify the limits of a plan on the GitLab instance."),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
+	)
+
+	s.AddTool(tool, mcp.NewTypedToolHandler(putApplicationPlanLimitsHandler))
+}
+
+func putApplicationPlanLimitsHandler(ctx context.Context, request mcp.CallToolRequest, req PutApplicationPlanLimitsRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	return toResult(c.PutApiV4ApplicationPlanLimits(ctx, req.Body, authorizationHeader))
+}
+
 type GetApplicationPlanLimitsRequest struct {
 	Params *client.GetApiV4ApplicationPlanLimitsParams `json:"params,omitempty"`
 }

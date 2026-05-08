@@ -47,6 +47,44 @@ func deleteHooksHookIdUrlVariablesKeyHandler(ctx context.Context, request mcp.Ca
 	return toResult(c.DeleteApiV4HooksHookIdUrlVariablesKey(ctx, req.HookId, req.Key, authorizationHeader))
 }
 
+type PutHooksHookIdUrlVariablesKeyRequest struct {
+	HookId int32  `json:"hook_id" jsonschema:"description=The ID of the hook"`
+	Key    string `json:"key" jsonschema:"description=The key of the variable"`
+
+	Body client.PutApiV4HooksHookIdUrlVariablesKeyJSONRequestBody `json:"body"`
+}
+
+func registerPutHooksHookIdUrlVariablesKey(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&PutHooksHookIdUrlVariablesKeyRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
+	tool := mcp.NewTool("put_hooks_hook_id_url_variables_key",
+		mcp.WithDescription("Set a url variable"),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
+	)
+
+	s.AddTool(tool, mcp.NewTypedToolHandler(putHooksHookIdUrlVariablesKeyHandler))
+}
+
+func putHooksHookIdUrlVariablesKeyHandler(ctx context.Context, request mcp.CallToolRequest, req PutHooksHookIdUrlVariablesKeyRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	return toResult(c.PutApiV4HooksHookIdUrlVariablesKey(ctx, req.HookId, req.Key, req.Body, authorizationHeader))
+}
+
 type DeleteHooksHookIdCustomHeadersKeyRequest struct {
 	HookId int32  `json:"hook_id" jsonschema:"description=The ID of the hook"`
 	Key    string `json:"key" jsonschema:"description=The key of the custom header"`
@@ -81,6 +119,79 @@ func deleteHooksHookIdCustomHeadersKeyHandler(ctx context.Context, request mcp.C
 	}
 
 	return toResult(c.DeleteApiV4HooksHookIdCustomHeadersKey(ctx, req.HookId, req.Key, authorizationHeader))
+}
+
+type PutHooksHookIdCustomHeadersKeyRequest struct {
+	HookId int32  `json:"hook_id" jsonschema:"description=The ID of the hook"`
+	Key    string `json:"key" jsonschema:"description=The key of the custom header"`
+
+	Body client.PutApiV4HooksHookIdCustomHeadersKeyJSONRequestBody `json:"body"`
+}
+
+func registerPutHooksHookIdCustomHeadersKey(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&PutHooksHookIdCustomHeadersKeyRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
+	tool := mcp.NewTool("put_hooks_hook_id_custom_headers_key",
+		mcp.WithDescription("Set a custom header"),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
+	)
+
+	s.AddTool(tool, mcp.NewTypedToolHandler(putHooksHookIdCustomHeadersKeyHandler))
+}
+
+func putHooksHookIdCustomHeadersKeyHandler(ctx context.Context, request mcp.CallToolRequest, req PutHooksHookIdCustomHeadersKeyRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	return toResult(c.PutApiV4HooksHookIdCustomHeadersKey(ctx, req.HookId, req.Key, req.Body, authorizationHeader))
+}
+
+type PostHooksRequest struct {
+	Body client.PostApiV4HooksJSONRequestBody `json:"body"`
+}
+
+func registerPostHooks(s *server.MCPServer) {
+	r := &jsonschema.Reflector{}
+	r.DoNotReference = true
+	schemaObj := r.Reflect(&PostHooksRequest{})
+	mcpSchema, err := json.Marshal(schemaObj)
+	if err != nil {
+		return
+	}
+
+	rawSchema := json.RawMessage(mcpSchema)
+
+	tool := mcp.NewTool("post_hooks",
+		mcp.WithDescription("Add a new system hook"),
+		mcp.WithRawInputSchema(rawSchema),
+		func(tool *mcp.Tool) {
+			tool.InputSchema.Type = ""
+		},
+	)
+
+	s.AddTool(tool, mcp.NewTypedToolHandler(postHooksHandler))
+}
+
+func postHooksHandler(ctx context.Context, request mcp.CallToolRequest, req PostHooksRequest) (*mcp.CallToolResult, error) {
+	c, err := newClient(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	return toResult(c.PostApiV4Hooks(ctx, req.Body, authorizationHeader))
 }
 
 type GetHooksRequest struct {
@@ -153,14 +264,16 @@ func deleteHooksHookIdHandler(ctx context.Context, request mcp.CallToolRequest, 
 	return toResult(c.DeleteApiV4HooksHookId(ctx, req.HookId, authorizationHeader))
 }
 
-type PostHooksHookIdRequest struct {
-	HookId int32 `json:"hook_id" jsonschema:"description=The ID of the hook"`
+type PutHooksHookIdRequest struct {
+	HookId int32 `json:"hook_id" jsonschema:"description=The ID of the system hook"`
+
+	Body client.PutApiV4HooksHookIdJSONRequestBody `json:"body"`
 }
 
-func registerPostHooksHookId(s *server.MCPServer) {
+func registerPutHooksHookId(s *server.MCPServer) {
 	r := &jsonschema.Reflector{}
 	r.DoNotReference = true
-	schemaObj := r.Reflect(&PostHooksHookIdRequest{})
+	schemaObj := r.Reflect(&PutHooksHookIdRequest{})
 	mcpSchema, err := json.Marshal(schemaObj)
 	if err != nil {
 		return
@@ -168,24 +281,24 @@ func registerPostHooksHookId(s *server.MCPServer) {
 
 	rawSchema := json.RawMessage(mcpSchema)
 
-	tool := mcp.NewTool("post_hooks_hook_id",
-		mcp.WithDescription("null"),
+	tool := mcp.NewTool("put_hooks_hook_id",
+		mcp.WithDescription("Edits a system hook"),
 		mcp.WithRawInputSchema(rawSchema),
 		func(tool *mcp.Tool) {
 			tool.InputSchema.Type = ""
 		},
 	)
 
-	s.AddTool(tool, mcp.NewTypedToolHandler(postHooksHookIdHandler))
+	s.AddTool(tool, mcp.NewTypedToolHandler(putHooksHookIdHandler))
 }
 
-func postHooksHookIdHandler(ctx context.Context, request mcp.CallToolRequest, req PostHooksHookIdRequest) (*mcp.CallToolResult, error) {
+func putHooksHookIdHandler(ctx context.Context, request mcp.CallToolRequest, req PutHooksHookIdRequest) (*mcp.CallToolResult, error) {
 	c, err := newClient(ctx)
 	if err != nil {
 		return mcp.NewToolResultError(err.Error()), nil
 	}
 
-	return toResult(c.PostApiV4HooksHookId(ctx, req.HookId, authorizationHeader))
+	return toResult(c.PutApiV4HooksHookId(ctx, req.HookId, req.Body, authorizationHeader))
 }
 
 type GetHooksHookIdRequest struct {
