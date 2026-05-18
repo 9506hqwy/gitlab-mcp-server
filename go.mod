@@ -12,7 +12,7 @@ tool (
 require (
 	github.com/9506hqwy/gitlab-client-go v0.0.0-20260414094018-dcda12f7343f
 	github.com/invopop/jsonschema v0.14.0
-	github.com/mark3labs/mcp-go v0.52.0
+	github.com/mark3labs/mcp-go v0.54.0
 	github.com/spf13/cobra v1.10.2
 	github.com/spf13/viper v1.21.0
 )
@@ -40,7 +40,6 @@ require (
 	github.com/mattn/go-isatty v0.0.20 // indirect
 	github.com/mgechev/dots v1.0.0 // indirect
 	github.com/mgechev/revive v1.15.0 // indirect
-	github.com/niemeyer/pretty v0.0.0-20200227124842-a10e7caefd8e // indirect
 	github.com/oapi-codegen/runtime v1.4.0 // indirect
 	github.com/otiai10/copy v1.10.0 // indirect
 	github.com/pb33f/ordered-map/v2 v2.3.1 // indirect
@@ -66,7 +65,6 @@ require (
 	golang.org/x/tools v0.43.0 // indirect
 	golang.org/x/tools/cmd/godoc v0.1.0-deprecated // indirect
 	golang.org/x/tools/godoc v0.1.0-deprecated // indirect
-	gopkg.in/check.v1 v1.0.0-20200227125254-8fa46927fb4f // indirect
 	honnef.co/go/tools v0.6.1 // indirect
 	k8s.io/klog/v2 v2.90.1 // indirect
 )
