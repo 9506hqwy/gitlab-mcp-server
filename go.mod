@@ -12,7 +12,7 @@ tool (
 require (
 	github.com/9506hqwy/gitlab-client-go v0.0.0-20260414094018-dcda12f7343f
 	github.com/invopop/jsonschema v0.14.0
-	github.com/mark3labs/mcp-go v0.55.0
+	github.com/mark3labs/mcp-go v0.55.1
 	github.com/spf13/cobra v1.10.2
 	github.com/spf13/viper v1.21.0
 )
